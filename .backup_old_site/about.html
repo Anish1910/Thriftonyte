@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About BONZERO</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-amber-50">
+    <nav class="bg-white sticky top-0 z-50" id="navbar">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-green-900">BONZERO</h1>
+            <div class="flex gap-6">
+                <a href="index.html" class="text-gray-700 hover:text-green-900 transition">Home</a>
+                <a href="about.html" class="text-gray-700 hover:text-green-900 transition">About</a>
+                <a href="curations.html" class="text-gray-700 hover:text-green-900 transition">Curations</a>
+                <a href="learn.html" class="text-gray-700 hover:text-green-900 transition">Learn</a>
+                <a href="consign.html" class="text-gray-700 hover:text-green-900 transition">Consign</a>
+                <a href="contact.html" class="text-gray-700 hover:text-green-900 transition">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="bg-gradient-to-b from-amber-100 to-white py-20 md:py-32">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-5xl md:text-6xl font-bold mb-6 font-serif text-gray-900" style="animation: slideUp 0.8s ease-out;">Our Story</h1>
+            <p class="text-xl text-gray-700" style="animation: slideUp 0.8s ease-out 0.2s both;">Building sustainable fashion, one piece at a time.</p>
+        </div>
+    </section>
+
+    <section class="bg-white py-16 md:py-24">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 font-serif text-gray-900">How It Started</h2>
+            <div class="space-y-6 text-gray-700 leading-relaxed" id="story-content"></div>
+        </div>
+    </section>
+
+    <section class="bg-amber-100 py-16 md:py-24">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 font-serif text-gray-900">Our Values</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="values-grid"></div>
+        </div>
+    </section>
+
+    <section class="bg-white py-16 md:py-24">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 font-serif text-gray-900">Our Team</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="team-grid"></div>
+        </div>
+    </section>
+
+    <section class="bg-amber-100 py-16 md:py-24">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 font-serif text-gray-900">Our Impact</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="impact-grid"></div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p>&copy; 2024 BONZERO. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- External Scripts -->
+    <script src="js/data.js"></script>
+    <script src="js/main.js"></script>
+    
+    <!-- Page-specific Script -->
+    <script>
+        const storyParagraphs = [
+            "BONZERO was born from a simple idea: sustainable fashion shouldn't feel like a compromise. In 2022, our founder realized that fast fashion was everywhere—cheap, disposable, destroying the planet.",
+            "We started as a simple social project sharing curated thrifted pieces. Within months, we realized there was massive demand from Gen-Z who wanted to thrift smarter.",
+            "Today, BONZERO is a community platform dedicated to making sustainable fashion accessible, stylish, and conscious."
+        ];
+
+        const values = [
+            { icon: '🎨', title: 'Originality', text: 'Celebrate individuality. Your style should be uniquely yours.' },
+            { icon: '💚', title: 'Sustainability', text: 'Fashion shouldn\'t cost the planet.' },
+            { icon: '💰', title: 'Affordability', text: 'Quality fashion accessible to everyone.' },
+            { icon: '🌍', title: 'Inclusivity', text: 'Celebrate all bodies, styles, and identities.' },
+            { icon: '📚', title: 'Education', text: 'Knowledge should be freely available.' },
+            { icon: '✨', title: 'Quality', text: 'We curate obsessively for the best pieces.' }
+        ];
+
+        const teamMembers = [
+            { name: 'Alex Chen', role: 'Founder & Curator', bio: 'Fashion enthusiast building a sustainable future.' },
+            { name: 'Jordan Rivera', role: 'Head of Curation', bio: 'Former fashion buyer hunting hidden gems.' },
+            { name: 'Sam Park', role: 'Community Manager', bio: 'Passionate about making thrifting accessible.' }
+        ];
+
+        const impact = [
+            { stat: '50K+', label: 'Community Members' },
+            { stat: '1M+', label: 'Pieces Rehomed' },
+            { stat: '2M', label: 'Gallons Water Saved' }
+        ];
+
+        // Populate content
+        document.getElementById('story-content').innerHTML = storyParagraphs.map((p, i) => 
+            `<p style="animation: slideUp 0.6s ease-out ${i * 0.15}s both;">${p}</p>`
+        ).join('');
+
+        document.getElementById('values-grid').innerHTML = values.map((v, i) =>
+            `<div class="card-3d bg-white p-8 rounded-xl border border-gray-200 scaleIn" style="animation: scaleIn 0.6s ease-out ${i * 0.08}s both;">
+                <div class="text-4xl mb-4 icon-bounce">${v.icon}</div>
+                <h3 class="text-lg font-semibold mb-2 text-green-900">${v.title}</h3>
+                <p class="text-gray-600 text-sm">${v.text}</p>
+            </div>`
+        ).join('');
+
+        document.getElementById('team-grid').innerHTML = teamMembers.map((m, i) =>
+            `<div class="card-3d bg-white p-8 rounded-xl border border-gray-200 text-center scaleIn" style="animation: scaleIn 0.6s ease-out ${i * 0.1}s both;">
+                <div class="text-5xl mb-4">👤</div>
+                <h3 class="text-lg font-semibold mb-1 text-gray-900">${m.name}</h3>
+                <p class="text-green-900 font-semibold text-sm mb-3">${m.role}</p>
+                <p class="text-gray-600 text-sm">${m.bio}</p>
+            </div>`
+        ).join('');
+
+        document.getElementById('impact-grid').innerHTML = impact.map((i, idx) =>
+            `<div class="card-3d bg-white p-8 rounded-xl border border-gray-200 text-center scaleIn" style="animation: scaleIn 0.6s ease-out ${idx * 0.1}s both;">
+                <h3 class="text-5xl font-bold text-green-900 mb-2">${i.stat}</h3>
+                <p class="text-gray-600 font-semibold">${i.label}</p>
+            </div>`
+        ).join('');
+    </script>
+</body>
+</html>

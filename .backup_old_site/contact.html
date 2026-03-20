@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - BONZERO</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-amber-50">
+    <nav class="bg-white sticky top-0 z-50" id="navbar">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-green-900">BONZERO</h1>
+            <div class="flex gap-6">
+                <a href="index.html" class="text-gray-700 hover:text-green-900 transition">Home</a>
+                <a href="about.html" class="text-gray-700 hover:text-green-900 transition">About</a>
+                <a href="curations.html" class="text-gray-700 hover:text-green-900 transition">Curations</a>
+                <a href="learn.html" class="text-gray-700 hover:text-green-900 transition">Learn</a>
+                <a href="consign.html" class="text-gray-700 hover:text-green-900 transition">Consign</a>
+                <a href="contact.html" class="text-gray-700 hover:text-green-900 transition">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="bg-gradient-to-b from-amber-100 to-white py-20 md:py-32">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-5xl md:text-6xl font-bold mb-6 font-serif text-gray-900" style="animation: slideUp 0.8s ease-out;">Get in Touch</h1>
+            <p class="text-xl text-gray-700" style="animation: slideUp 0.8s ease-out 0.2s both;">We'd love to hear from you. Let's start a conversation.</p>
+        </div>
+    </section>
+
+    <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+            <div class="lg:col-span-2">
+                <div class="contact-card bg-white p-8 rounded-xl border border-gray-200">
+                    <form id="contact-form">
+                        <div class="space-y-6">
+                            <div class="form-group grid grid-cols-1 md:grid-cols-2 gap-4" style="animation-delay: 0s;">
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-900 mb-2">Name <span class="text-red-500">*</span></label>
+                                    <input type="text" name="name" required class="w-full px-4 py-3 rounded-lg" placeholder="Your name">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-900 mb-2">Email <span class="text-red-500">*</span></label>
+                                    <input type="email" name="email" required class="w-full px-4 py-3 rounded-lg" placeholder="your@email.com">
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="animation-delay: 0.08s;">
+                                <label class="block text-sm font-semibold text-gray-900 mb-2">Subject <span class="text-red-500">*</span></label>
+                                <input type="text" name="subject" required class="w-full px-4 py-3 rounded-lg" placeholder="Message subject">
+                            </div>
+
+                            <div class="form-group" style="animation-delay: 0.16s;">
+                                <label class="block text-sm font-semibold text-gray-900 mb-2">Message <span class="text-red-500">*</span></label>
+                                <textarea name="message" rows="6" required class="w-full px-4 py-3 rounded-lg" placeholder="Your message here..."></textarea>
+                            </div>
+
+                            <div class="form-group" style="animation-delay: 0.24s;">
+                                <button type="submit" class="w-full btn-submit text-white py-3 rounded-lg font-semibold text-lg">
+                                    Send Message
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div id="success-message" class="hidden mt-8 p-6 bg-green-50 border-2 border-green-900 rounded-xl text-center" style="animation: slideUp 0.6s ease-out;">
+                        <h3 class="text-2xl font-bold text-green-900 mb-2">Message Sent! ✓</h3>
+                        <p class="text-gray-700">Thanks for reaching out. We'll get back to you soon.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <div class="contact-info bg-white p-6 rounded-xl border border-gray-200" style="animation-delay: 0s;">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">📍 Office</h3>
+                    <p class="text-gray-600">1234 Fashion Street<br>New York, NY 10001</p>
+                </div>
+
+                <div class="contact-info bg-white p-6 rounded-xl border border-gray-200" style="animation-delay: 0.08s;">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">💬 Message</h3>
+                    <p class="text-gray-600">contact@bonzero.com</p>
+                </div>
+
+                <div class="contact-info bg-white p-6 rounded-xl border border-gray-200" style="animation-delay: 0.16s;">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">📞 Phone</h3>
+                    <p class="text-gray-600">(555) 123-4567</p>
+                </div>
+
+                <div class="contact-info bg-white p-6 rounded-xl border border-gray-200" style="animation-delay: 0.24s;">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">🕐 Hours</h3>
+                    <p class="text-gray-600">Mon - Fri: 9AM - 6PM<br>Sat - Sun: 10AM - 4PM</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p>&copy; 2024 BONZERO. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- External Scripts -->
+    <script src="js/data.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

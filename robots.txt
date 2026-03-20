@@ -1,0 +1,17 @@
+# robots.txt for BONZERO
+# Allows search engines to crawl the site
+
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+
+# Allow Google Image Search
+User-agent: Googlebot-Image
+Allow: /assets/images/
+
+# Specify sitemap (when ready)
+# Sitemap: https://yourdomain.com/sitemap.xml
+
+# Crawl delay (optional - in seconds)
+Crawl-delay: 1

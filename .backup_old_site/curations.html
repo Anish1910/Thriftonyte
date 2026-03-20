@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curations - BONZERO</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-amber-50">
+    <nav class="bg-white sticky top-0 z-50" id="navbar">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-green-900">BONZERO</h1>
+            <div class="flex gap-6">
+                <a href="index.html" class="text-gray-700 hover:text-green-900 transition">Home</a>
+                <a href="about.html" class="text-gray-700 hover:text-green-900 transition">About</a>
+                <a href="curations.html" class="text-gray-700 hover:text-green-900 transition">Curations</a>
+                <a href="learn.html" class="text-gray-700 hover:text-green-900 transition">Learn</a>
+                <a href="consign.html" class="text-gray-700 hover:text-green-900 transition">Consign</a>
+                <a href="contact.html" class="text-gray-700 hover:text-green-900 transition">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="bg-gradient-to-b from-amber-100 to-white py-20 md:py-32">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-5xl md:text-6xl font-bold mb-6 font-serif text-gray-900" style="animation: slideUp 0.8s ease-out;">Hand-Picked Curations</h1>
+            <p class="text-xl text-gray-700" style="animation: slideUp 0.8s ease-out 0.2s both;">Discover our latest thrifted collections.</p>
+        </div>
+    </section>
+
+    <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="flex flex-wrap gap-3 justify-center mb-12">
+            <button class="filter-btn active px-6 py-2 rounded-full border border-gray-300 hover:bg-gray-100 transition" data-filter="all">All</button>
+            <button class="filter-btn px-6 py-2 rounded-full border border-gray-300 hover:bg-gray-100 transition" data-filter="vintage">Vintage</button>
+            <button class="filter-btn px-6 py-2 rounded-full border border-gray-300 hover:bg-gray-100 transition" data-filter="contemporary">Contemporary</button>
+            <button class="filter-btn px-6 py-2 rounded-full border border-gray-300 hover:bg-gray-100 transition" data-filter="luxury">Luxury</button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="curations-grid"></div>
+    </section>
+
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p>&copy; 2024 BONZERO. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- External Scripts -->
+    <script src="js/data.js"></script>
+    <script src="js/main.js"></script>
+    
+    <!-- Page-specific Script -->
+    <script>
+        let selectedFilter = 'all';
+
+        function renderCurations(filter = 'all') {
+            const grid = document.getElementById('curations-grid');
+            const filtered = filter === 'all' ? curations : curations.filter(c => c.category === filter);
+            
+            grid.innerHTML = filtered.map((c, idx) => `
+                <div class="card-3d bg-white rounded-xl overflow-hidden border border-gray-200 hover:border-green-900 scaleIn" style="animation: scaleIn 0.6s ease-out ${idx * 0.08}s both;">
+                    <div class="bg-gradient-to-br from-green-100 to-amber-100 h-48 flex items-center justify-center animate-pulse">
+                        <span class="text-6xl">${c.emoji || '👗'}</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2">${c.title}</h3>
+                        <p class="text-sm text-green-900 font-semibold mb-2">Category: ${c.category}</p>
+                        <p class="text-sm text-gray-600 mb-4">${c.items} items • Price: ${c.price}</p>
+                        <button class="w-full btn-interactive text-white py-3 rounded-lg font-semibold hover:text-white relative" onclick="buyNowWhatsApp(event, CONFIG.whatsappNumber, '${c.title} Collection', '${c.price}')">
+                            💬 Ask About Collection
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function createBurst(event) {
+            const button = event.target.closest('button');
+            const rect = button.getBoundingClientRect();
+            const container = button.closest('.card-3d');
+            
+            for(let i = 0; i < 8; i++) {
+                const particle = document.createElement('div');
+                const angle = (i / 8) * Math.PI * 2;
+                const distance = 100;
+                const x = Math.cos(angle) * distance;
+                const y = Math.sin(angle) * distance;
+                
+                particle.className = 'particle';
+                particle.style.left = rect.left - container.getBoundingClientRect().left + button.offsetWidth / 2 + 'px';
+                particle.style.top = rect.top - container.getBoundingClientRect().top + button.offsetHeight / 2 + 'px';
+                particle.style.width = '8px';
+                particle.style.height = '8px';
+                particle.style.background = '#3d5a42';
+                particle.style.animation = `particleBurst 0.8s ease-out forwards`;
+                particle.style.setProperty('--tx', x + 'px');
+                particle.style.setProperty('--ty', y + 'px');
+                particle.style.boxShadow = '0 0 10px rgba(61, 90, 66, 0.5)';
+                
+                container.appendChild(particle);
+                
+                setTimeout(() => particle.remove(), 800);
+            }
+            
+            // Button feedback
+            const originalText = button.textContent;
+            button.textContent = 'Loading...';
+            setTimeout(() => {
+                button.textContent = originalText;
+            }, 1500);
+        }
+
+        // Filter buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                selectedFilter = btn.dataset.filter;
+                renderCurations(selectedFilter);
+            });
+        });
+
+        // Initial render
+        renderCurations();
+    </script>
+</body>
+</html>

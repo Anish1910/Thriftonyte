@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn - BONZERO</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+        
+        .lesson-icon {
+            display: inline-block;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .btn-learn {
+            background: linear-gradient(135deg, #3d5a42, #2d4a32);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .btn-learn:hover {
+            transform: scale(1.05);
+            animation: glow 1.5s ease-in-out infinite;
+        }
+        
+        .progress-ring {
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+        
+        .progress-ring-circle {
+            transition: stroke-dashoffset 0.35s;
+            stroke-dasharray: 339.29;
+            stroke-dashoffset: 0;
+        }
+    </style>
+</head>
+<body class="bg-amber-50">
+    <nav class="bg-white sticky top-0 z-50" id="navbar">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-green-900">BONZERO</h1>
+            <div class="flex gap-6">
+                <a href="index.html" class="text-gray-700 hover:text-green-900 transition">Home</a>
+                <a href="about.html" class="text-gray-700 hover:text-green-900 transition">About</a>
+                <a href="curations.html" class="text-gray-700 hover:text-green-900 transition">Curations</a>
+                <a href="learn.html" class="text-gray-700 hover:text-green-900 transition">Learn</a>
+                <a href="consign.html" class="text-gray-700 hover:text-green-900 transition">Consign</a>
+                <a href="contact.html" class="text-gray-700 hover:text-green-900 transition">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="gradient-bg text-white py-20 md:py-32">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-5xl md:text-6xl font-bold mb-6 font-serif" style="animation: slideUp 0.8s ease-out;">Learn About Sustainable Fashion</h1>
+            <p class="text-xl" style="animation: slideUp 0.8s ease-out 0.2s both;">Understanding thrift, quality, and conscious consumption.</p>
+        </div>
+    </section>
+
+    <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 font-serif text-gray-900">Core Concepts</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="concepts-grid"></div>
+    </section>
+
+    <section class="bg-white py-16 md:py-24">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl md:text-4xl font-bold mb-12 font-serif text-gray-900">Quick Tips</h2>
+            <div class="space-y-6" id="tips-container"></div>
+        </div>
+    </section>
+
+    <section class="bg-amber-100 py-16 md:py-24">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 font-serif text-gray-900">Interactive Learning</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8" id="interactive-grid"></div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p>&copy; 2024 BONZERO. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll navbar
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            navbar.classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        const concepts = [
+            { 
+                icon: '♻️', 
+                title: 'Circular Fashion', 
+                desc: 'Understanding how giving clothes a second life reduces waste and environmental impact.' 
+            },
+            { 
+                icon: '🧵', 
+                title: 'Fabric Care', 
+                desc: 'Learn how proper care extends the life of your garments and maintains quality.' 
+            },
+            { 
+                icon: '🎨', 
+                title: 'Style Mixing', 
+                desc: 'Creating unique outfits by mixing vintage and contemporary pieces thoughtfully.' 
+            },
+            { 
+                icon: '💎', 
+                title: 'Quality Over Quantity', 
+                desc: 'Selecting fewer, better-made pieces that last longer and always stay stylish.' 
+            },
+            { 
+                icon: '👥', 
+                title: 'Ethical Production', 
+                desc: 'Understanding fair wages and working conditions in sustainable fashion.' 
+            },
+            { 
+                icon: '🌍', 
+                title: 'Global Impact', 
+                desc: 'How fast fashion affects communities worldwide and why alternatives matter.' 
+            }
+        ];
+
+        const tips = [
+            { title: 'Inspect Before Buying', content: 'Always check for stains, tears, or damage. Look closely at zippers, buttons, and seams. Quality matters in secondhand fashion.' },
+            { title: 'Know Your Sizes', content: 'Vintage sizing differs from modern sizing. Take measurements and compare against the item specifications rather than relying on labels.' },
+            { title: 'Build a Capsule Wardrobe', content: 'Choose versatile, timeless pieces that work together. Focus on neutral colors with a few standout pieces for personality.' },
+            { title: 'Care for Your Finds', content: 'Wash delicates gently. Store properly to prevent wrinkles. Quality care extends the life of your thrifted treasures.' }
+        ];
+
+        const interactive = [
+            { 
+                title: 'Quiz: Spot the Fake',
+                content: 'Test your knowledge of authentic designer markers and common counterfeits.',
+                btn: 'Start Quiz'
+            },
+            { 
+                title: 'Size Guide',
+                content: 'Interactive size converter to help you find your perfect fit across different eras and brands.',
+                btn: 'View Guide'
+            },
+            { 
+                title: 'Material Identifier',
+                content: 'Learn to identify fabrics by feel and sight. Essential for assessing quality.',
+                btn: 'Learn Materials'
+            },
+            { 
+                title: 'Era Timeline',
+                content: 'Explore fashion eras from 80s to 2010s with iconic pieces and styling tips.',
+                btn: 'Explore Eras'
+            }
+        ];
+
+        // Render concepts
+        document.getElementById('concepts-grid').innerHTML = concepts.map((c, i) => `
+            <div class="card-3d bg-white p-8 rounded-xl border border-gray-200 text-center hover:border-green-900 scaleIn" style="animation: scaleIn 0.6s ease-out ${i * 0.08}s both;">
+                <div class="lesson-icon">${c.icon}</div>
+                <h3 class="text-lg font-semibold mb-3 text-gray-900">${c.title}</h3>
+                <p class="text-gray-600 text-sm">${c.desc}</p>
+            </div>
+        `).join('');
+
+        // Render tips
+        document.getElementById('tips-container').innerHTML = tips.map((t, i) => `
+            <div class="card-3d bg-amber-50 p-6 rounded-xl border-l-4 border-green-900 hover:border-green-700 scaleIn" style="animation: scaleIn 0.6s ease-out ${i * 0.08}s both;">
+                <h3 class="text-lg font-semibold mb-2 text-gray-900">${t.title}</h3>
+                <p class="text-gray-700">${t.content}</p>
+            </div>
+        `).join('');
+
+        // Render interactive
+        document.getElementById('interactive-grid').innerHTML = interactive.map((item, i) => `
+            <div class="card-3d bg-white p-8 rounded-xl border border-gray-200 hover:border-green-900 text-center scaleIn" style="animation: scaleIn 0.6s ease-out ${i * 0.08}s both;">
+                <h3 class="text-xl font-semibold mb-4 text-gray-900">${item.title}</h3>
+                <p class="text-gray-600 mb-6">${item.content}</p>
+                <button class="btn-learn text-white px-6 py-2 rounded-lg font-semibold hover:text-white" onclick="handleButtonClick(this)">
+                    ${item.btn}
+                </button>
+            </div>
+        `).join('');
+
+        function handleButtonClick(button) {
+            const originalText = button.textContent;
+            button.textContent = '✓ Done!';
+            button.style.background = '#10b981';
+            
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.style.background = '';
+            }, 2000);
+        }
+    </script>
+
+    <!-- External Scripts -->
+    <script src="js/data.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

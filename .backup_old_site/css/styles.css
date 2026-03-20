@@ -1,0 +1,306 @@
+/* =============================================
+   BONZERO - Sustainable Fashion Marketplace
+   Shared Styles & Animations
+   ============================================= */
+
+/* ------- KEYFRAME ANIMATIONS ------- */
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes glow {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(13, 190, 167, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 40px rgba(92, 144, 67, 0.59);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-15px);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+@keyframes particleBurst {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes checkmark {
+    0% {
+        transform: scale(0) rotate(-45deg);
+    }
+    100% {
+        transform: scale(1) rotate(0);
+    }
+}
+
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-5px);
+    }
+    75% {
+        transform: translateX(5px);
+    }
+}
+
+/* ------- NAVIGATION ------- */
+
+nav {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+nav.scrolled {
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+    background-color: rgba(234, 200, 48, 0.77);
+    backdrop-filter: blur(10px);
+}
+
+/* ------- HERO SECTION ------- */
+
+.hero-gradient {
+    background: linear-gradient(-45deg, #ee7752, #e7de3c, #23d58e, #9123d5);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+}
+
+/* ------- CARDS & 3D EFFECTS ------- */
+
+.card-3d {
+    perspective: 1000px;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    cursor: pointer;
+    position: relative;
+}
+
+.card-3d:hover {
+    transform: translateY(-16px) translateZ(20px);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+    animation: glow 2s ease-in-out infinite;
+}
+
+.contact-card {
+    perspective: 1000px;
+    transition: all 0.3s ease;
+}
+
+.contact-card:hover {
+    transform: translateZ(10px);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+}
+
+/* ------- BUTTONS ------- */
+
+.btn-cta {
+    background: linear-gradient(135deg, #3d5a42, #2d4a32);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    overflow: hidden;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-cta:hover {
+    transform: scale(1.08);
+    animation: glow 1.5s ease-in-out infinite;
+    box-shadow: 0 0 30px rgba(61, 90, 66, 0.5);
+}
+
+.btn-cta:active {
+    transform: scale(0.95);
+}
+
+.btn-interactive {
+    background: linear-gradient(135deg, #3d5a42, #2d4a32);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-interactive:hover {
+    transform: scale(1.05);
+    animation: glow 1.5s ease-in-out infinite;
+}
+
+.btn-submit {
+    background: linear-gradient(135deg, #3d5a42, #2d4a32);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-submit:hover {
+    transform: scale(1.05);
+    animation: glow 1.5s ease-in-out infinite;
+}
+
+.btn-submit:active {
+    transform: scale(0.98);
+}
+
+.filter-btn {
+    transition: all 0.3s ease;
+    background: white;
+    border: 1px solid #d1d5db;
+    cursor: pointer;
+}
+
+.filter-btn.active {
+    background: #3d5a42;
+    color: white;
+    border-color: #3d5a42;
+}
+
+/* ------- PARTICLES & EFFECTS ------- */
+
+.particle {
+    position: absolute;
+    pointer-events: none;
+    border-radius: 50%;
+    box-shadow: 0 0 15px rgba(61, 90, 66, 0.6);
+}
+
+.floating-element {
+    animation: float 3s ease-in-out infinite;
+}
+
+.checkmark-icon {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    background: #10b981;
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 24px;
+    margin-left: 8px;
+    animation: checkmark 0.5s ease-out;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* ------- FORMS ------- */
+
+.newsletter-form input {
+    transition: all 0.3s ease;
+    border: 2px solid #e8e5df;
+}
+
+.newsletter-form input:focus {
+    outline: none;
+    border-color: #3d5a42;
+    box-shadow: 0 0 20px rgba(61, 90, 66, 0.3);
+    transform: scale(1.02);
+}
+
+input,
+textarea {
+    transition: all 0.3s ease;
+    border: 2px solid #e8e5df;
+}
+
+input:focus,
+textarea:focus {
+    outline: none;
+    border-color: #3d5a42;
+    box-shadow: 0 0 20px rgba(61, 90, 66, 0.3);
+    transform: scale(1.02);
+}
+
+input.valid {
+    border-color: #10b981;
+    background-color: rgba(16, 185, 129, 0.05);
+}
+
+input.error {
+    border-color: #ef4444;
+    background-color: rgba(239, 68, 68, 0.05);
+    animation: shake 0.4s ease-in-out;
+}
+
+/* ------- UTILITY CLASSES ------- */
+
+.form-group {
+    animation: slideUp 0.6s ease-out both;
+}
+
+.contact-info {
+    animation: slideUp 0.6s ease-out both;
+}
+
+/* ------- RESPONSIVE UTILITIES ------- */
+
+@media (max-width: 768px) {
+    .hidden {
+        display: none;
+    }
+
+    .md\:flex {
+        display: flex;
+    }
+}

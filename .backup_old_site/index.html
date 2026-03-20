@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BONZERO - Sustainable Fashion Marketplace</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-amber-50">
+    <!-- Navigation -->
+    <nav class="bg-white sticky top-0 z-50" id="navbar">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-green-900">BONZERO</h1>
+            <div class="hidden md:flex gap-8">
+                <a href="index.html" class="text-gray-700 hover:text-green-900 transition">Home</a>
+                <a href="about.html" class="text-gray-700 hover:text-green-900 transition">About</a>
+                <a href="curations.html" class="text-gray-700 hover:text-green-900 transition">Curations</a>
+                <a href="learn.html" class="text-gray-700 hover:text-green-900 transition">Learn</a>
+                <a href="consign.html" class="text-gray-700 hover:text-green-900 transition">Consign</a>
+                <a href="contact.html" class="text-gray-700 hover:text-green-900 transition">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient text-white py-24 md:py-40 relative overflow-hidden">
+        <div class="absolute top-20 right-10 opacity-20 floating-element">
+            <div class="text-8xl">👗</div>
+        </div>
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 font-serif" style="animation: slideUp 0.8s ease-out;">Sustainable Fashion Redefined</h1>
+            <p class="text-xl md:text-2xl mb-8 max-w-2xl" style="animation: slideUp 0.8s ease-out 0.1s both;">Discover hand-curated, pre-loved fashion. Quality. Conscious. Affordable.</p>
+            <button class="btn-cta text-white px-8 py-4 rounded-lg font-bold text-lg hover:text-white" onclick="scrollToFeatured(); return false;" style="animation: scaleIn 0.6s ease-out 0.2s both;">
+                Explore Now
+            </button>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20" id="featured">
+        <h2 class="text-4xl md:text-5xl font-bold text-center mb-4 font-serif text-gray-900">Featured Finds</h2>
+        <p class="text-center text-gray-600 mb-16 text-lg">This week's most loved pieces from our community</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="products-grid"></div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="bg-white py-20">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl md:text-5xl font-bold text-center mb-16 font-serif text-gray-900">Why Choose BONZERO</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="features-grid"></div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="bg-amber-100 py-20">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl md:text-5xl font-bold text-center mb-16 font-serif text-gray-900">What Our Community Says</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="testimonials-grid"></div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="bg-gradient-to-r from-green-900 to-green-800 text-white py-16">
+        <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4 font-serif">Stay Updated</h2>
+            <p class="text-lg mb-8 opacity-90">Get exclusive curations and fashion tips delivered to your inbox.</p>
+            
+            <form class="newsletter-form flex gap-2" id="newsletter-form">
+                <input 
+                    type="email" 
+                    placeholder="your@email.com" 
+                    required 
+                    class="flex-1 px-4 py-3 rounded-lg text-gray-900"
+                >
+                <button 
+                    type="submit" 
+                    class="btn-cta text-white px-6 py-3 rounded-lg font-bold hover:text-white"
+                >
+                    Subscribe
+                </button>
+            </form>
+            <p id="newsletter-message" class="mt-4 text-sm opacity-0">Thanks for subscribing!</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p>&copy; 2024 BONZERO. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- External Scripts -->
+    <script src="js/data.js"></script>
+    <script src="js/main.js"></script>
+    
+    <!-- Page-specific Script -->
+    <script>
+        // Render products
+        document.getElementById('products-grid').innerHTML = products.map((p, i) => `
+            <div class="card-3d bg-white rounded-xl overflow-hidden border border-gray-200 hover:border-green-900 scaleIn" style="animation: scaleIn 0.6s ease-out ${i * 0.08}s both;">
+                <div class="bg-gradient-to-br from-green-100 to-amber-100 h-48 flex items-center justify-center">
+                    <span class="text-6xl">${p.emoji || '👗'}</span>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">${p.title}</h3>
+                    <p class="text-sm text-green-900 font-semibold mb-4">${p.category}</p>
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="text-2xl font-bold text-green-900">${p.price}</span>
+                    </div>
+                    <button class="w-full btn-cta text-white px-4 py-3 rounded-lg text-sm hover:text-white font-semibold" onclick="buyNowWhatsApp(event, CONFIG.whatsappNumber, '${p.title}', '${p.price}')">
+                        💬 Buy Now
+                    </button>
+                </div>
+            </div>
+        `).join('');
+
+        // Render features
+        document.getElementById('features-grid').innerHTML = features.map((f, i) => `
+            <div class="card-3d bg-gradient-to-br from-amber-50 to-green-50 p-8 rounded-xl border border-gray-200 text-center hover:border-green-900 scaleIn" style="animation: scaleIn 0.6s ease-out ${i * 0.08}s both;">
+                <div class="text-5xl mb-4">${f.icon}</div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-3">${f.title}</h3>
+                <p class="text-gray-600">${f.desc}</p>
+            </div>
+        `).join('');
+
+        // Render testimonials
+        document.getElementById('testimonials-grid').innerHTML = testimonials.map((t, i) => `
+            <div class="card-3d bg-white p-6 rounded-xl border border-gray-200 hover:border-green-900 text-center scaleIn" style="animation: scaleIn 0.6s ease-out ${i * 0.08}s both;">
+                <p class="text-gray-600 mb-4 italic">"${t.text}"</p>
+                <h4 class="font-semibold text-gray-900">- ${t.name}</h4>
+            </div>
+        `).join('');
+    </script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+# Git Ignore Rules for BONZERO Project
+
+# OS Files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDE & Editor
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.project
+.classpath
+
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+
+# Build & Dist
+dist/
+build/
+*.log
+
+# Environment Variables
+.env
+.env.local
+.env.*.local
+
+# Temporary Files
+temp/
+tmp/
+*.tmp
+
+# Backup Files
+*.bak
+*.backup
+*_backup
+
+# OS Cache
+.cache/
+.DS_Store
+
+# Local Development
+local.conf
+config.local.js
+
+# Debug
+debug/
+*.debug
