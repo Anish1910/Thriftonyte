@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
 import { fadeInVariants } from '../constants/animations';
 import { VALUES } from '../constants/aboutContent';
@@ -91,12 +92,12 @@ export default function About() {
           <p className="text-lg text-text-medium mb-8 max-w-2xl mx-auto">
             Explore our collection of carefully curated pre-loved fashion and make a difference with every purchase.
           </p>
-          <a
-            href="/shop"
+          <Link
+            to="/shop"
             className="inline-block px-8 py-4 bg-accent-brown text-white font-semibold rounded-minimal hover:bg-accent-green transition-colors duration-300"
           >
             Start Shopping
-          </a>
+          </Link>
         </motion.div>
       </div>
 

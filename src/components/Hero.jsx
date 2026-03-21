@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
-export default function Hero({ onShopClick }) {
+export default function Hero() {
   // Container animation - stagger children
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -99,15 +99,18 @@ export default function Hero({ onShopClick }) {
               className="flex flex-col sm:flex-row gap-4 pt-4"
             >
               {/* Primary Button */}
-              <motion.button
+              <motion.div
                 variants={buttonHoverVariants}
                 whileHover="hover"
                 whileTap="tap"
-                onClick={onShopClick}
-                className="px-8 py-4 bg-accent-brown text-white font-semibold text-lg rounded-minimal shadow-soft hover:shadow-hover transition-shadow duration-300 hover:bg-accent-green w-fit"
               >
-                Shop Now
-              </motion.button>
+                <Link
+                  to="/shop"
+                  className="px-8 py-4 bg-accent-brown text-white font-semibold text-lg rounded-minimal shadow-soft hover:shadow-hover transition-shadow duration-300 hover:bg-accent-green w-fit block"
+                >
+                  Shop Now
+                </Link>
+              </motion.div>
 
               {/* Secondary Link */}
               <motion.div

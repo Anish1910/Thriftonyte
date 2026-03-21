@@ -1,23 +1,22 @@
+import { motion } from 'framer-motion';
 import Hero from '../components/Hero';
 import ProductGrid from '../components/ProductGrid';
 import Footer from '../components/Footer';
 import { products } from '../data/products';
-import { useRef } from 'react';
 
 export default function Shop() {
-  const productsRef = useRef(null);
-
-  const handleScrollToProducts = () => {
-    productsRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
   return (
     <main>
-      <Hero onShopClick={handleScrollToProducts} />
+      <Hero />
 
-      <div ref={productsRef}>
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+      >
         <ProductGrid products={products} />
-      </div>
+      </motion.div>
 
       <Footer />
     </main>
