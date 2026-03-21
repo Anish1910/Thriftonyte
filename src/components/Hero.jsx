@@ -1,7 +1,26 @@
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { products } from '../data/products';
 
 export default function Hero() {
+  // Select 3-4 featured products for carousel
+  const carouselImages = products.slice(0, 4).flatMap(p => p.images.slice(0, 1));
+
+  // State for current image index
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  // Auto-rotate images every 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) =>
+        (prevIndex + 1) % carouselImages.length
+      );
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [carouselImages.length]);
+
   // Container animation - stagger children
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -153,22 +172,25 @@ export default function Hero() {
             className="relative h-96 md:h-[500px] lg:h-[600px] overflow-hidden"
           >
             {/* Image container with rounded corners */}
-            <motion.div
-              className="relative w-full h-full rounded-3xl overflow-hidden shadow-hover"
-              animate={{ scale: [1, 1.02, 1] }}
-              transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-            >
-              {/* Fashion/lifestyle image */}
-              <img
-                src="https://images.unsplash.com/photo-1567521464027-f127ff144326?w=800&q=80"
-                alt="Curated vintage fashion collection"
-                className="w-full h-full object-cover"
-              />
+            <div className="relative w-full h-full rounded-3xl overflow-hidden shadow-hover">
+              {/* Rotating image carousel with fade transition */}
+              <AnimatePresence mode="wait">
+                <motion.img
+                  key={currentImageIndex}
+                  src={carouselImages[currentImageIndex]}
+                  alt="Curated vintage fashion collection"
+                  className="w-full h-full object-cover"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.8, ease: 'easeInOut' }}
+                />
+              </AnimatePresence>
 
               {/* Subtle overlay gradient for readability */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none"></div>
 
-              {/* Optional: Subtle badge or text overlay */}
+              {/* Subtle badge or text overlay */}
               <motion.div
                 className="absolute bottom-6 left-6 bg-white/95 backdrop-blur-md px-4 py-2 rounded-lg shadow-soft"
                 initial={{ opacity: 0, y: 10 }}
@@ -177,7 +199,7 @@ export default function Hero() {
               >
                 <p className="text-sm font-semibold text-text-dark">Curated for You</p>
               </motion.div>
-            </motion.div>
+            </div>
           </motion.div>
         </motion.div>
       </div>
