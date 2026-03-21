@@ -151,59 +151,34 @@ export default function Hero({ onShopClick }) {
           {/* Right: Visual Content */}
           <motion.div
             variants={imageVariants}
-            className="relative h-96 md:h-[500px] lg:h-[600px] flex items-center justify-center"
+            className="relative h-96 md:h-[500px] lg:h-[600px] overflow-hidden"
           >
-            {/* Fashion hero visual - using emoji/icon composition */}
+            {/* Image container with rounded corners */}
             <motion.div
-              animate={{ y: [0, 20, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-              className="relative w-full h-full"
+              className="relative w-full h-full rounded-3xl overflow-hidden shadow-hover"
+              animate={{ scale: [1, 1.02, 1] }}
+              transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
             >
-              {/* Main accent shape background */}
-              <div className="absolute inset-0 bg-gradient-to-br from-neutral-warm-beige to-neutral-light-beige rounded-3xl transform -rotate-3 opacity-80"></div>
+              {/* Fashion/lifestyle image */}
+              <img
+                src="https://images.unsplash.com/photo-1567521464027-f127ff144326?w=800&q=80"
+                alt="Curated vintage fashion collection"
+                className="w-full h-full object-cover"
+              />
 
-              {/* Inner content area */}
-              <div className="absolute inset-0 flex flex-col items-center justify-center rounded-3xl overflow-hidden">
-                {/* Large fashion icons */}
-                <motion.div
-                  animate={{ scale: [1, 1.05, 1] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-                  className="text-9xl filter drop-shadow-lg"
-                >
-                  👗
-                </motion.div>
+              {/* Subtle overlay gradient for readability */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none"></div>
 
-                {/* Floating accent elements */}
-                <motion.div
-                  className="absolute top-12 right-12 text-6xl filter drop-shadow-lg"
-                  animate={{ rotate: [0, 10, -10, 0], y: [0, -10, 10, 0] }}
-                  transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-                >
-                  👜
-                </motion.div>
-
-                <motion.div
-                  className="absolute bottom-16 left-8 text-5xl filter drop-shadow-lg"
-                  animate={{ rotate: [0, -12, 12, 0], x: [0, 10, -10, 0] }}
-                  transition={{ duration: 5.5, repeat: Infinity, ease: 'easeInOut' }}
-                >
-                  👠
-                </motion.div>
-
-                {/* Subtle overlay badge */}
-                <motion.div
-                  className="absolute bottom-8 bg-white/90 backdrop-blur-sm px-6 py-2 rounded-full shadow-soft"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.8, duration: 0.8 }}
-                >
-                  <p className="text-sm font-semibold text-text-dark">One of One</p>
-                </motion.div>
-              </div>
+              {/* Optional: Subtle badge or text overlay */}
+              <motion.div
+                className="absolute bottom-6 left-6 bg-white/95 backdrop-blur-md px-4 py-2 rounded-lg shadow-soft"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1, duration: 0.8 }}
+              >
+                <p className="text-sm font-semibold text-text-dark">Curated for You</p>
+              </motion.div>
             </motion.div>
-
-            {/* Subtle frame effect */}
-            <div className="absolute inset-0 rounded-3xl border-2 border-neutral-light-beige pointer-events-none transform -rotate-3"></div>
           </motion.div>
         </motion.div>
       </div>
