@@ -1,26 +1,24 @@
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { cardVariants, imageVariants } from '../constants/animations';
+import { BADGE_STYLES } from '../constants/product';
 
 export default function ProductCard({ product }) {
   const { addToCart } = useCart();
+  const navigate = useNavigate();
 
-  const cardVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.5, ease: 'easeOut' }
+  const handleCardClick = (e) => {
+    // Don't navigate if clicking the add to cart button
+    if (e.target.closest('button')) {
+      return;
     }
+    navigate(`/product/${product.id}`);
   };
 
-  const imageVariants = {
-    rest: { scale: 1 },
-    hover: { scale: 1.08, transition: { duration: 0.3 } }
-  };
-
-  const buttonVariants = {
-    rest: { opacity: 0, y: 10 },
-    hover: { opacity: 1, y: 0, transition: { duration: 0.2 } }
+  const handleAddToCart = (e) => {
+    e.stopPropagation();
+    addToCart(product);
   };
 
   return (
@@ -32,17 +30,14 @@ export default function ProductCard({ product }) {
       className="flex flex-col h-full"
     >
       <motion.div
-        className="relative bg-neutral-off-white rounded-minimal overflow-hidden shadow-soft group h-full flex flex-col"
+        className="relative bg-neutral-off-white rounded-minimal overflow-hidden shadow-soft group h-full flex flex-col cursor-pointer"
         whileHover={{ shadow: '0 8px 24px rgba(0,0,0,0.12)', transition: { duration: 0.3 } }}
+        onClick={handleCardClick}
       >
         {/* Badge */}
         {product.badge && (
-          <div className="absolute top-4 right-4 z-20">
-            <span className={`px-3 py-1 text-xs font-semibold rounded-minimal ${
-              product.badge === 'New'
-                ? 'bg-accent-green text-white'
-                : 'bg-accent-brown text-white'
-            }`}>
+          <div className="absolute top-4 right-4 z-20 pointer-events-none">
+            <span className={`px-3 py-1 text-xs font-semibold rounded-minimal ${BADGE_STYLES[product.badge] || 'bg-accent-brown text-white'}`}>
               {product.badge}
             </span>
           </div>
@@ -70,23 +65,20 @@ export default function ProductCard({ product }) {
             </p>
           </div>
 
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mb-4">
             <p className="text-xl md:text-2xl font-bold text-accent-brown">
               ₹{product.price}
             </p>
           </div>
         </div>
 
-        {/* Add to Cart Button */}
-        <motion.button
+        {/* Add to Cart Button - ALWAYS VISIBLE */}
+        <button
+          onClick={handleAddToCart}
           className="w-full px-4 py-3 bg-accent-brown text-white font-semibold rounded-b-minimal hover:bg-accent-green transition-colors duration-300"
-          variants={buttonVariants}
-          initial="rest"
-          whileHover="hover"
-          onClick={() => addToCart(product)}
         >
           Add to Cart
-        </motion.button>
+        </button>
       </motion.div>
     </motion.div>
   );

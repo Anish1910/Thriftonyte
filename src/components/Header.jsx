@@ -1,10 +1,24 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useMemo } from 'react';
+import { Link, NavLink } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 
-export default function Header() {
+const NAV_ITEMS = [
+  { to: '/', label: 'Home', end: true, color: 'accent-brown' },
+  { to: '/shop', label: 'Shop', color: 'accent-brown' },
+  { to: '/about', label: 'About', color: 'accent-green' },
+  { to: '/learn', label: 'Learn', color: 'accent-green' }
+];
+
+const getNavLinkClass = ({ isActive }, color = 'accent-brown') =>
+  `text-sm font-medium transition-colors ${
+    isActive
+      ? `text-${color}`
+      : `text-text-medium hover:text-${color}`
+  }`;
+
+export default function Header({ onCartToggle }) {
   const { getTotalItems } = useCart();
-  const [isCartOpen, setIsCartOpen] = useState(false);
+  const totalItems = useMemo(() => getTotalItems(), [getTotalItems]);
 
   return (
     <header className="sticky top-0 z-40 bg-white border-b border-neutral-light-beige shadow-soft">
@@ -14,22 +28,27 @@ export default function Header() {
         </Link>
 
         <nav className="hidden md:flex gap-8 items-center">
-          <Link to="/" className="text-text-medium hover:text-accent-brown transition-colors text-sm font-medium">
-            Shop
-          </Link>
-          <Link to="/learn" className="text-text-medium hover:text-accent-green transition-colors text-sm font-medium">
-            Learn
-          </Link>
+          {NAV_ITEMS.map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              className={({ isActive }) => getNavLinkClass({ isActive }, item.color)}
+              end={item.end}
+            >
+              {item.label}
+            </NavLink>
+          ))}
           <button
-            onClick={() => setIsCartOpen(!isCartOpen)}
+            onClick={onCartToggle}
             className="relative p-2 text-text-medium hover:text-accent-brown transition-colors"
+            aria-label="Open cart"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 9m10 0l2 9m-12 0h14" />
             </svg>
-            {getTotalItems() > 0 && (
+            {totalItems > 0 && (
               <span className="absolute top-1 right-1 bg-accent-brown text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
-                {getTotalItems()}
+                {totalItems}
               </span>
             )}
           </button>

@@ -1,27 +1,23 @@
-import { useRef } from 'react';
 import Hero from '../components/Hero';
 import ProductGrid from '../components/ProductGrid';
-import LearnSection from '../components/LearnSection';
 import Footer from '../components/Footer';
 import { products } from '../data/products';
-import { articles } from '../data/articles';
+import { useRef } from 'react';
 
-export default function Home() {
+export default function Shop() {
   const productsRef = useRef(null);
 
-  const handleShopClick = () => {
+  const handleScrollToProducts = () => {
     productsRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
     <main>
-      <Hero onShopClick={handleShopClick} />
+      <Hero onShopClick={handleScrollToProducts} />
 
       <div ref={productsRef}>
         <ProductGrid products={products} />
       </div>
-
-      <LearnSection articles={articles} />
 
       <Footer />
     </main>
