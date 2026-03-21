@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { useSearchParams, Link } from 'react-router-dom';
 import Hero from '../components/Hero';
+import ShopFilters from '../components/ShopFilters';
 import ProductGrid from '../components/ProductGrid';
 import Footer from '../components/Footer';
 import { products } from '../data/products';
@@ -22,6 +23,9 @@ export default function Shop() {
   return (
     <main>
       <Hero />
+
+      {/* Filter bar */}
+      <ShopFilters />
 
       {/* Active category filter UI */}
       {categoryParam && (
