@@ -56,10 +56,6 @@ export default function Hero({ onShopClick }) {
       {/* Subtle background gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-neutral-off-white via-white to-neutral-warm-beige/30 pointer-events-none"></div>
 
-      {/* Decorative elements - minimal and subtle */}
-      <div className="absolute top-20 right-0 w-96 h-96 bg-accent-green opacity-3 rounded-full blur-3xl pointer-events-none"></div>
-      <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-accent-brown opacity-2 rounded-full blur-3xl pointer-events-none"></div>
-
       {/* Main content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-screen flex items-center">
         <motion.div
@@ -182,27 +178,6 @@ export default function Hero({ onShopClick }) {
           </motion.div>
         </motion.div>
       </div>
-
-      {/* Scroll indicator */}
-      <motion.div
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20"
-        animate={{ y: [0, 12, 0] }}
-        transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
-      >
-        <svg
-          className="w-6 h-6 text-accent-brown opacity-60"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M19 14l-7 7m0 0l-7-7m7 7V3"
-          />
-        </svg>
-      </motion.div>
     </section>
   );
 }
