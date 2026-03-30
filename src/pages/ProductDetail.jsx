@@ -1,10 +1,10 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useMemo } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { products } from '../data/products';
 import { useCart } from '../context/CartContext';
-import { fadeInVariants, imageVariants } from '../constants/animations';
-import { BADGE_STYLES, PRODUCT_DETAILS } from '../constants/product';
+import { fadeInVariants } from '../constants/animations';
+import { BADGE_STYLES } from '../constants/product';
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -48,155 +48,235 @@ export default function ProductDetail() {
     setAddedToCart(true);
   };
 
-  const nextImage = () => {
-    setCurrentImageIndex((prev) => (prev + 1) % product.images.length);
-  };
-
-  const prevImage = () => {
-    setCurrentImageIndex((prev) => (prev - 1 + product.images.length) % product.images.length);
-  };
-
   return (
     <main className="min-h-screen bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-16">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-14">
         {/* Back Button */}
-        <button
+        <motion.button
           onClick={() => navigate('/shop')}
-          className="mb-8 flex items-center gap-2 text-text-medium hover:text-text-dark transition-colors"
+          className="mb-8 flex items-center gap-2 text-text-medium hover:text-text-dark transition-colors duration-200 group"
+          initial={{ opacity: 0, x: -10 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.4 }}
         >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
-          Back to Shop
-        </button>
+          <span>Back to Shop</span>
+        </motion.button>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+        {/* Main Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16">
           {/* Image Gallery */}
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={fadeInVariants}
-          >
-            <div className="bg-neutral-warm-beige rounded-minimal overflow-hidden mb-4">
-              <div className="relative h-96 md:h-[500px] flex items-center justify-center text-9xl md:text-[200px]">
-                {product.images[currentImageIndex]}
-              </div>
-            </div>
-
-            {/* Thumbnail Navigation */}
-            {product.images.length > 1 && (
-              <div className="flex gap-3 justify-center">
-                <button
-                  onClick={prevImage}
-                  className="p-2 text-text-medium hover:text-accent-brown transition-colors"
-                  aria-label="Previous image"
-                >
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                  </svg>
-                </button>
-
-                <div className="flex gap-2">
-                  {product.images.map((_, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => setCurrentImageIndex(idx)}
-                      className={`w-3 h-3 rounded-full transition-colors ${
-                        idx === currentImageIndex
-                          ? 'bg-accent-brown'
-                          : 'bg-neutral-light-beige hover:bg-text-light'
-                      }`}
-                      aria-label={`View image ${idx + 1}`}
-                    />
-                  ))}
-                </div>
-
-                <button
-                  onClick={nextImage}
-                  className="p-2 text-text-medium hover:text-accent-brown transition-colors"
-                  aria-label="Next image"
-                >
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </button>
-              </div>
-            )}
-          </motion.div>
-
-          {/* Product Info */}
           <motion.div
             initial="hidden"
             animate="visible"
             variants={fadeInVariants}
             className="flex flex-col"
           >
+            {/* Main Image */}
+            <div className="relative bg-neutral-off-white rounded-lg overflow-hidden mb-6 aspect-square flex items-center justify-center">
+              <AnimatePresence mode="wait">
+                <motion.img
+                  key={currentImageIndex}
+                  src={product.images[currentImageIndex]}
+                  alt={product.title}
+                  className="w-full h-full object-cover"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.4 }}
+                />
+              </AnimatePresence>
+            </div>
+
+            {/* Thumbnail Gallery */}
+            {product.images.length > 1 && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="flex gap-3 overflow-x-auto pb-2"
+              >
+                {product.images.map((image, idx) => (
+                  <motion.button
+                    key={idx}
+                    onClick={() => setCurrentImageIndex(idx)}
+                    className={`relative flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-all duration-300 ${
+                      idx === currentImageIndex
+                        ? 'border-accent-brown shadow-md'
+                        : 'border-neutral-light-beige hover:border-text-light'
+                    }`}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <img
+                      src={image}
+                      alt={`${product.title} ${idx + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </motion.button>
+                ))}
+              </motion.div>
+            )}
+          </motion.div>
+
+          {/* Product Details */}
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={fadeInVariants}
+            className="flex flex-col justify-start"
+          >
             {/* Badge & Category */}
-            <div className="flex items-center gap-4 mb-4">
+            <div className="flex items-center gap-3 mb-5">
               <span className="text-xs text-text-light uppercase tracking-wider font-semibold">
                 {product.category}
               </span>
               {product.badge && (
-                <span className={`px-3 py-1 text-xs font-semibold rounded-minimal ${BADGE_STYLES[product.badge] || 'bg-accent-brown text-white'}`}>
+                <motion.span
+                  initial={{ scale: 0.95, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 0.4, delay: 0.1 }}
+                  className={`px-3 py-1 text-xs font-semibold rounded-full ${BADGE_STYLES[product.badge] || 'bg-accent-brown text-white'}`}
+                >
                   {product.badge}
-                </span>
+                </motion.span>
               )}
             </div>
 
             {/* Title */}
-            <h1 className="text-4xl md:text-5xl font-bold text-text-dark mb-4">
+            <motion.h1
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="text-3xl md:text-4xl lg:text-5xl font-bold text-text-dark mb-6 leading-tight"
+            >
               {product.title}
-            </h1>
+            </motion.h1>
 
             {/* Price */}
-            <div className="flex items-baseline gap-2 mb-8">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.15 }}
+              className="mb-8"
+            >
               <span className="text-4xl md:text-5xl font-bold text-accent-brown">
                 ₹{product.price}
               </span>
-            </div>
+            </motion.div>
+
+            {/* Stock Message */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="mb-6 p-3 bg-neutral-warm-beige/40 rounded-lg"
+            >
+              <p className="text-sm font-medium text-text-dark">
+                ✓ Only 1 piece available
+              </p>
+            </motion.div>
 
             {/* Description */}
-            <div className="mb-8 space-y-4">
-              <p className="text-text-medium text-lg leading-relaxed">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.25 }}
+              className="mb-10 space-y-3"
+            >
+              <p className="text-text-medium text-base md:text-lg leading-relaxed">
                 {product.longDescription}
               </p>
-            </div>
+            </motion.div>
 
-            {/* Add to Cart Section */}
-            <div className="space-y-4 mt-auto">
+            {/* CTA Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="space-y-4"
+            >
+              {/* Add to Cart Button */}
               <motion.button
                 onClick={handleAddToCart}
-                className={`w-full px-6 py-4 font-semibold rounded-minimal text-white text-lg transition-colors duration-300 ${
+                className={`w-full px-6 py-4 font-semibold rounded-lg text-white text-lg transition-all duration-300 shadow-soft hover:shadow-md ${
                   addedToCart
                     ? 'bg-accent-green'
-                    : 'bg-accent-brown hover:bg-accent-green'
+                    : 'bg-accent-brown hover:bg-opacity-90'
                 }`}
                 whileTap={{ scale: 0.98 }}
               >
-                {addedToCart ? '✓ Added to Cart' : 'Add to Cart'}
+                {addedToCart ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                    Added to Cart
+                  </span>
+                ) : (
+                  'Add to Cart'
+                )}
               </motion.button>
 
-              <button
-                onClick={() => navigate('/shop')}
-                className="w-full px-6 py-3 border-2 border-neutral-light-beige text-text-dark font-semibold rounded-minimal hover:bg-neutral-warm-beige transition-colors"
+              {/* WhatsApp Option */}
+              <motion.a
+                href={`https://wa.me/1234567890?text=Hi, I'm interested in this item: ${product.title} (₹${product.price})`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full px-6 py-3 border-2 border-text-dark text-text-dark font-semibold rounded-lg hover:bg-neutral-off-white transition-all duration-300 flex items-center justify-center gap-2"
+                whileHover={{ scale: 1.01 }}
+                whileTap={{ scale: 0.98 }}
               >
-                Continue Shopping
-              </button>
-            </div>
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-5.031 1.378c-3.055 2.044-4.661 5.147-4.661 8.905 0 .789.083 1.553.246 2.308L2.75 22l2.502-.826c.63.321 1.335.572 2.07.75 5.256 1.476 10.931-2.026 12.407-7.282s-2.026-10.931-7.282-12.407c-.955-.268-1.922-.401-2.901-.401zM0 11.993C0 5.366 5.366 0 12 0s12 5.366 12 12-5.366 12-12 12c-2.125 0-4.129-.515-5.893-1.728L0 24l1.735-5.221C.516 16.107 0 14.105 0 11.993z" />
+                </svg>
+                Chat on WhatsApp
+              </motion.a>
+            </motion.div>
 
-            {/* Product Details */}
-            <div className="mt-12 pt-8 border-t border-neutral-light-beige space-y-4">
-              <div>
-                <h3 className="text-sm font-semibold text-text-dark uppercase tracking-wide mb-2">
-                  Details
-                </h3>
-                <ul className="text-sm text-text-medium space-y-2">
-                  {PRODUCT_DETAILS.map((detail, idx) => (
-                    <li key={idx}>• {detail.label}: {detail.value}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
+            {/* Continue Shopping */}
+            <motion.button
+              onClick={() => navigate('/shop')}
+              className="w-full px-6 py-3 mt-4 text-text-dark font-semibold rounded-lg hover:bg-neutral-warm-beige/40 transition-all duration-300"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.35 }}
+              whileHover={{ scale: 1.01 }}
+            >
+              Continue Shopping
+            </motion.button>
+
+            {/* Product Details Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              className="mt-10 pt-8 border-t border-neutral-light-beige"
+            >
+              <h3 className="text-sm font-semibold text-text-dark uppercase tracking-wider mb-4">
+                About This Piece
+              </h3>
+              <ul className="text-sm text-text-medium space-y-3">
+                <li className="flex gap-3">
+                  <span className="text-accent-brown font-bold">•</span>
+                  <span>Authentic vintage from curated collections</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="text-accent-brown font-bold">•</span>
+                  <span>Quality inspected and carefully restored</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="text-accent-brown font-bold">•</span>
+                  <span>One of a kind - limited availability</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="text-accent-brown font-bold">•</span>
+                  <span>Environmentally conscious shopping</span>
+                </li>
+              </ul>
+            </motion.div>
           </motion.div>
         </div>
       </div>
