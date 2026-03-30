@@ -48,21 +48,26 @@ export default function ProductDetail() {
     setAddedToCart(true);
   };
 
+  const getWhatsAppMessage = () => {
+    const message = `hey, i'm interested in this piece:\n\n${product.title} - ₹${product.price}\n\nis it still available?`;
+    return encodeURIComponent(message);
+  };
+
   return (
     <main className="min-h-screen bg-white">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-14">
         {/* Back Button */}
         <motion.button
           onClick={() => navigate('/shop')}
-          className="mb-8 flex items-center gap-2 text-text-medium hover:text-text-dark transition-colors duration-200 group"
+          className="mb-8 flex items-center gap-1.5 text-xs text-text-light hover:text-text-medium transition-colors duration-200 group"
           initial={{ opacity: 0, x: -10 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.4 }}
         >
-          <svg className="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
-          <span>Back to Shop</span>
+          <span className="uppercase tracking-wide">Back</span>
         </motion.button>
 
         {/* Main Grid */}
@@ -86,6 +91,7 @@ export default function ProductDetail() {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.4 }}
+                  whileHover={{ scale: 1.05 }}
                 />
               </AnimatePresence>
             </div>
@@ -104,8 +110,8 @@ export default function ProductDetail() {
                     onClick={() => setCurrentImageIndex(idx)}
                     className={`relative flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-all duration-300 ${
                       idx === currentImageIndex
-                        ? 'border-accent-brown shadow-md'
-                        : 'border-neutral-light-beige hover:border-text-light'
+                        ? 'border-accent-brown shadow-md opacity-100'
+                        : 'border-neutral-light-beige hover:border-text-light opacity-60'
                     }`}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
@@ -160,19 +166,29 @@ export default function ProductDetail() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.15 }}
-              className="mb-8"
+              className="mb-4"
             >
               <span className="text-4xl md:text-5xl font-bold text-accent-brown">
                 ₹{product.price}
               </span>
             </motion.div>
 
+            {/* Scarcity Message */}
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="text-sm font-semibold text-accent-brown mb-10"
+            >
+              one piece only. no restocks.
+            </motion.p>
+
             {/* Stock Message */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="mb-6 p-3 bg-neutral-warm-beige/40 rounded-lg"
+              transition={{ duration: 0.5, delay: 0.25 }}
+              className="mb-8 p-3 bg-neutral-warm-beige/40 rounded-lg"
             >
               <p className="text-sm font-medium text-text-dark">
                 ✓ Only 1 piece available
@@ -183,8 +199,8 @@ export default function ProductDetail() {
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.25 }}
-              className="mb-10 space-y-3"
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="mb-12 space-y-3"
             >
               <p className="text-text-medium text-base md:text-lg leading-relaxed">
                 {product.longDescription}
@@ -195,7 +211,7 @@ export default function ProductDetail() {
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
+              transition={{ duration: 0.5, delay: 0.35 }}
               className="space-y-4"
             >
               {/* Add to Cart Button */}
@@ -222,7 +238,7 @@ export default function ProductDetail() {
 
               {/* WhatsApp Option */}
               <motion.a
-                href={`https://wa.me/1234567890?text=Hi, I'm interested in this item: ${product.title} (₹${product.price})`}
+                href={`https://wa.me/1234567890?text=${getWhatsAppMessage()}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full px-6 py-3 border-2 border-text-dark text-text-dark font-semibold rounded-lg hover:bg-neutral-off-white transition-all duration-300 flex items-center justify-center gap-2"
@@ -234,6 +250,11 @@ export default function ProductDetail() {
                 </svg>
                 Chat on WhatsApp
               </motion.a>
+
+              {/* Trust Signal */}
+              <p className="text-xs text-text-light text-center mt-2">
+                secure checkout via whatsapp
+              </p>
             </motion.div>
 
             {/* Continue Shopping */}
@@ -252,28 +273,24 @@ export default function ProductDetail() {
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              className="mt-10 pt-8 border-t border-neutral-light-beige"
+              transition={{ duration: 0.5, delay: 0.5 }}
+              className="mt-12 pt-8 border-t border-neutral-light-beige"
             >
-              <h3 className="text-sm font-semibold text-text-dark uppercase tracking-wider mb-4">
+              <h3 className="text-xs font-semibold text-text-dark uppercase tracking-widest mb-4">
                 About This Piece
               </h3>
-              <ul className="text-sm text-text-medium space-y-3">
-                <li className="flex gap-3">
-                  <span className="text-accent-brown font-bold">•</span>
-                  <span>Authentic vintage from curated collections</span>
+              <ul className="text-sm text-text-medium space-y-2.5">
+                <li>
+                  Thoughtfully sourced authentic vintage
                 </li>
-                <li className="flex gap-3">
-                  <span className="text-accent-brown font-bold">•</span>
-                  <span>Quality inspected and carefully restored</span>
+                <li>
+                  Inspected & gently restored to wear
                 </li>
-                <li className="flex gap-3">
-                  <span className="text-accent-brown font-bold">•</span>
-                  <span>One of a kind - limited availability</span>
+                <li>
+                  One of a kind — will not restock
                 </li>
-                <li className="flex gap-3">
-                  <span className="text-accent-brown font-bold">•</span>
-                  <span>Environmentally conscious shopping</span>
+                <li>
+                  Sustainably sourced alternative
                 </li>
               </ul>
             </motion.div>
