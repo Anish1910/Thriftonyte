@@ -3,16 +3,16 @@ import { motion } from 'framer-motion';
 export default function ShopHeader() {
   return (
     <section className="w-full bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: 'easeOut' }}
-          className="space-y-3"
+          className="space-y-2"
         >
-          {/* Title */}
-          <h1 className="text-3xl md:text-4xl font-bold text-text-dark">
-            Shop All Pieces
+          {/* Title - Brand-driven, semibold with tight tracking */}
+          <h1 className="text-3xl md:text-4xl font-semibold text-text-dark tracking-tight">
+            all pieces. no restocks.
           </h1>
 
           {/* Subtext */}

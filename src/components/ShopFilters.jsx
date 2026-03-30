@@ -32,17 +32,17 @@ export default function ShopFilters() {
   };
 
   return (
-    <div className="bg-white border-b border-neutral-light-beige">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <p className="text-sm text-text-light mb-4">Filter by category:</p>
+    <div className="bg-neutral-warm-beige/40 border-b border-neutral-warm-beige">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <p className="text-xs md:text-sm text-text-light uppercase tracking-wider mb-5">Filter by category</p>
         <div className="flex flex-wrap gap-3">
           {/* All button */}
           <Link
             to="/shop"
-            className={`px-4 py-2 rounded-full font-medium transition-all duration-200 ${
+            className={`px-5 py-2.5 rounded-full font-medium transition-all duration-250 ${
               isAllSelected
                 ? 'bg-accent-brown text-white shadow-soft'
-                : 'bg-neutral-warm-beige text-text-dark hover:bg-neutral-light-beige hover:shadow-soft'
+                : 'text-text-dark hover:bg-white/60 transition-colors duration-250'
             }`}
           >
             All
@@ -55,10 +55,10 @@ export default function ShopFilters() {
               <button
                 key={category.slug}
                 onClick={() => handleCategoryToggle(category.slug)}
-                className={`px-4 py-2 rounded-full font-medium transition-all duration-200 flex items-center gap-2 ${
+                className={`px-5 py-2.5 rounded-full font-medium transition-all duration-250 flex items-center gap-2 ${
                   isSelected
                     ? 'bg-accent-brown text-white shadow-soft'
-                    : 'bg-neutral-warm-beige text-text-dark hover:bg-neutral-light-beige hover:shadow-soft'
+                    : 'text-text-dark hover:bg-white/60 transition-colors duration-250'
                 }`}
               >
                 {category.name}

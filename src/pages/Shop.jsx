@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { useSearchParams, Link } from 'react-router-dom';
+import { useSearchParams, Link, useRef, useEffect } from 'react-router-dom';
 import ShopHeader from '../components/ShopHeader';
 import ShopFilters from '../components/ShopFilters';
 import ProductGrid from '../components/ProductGrid';
@@ -9,6 +9,7 @@ import { products } from '../data/products';
 export default function Shop() {
   const [searchParams] = useSearchParams();
   const categoryParam = searchParams.get('category');
+  const productGridRef = useRef(null);
 
   // Filter products by category if provided
   const filteredProducts = categoryParam
@@ -20,12 +21,23 @@ export default function Shop() {
     ? categoryParam.charAt(0).toUpperCase() + categoryParam.slice(1)
     : null;
 
+  // Smooth scroll to product grid when category changes
+  useEffect(() => {
+    if (categoryParam && productGridRef.current) {
+      setTimeout(() => {
+        productGridRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }
+  }, [categoryParam]);
+
   return (
     <main>
       <ShopHeader />
 
-      {/* Filter bar */}
-      <ShopFilters />
+      {/* Filter bar with spacing */}
+      <div className="mt-8">
+        <ShopFilters />
+      </div>
 
       {/* Active category filter UI */}
       {categoryParam && (
@@ -60,12 +72,26 @@ export default function Shop() {
       {/* Products grid or empty state */}
       {filteredProducts.length > 0 ? (
         <motion.div
+          ref={productGridRef}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <ProductGrid products={filteredProducts} />
+          {/* Microcopy above product grid */}
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 md:pt-16">
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="text-sm text-text-light mb-6"
+            >
+              limited pieces. once gone, gone.
+            </motion.p>
+          </div>
+
+          {/* Product grid without heading */}
+          <ProductGrid products={filteredProducts} showHeading={false} />
         </motion.div>
       ) : (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">

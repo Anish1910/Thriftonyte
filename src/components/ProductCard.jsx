@@ -31,7 +31,7 @@ export default function ProductCard({ product }) {
     >
       <motion.div
         className="relative bg-neutral-off-white rounded-minimal overflow-hidden shadow-soft group h-full flex flex-col cursor-pointer"
-        whileHover={{ shadow: '0 8px 24px rgba(0,0,0,0.12)', transition: { duration: 0.3 } }}
+        whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}
         onClick={handleCardClick}
       >
         {/* Badge */}
