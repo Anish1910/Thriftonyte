@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { useSearchParams, Link } from 'react-router-dom';
-import Hero from '../components/Hero';
+import ShopHeader from '../components/ShopHeader';
 import ShopFilters from '../components/ShopFilters';
 import ProductGrid from '../components/ProductGrid';
 import Footer from '../components/Footer';
@@ -22,7 +22,7 @@ export default function Shop() {
 
   return (
     <main>
-      <Hero />
+      <ShopHeader />
 
       {/* Filter bar */}
       <ShopFilters />
