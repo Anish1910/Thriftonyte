@@ -97,6 +97,9 @@ export default function Cart({ isOpen, onClose }) {
                       >
                         Remove
                       </button>
+                      <p className="text-xs text-accent-brown">
+                      items are not reserved until you confirm on whatsapp
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -116,11 +119,11 @@ export default function Cart({ isOpen, onClose }) {
               onClick={handleCheckout}
               className="w-full px-4 py-3 bg-accent-brown text-white font-semibold rounded-minimal hover:bg-accent-green transition-colors duration-300 shadow-soft"
             >
-              Buy via WhatsApp
+              Place Order on WhatsApp
             </button>
-            
+
             <p className="text-xs text-text-light text-center">
-             you'll confirm details on whatsapp
+             You'll confirm details and delivery on whatsapp
             </p>
             <button
               onClick={() => {

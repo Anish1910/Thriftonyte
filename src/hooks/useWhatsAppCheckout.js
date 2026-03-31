@@ -15,7 +15,8 @@ export const useWhatsAppCheckout = () => {
     });
 
      message += `\n total: ₹${total}\n\n`;
-     message += "are these available?";
+     message += "Name: \nAddress: \nPhone: \n\n";
+     message += "Are these available?";
 
 
     return message;
