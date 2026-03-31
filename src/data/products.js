@@ -5,7 +5,7 @@ export const products = [
     price: 900,
     category: 'Outerwear',
     description: 'Classic vintage leather jacket in rich cognac. Timeless piece perfect for any wardrobe. Premium quality with authentic vintage character.',
-    images: ['d:\Thrift\Thrift_Pics\IMG_1829.PNG', 'https://images.pexels.com/photos/3622606/pexels-photo-3622606.jpeg?auto=compress&cs=tinysrgb&w=600'],
+    images: ['IMG_1829.PNG', 'https://images.pexels.com/photos/3622606/pexels-photo-3622606.jpeg?auto=compress&cs=tinysrgb&w=600'],
     image: 'https://images.pexels.com/photos/3622606/pexels-photo-3622606.jpeg?auto=compress&cs=tinysrgb&w=600',
     badge: 'Curated',
     longDescription: 'This stunning vintage leather jacket is the ultimate wardrobe staple. Crafted from genuine leather, it features a rich cognac color that adds sophistication to any outfit. With its classic tailoring and quality construction, this piece has been carefully restored and is ready for you to make it your own.',
