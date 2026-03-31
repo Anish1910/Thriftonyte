@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-import { useSearchParams, Link, useRef, useEffect } from 'react-router-dom';
+import { useSearchParams, Link } from 'react-router-dom';
+import { useRef, useEffect } from 'react';
 import ShopHeader from '../components/ShopHeader';
 import ShopFilters from '../components/ShopFilters';
 import ProductGrid from '../components/ProductGrid';
