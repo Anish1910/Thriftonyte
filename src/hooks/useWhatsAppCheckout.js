@@ -6,14 +6,17 @@ export const useWhatsAppCheckout = () => {
       return 'Hello, I\'m interested in your products!';
     }
 
-    let message = 'Hello, I\'m interested in buying:\n\n';
+    let message = "Hey, i'd like to order these items:\n\n";
+
 
     cartItems.forEach(item => {
       const itemTotal = item.price * item.quantity;
-      message += `- ${item.title} (₹${item.price}) x${item.quantity} = ₹${itemTotal}\n`;
+       message += `${index + 1}. ${item.title} - ₹${item.price} (qty: ${item.quantity})\n`;
     });
 
     message += `\nTotal: ₹${total}`;
+    message += "are these available?";
+
 
     return message;
   };

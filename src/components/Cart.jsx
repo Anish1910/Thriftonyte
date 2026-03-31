@@ -116,8 +116,12 @@ export default function Cart({ isOpen, onClose }) {
               onClick={handleCheckout}
               className="w-full px-4 py-3 bg-accent-brown text-white font-semibold rounded-minimal hover:bg-accent-green transition-colors duration-300 shadow-soft"
             >
-              Checkout via WhatsApp
+              Buy via WhatsApp
             </button>
+            
+            <p className="text-xs text-text-light text-center">
+             you'll confirm details on whatsapp
+            </p>
             <button
               onClick={() => {
                 clearCart();
