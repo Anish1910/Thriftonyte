@@ -14,8 +14,8 @@ export const useWhatsAppCheckout = () => {
        message += `${index + 1}. ${item.title} - ₹${item.price} (qty: ${item.quantity})\n`;
     });
 
-    message += `\nTotal: ₹${total}`;
-    message += "are these available?";
+     message += `\n total: ₹${total}\n\n`;
+     message += "are these available?";
 
 
     return message;
