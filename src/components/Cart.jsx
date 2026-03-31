@@ -99,21 +99,20 @@ export default function Cart({ isOpen, onClose }) {
                       </button>
 
 
-                      <p className="text-xs text-accent-brown">
-                      Items are not reserved until you confirm on whatsapp
-                      </p>
+                    
                     </div>
                   </div>
                 </div>
               ))}
             </div>
           )}
+          <p className="text-xs text-accent-brown">
+        Items are not reserved until you confirm on WhatsApp
+        </p>
         </div>
 
 
-        <p className="text-xs text-accent-brown">
-        Items are not reserved until you confirm on WhatsApp
-        </p>
+        
 
         {/* Footer */}
         {cartItems.length > 0 && (
