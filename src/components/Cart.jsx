@@ -97,8 +97,10 @@ export default function Cart({ isOpen, onClose }) {
                       >
                         Remove
                       </button>
+
+
                       <p className="text-xs text-accent-brown">
-                      items are not reserved until you confirm on whatsapp
+                      Items are not reserved until you confirm on whatsapp
                       </p>
                     </div>
                   </div>
@@ -107,6 +109,11 @@ export default function Cart({ isOpen, onClose }) {
             </div>
           )}
         </div>
+
+
+        <p className="text-xs text-accent-brown">
+        Items are not reserved until you confirm on WhatsApp
+        </p>
 
         {/* Footer */}
         {cartItems.length > 0 && (
