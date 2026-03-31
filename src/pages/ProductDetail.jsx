@@ -181,6 +181,10 @@ export default function ProductDetail() {
               className="text-sm font-semibold text-accent-brown mb-10"
             >
               one piece only. no restocks.
+              
+              <p className="text-xs text-text-light mt-1">
+               someone else could grab this anytime.
+              </p>
             </motion.p>
 
             {/* Stock Message */}
