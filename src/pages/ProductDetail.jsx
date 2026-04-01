@@ -5,6 +5,7 @@ import { products } from '../data/products';
 import { useCart } from '../context/CartContext';
 import { fadeInVariants } from '../constants/animations';
 import { BADGE_STYLES } from '../constants/product';
+import { getImage } from '../lib/image';
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -84,7 +85,7 @@ export default function ProductDetail() {
               <AnimatePresence mode="wait">
                 <motion.img
                   key={currentImageIndex}
-                  src={product.images[currentImageIndex]}
+                  src={getImage(product.images?.[currentImageIndex])}
                   alt={product.title}
                   className="w-full h-full object-cover"
                   initial={{ opacity: 0 }}
@@ -97,7 +98,7 @@ export default function ProductDetail() {
             </div>
 
             {/* Thumbnail Gallery */}
-            {product.images.length > 1 && (
+            {product.images && product.images.length > 1 && (
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -117,7 +118,7 @@ export default function ProductDetail() {
                     whileTap={{ scale: 0.98 }}
                   >
                     <img
-                      src={image}
+                      src={getImage(image)}
                       alt={`${product.title} ${idx + 1}`}
                       className="w-full h-full object-cover"
                     />

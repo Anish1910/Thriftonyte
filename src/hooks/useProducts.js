@@ -18,11 +18,10 @@ export const useProducts = (categorySlug = null) => {
           data = await fetchProducts();
         }
 
-        // Transform Sanity data to match component expectations
+        // Transform Sanity data - keep raw images for safe handling with getImage()
         const transformedProducts = data.map(product => ({
           ...product,
           id: product._id,
-          image: product.images?.[0]?.asset?.url || '👕', // fallback emoji
           category: typeof product.category === 'string'
             ? product.category
             : product.category?.name

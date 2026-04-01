@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { fetchProductBySlug, urlFor } from '../lib/sanity';
+import { fetchProductBySlug } from '../lib/sanity';
+import { getImage } from '../lib/image';
 import { motion } from 'framer-motion';
 import { useCart } from '../context/CartContext';
 
@@ -38,13 +39,13 @@ export default function ProductDetailExample({ product: initialProduct }) {
   }
 
   const images = product.images || [];
-  const selectedImage = images[selectedImageIndex] ? urlFor(images[selectedImageIndex]).url() : '';
+  const selectedImage = getImage(images[selectedImageIndex]);
 
   const handleAddToCart = () => {
     addToCart({
       ...product,
       id: product._id,
-      image: images[0] ? urlFor(images[0]).url() : ''
+      image: getImage(images[0])
     });
   };
 
@@ -76,7 +77,7 @@ export default function ProductDetailExample({ product: initialProduct }) {
                 }`}
               >
                 <img
-                  src={urlFor(img).url()}
+                  src={getImage(img)}
                   alt={`${product.title} ${idx + 1}`}
                   className="w-full h-full object-cover"
                 />

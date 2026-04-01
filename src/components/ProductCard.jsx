@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { cardVariants, imageVariants } from '../constants/animations';
 import { BADGE_STYLES } from '../constants/product';
-import { urlFor } from '../lib/sanity';
+import { getImage } from '../lib/image';
 import { useState } from 'react';
 
 export default function ProductCard({ product }) {
@@ -24,9 +24,9 @@ export default function ProductCard({ product }) {
     addToCart(product);
   };
 
-  // Build Sanity image URLs
-  const mainImage = product.images?.[0] ? urlFor(product.images[0]).url() : '';
-  const hoverImage = product.hoverGif ? urlFor(product.hoverGif).url() : null;
+  // Safe image handling - supports both Sanity objects and string URLs
+  const mainImage = getImage(product.images?.[0]);
+  const hoverImage = getImage(product.hoverGif);
   const displayImage = isHovering && hoverImage ? hoverImage : mainImage;
 
   // Get category name
