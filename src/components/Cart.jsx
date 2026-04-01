@@ -49,7 +49,7 @@ export default function Cart({ isOpen, onClose }) {
       >
         {/* Header */}
         <div className="p-6 border-b border-neutral-light-beige flex justify-between items-center">
-          <h2 className="text-2xl font-bold text-text-dark">Your Cart</h2>
+          <h2 className="text-2xl font-bold text-text-dark">your picks</h2>
           <button
             onClick={onClose}
             className="p-2 text-text-medium hover:text-text-dark transition-colors"
@@ -65,8 +65,8 @@ export default function Cart({ isOpen, onClose }) {
           {cartItems.length === 0 ? (
             <div className="flex items-center justify-center h-full text-center">
               <div>
-                <p className="text-text-medium mb-2">Your cart is empty</p>
-                <p className="text-sm text-text-light">Add items to get started!</p>
+                <p className="text-text-medium mb-2">nothing here yet</p>
+                <p className="text-sm text-text-light">find pieces you love</p>
               </div>
             </div>
           ) : (
@@ -107,7 +107,7 @@ export default function Cart({ isOpen, onClose }) {
             </div>
           )}
           <p className="text-xs text-accent-brown">
-        Items are not reserved until you confirm on WhatsApp
+        not reserved until you confirm on whatsapp
         </p>
         </div>
 
@@ -118,18 +118,18 @@ export default function Cart({ isOpen, onClose }) {
         {cartItems.length > 0 && (
           <div className="border-t border-neutral-light-beige p-6 space-y-4">
             <div className="flex justify-between items-center">
-              <span className="text-lg font-semibold text-text-dark">Total:</span>
+              <span className="text-lg font-semibold text-text-dark">total:</span>
               <span className="text-2xl font-bold text-accent-brown">₹{total}</span>
             </div>
             <button
               onClick={handleCheckout}
               className="w-full px-4 py-3 bg-accent-brown text-white font-semibold rounded-minimal hover:bg-accent-green transition-colors duration-300 shadow-soft"
             >
-              Place Order on WhatsApp
+              confirm on whatsapp
             </button>
 
             <p className="text-xs text-text-light text-center">
-             You'll confirm details and delivery on whatsapp
+             confirm details + delivery on whatsapp
             </p>
             <button
               onClick={() => {
@@ -138,7 +138,7 @@ export default function Cart({ isOpen, onClose }) {
               }}
               className="w-full px-4 py-2 text-text-medium border border-neutral-light-beige rounded-minimal hover:bg-neutral-warm-beige transition-colors"
             >
-              Clear Cart
+              clear
             </button>
           </div>
         )}

@@ -12,12 +12,12 @@ export default function ShopHeader() {
         >
           {/* Title - Brand-driven, semibold with tight tracking */}
           <h1 className="text-3xl md:text-4xl font-semibold text-text-dark tracking-tight">
-            all pieces. no restocks.
+            limited. authentic. yours.
           </h1>
 
           {/* Subtext */}
           <p className="text-sm md:text-base text-text-light max-w-lg">
-            Curated thrift. Limited availability.
+            one piece only. once gone, gone.
           </p>
         </motion.div>
       </div>

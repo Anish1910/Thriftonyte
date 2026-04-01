@@ -180,10 +180,10 @@ export default function ProductDetail() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="text-sm font-semibold text-accent-brown mb-10"
             >
-              one piece only. no restocks.
-              
+              only 1 piece. ever.
+
               <p className="text-xs text-text-light mt-1">
-               someone else could grab this anytime.
+               move fast or lose this.
               </p>
             </motion.p>
 
@@ -195,7 +195,7 @@ export default function ProductDetail() {
               className="mb-4 p-3 bg-neutral-warm-beige/40 rounded-lg"
             >
               <p className="text-sm font-medium text-text-dark">
-                ✓ Only 1 piece available
+                ✓ this is the only one
               </p>
             </motion.div>
 
@@ -206,7 +206,7 @@ export default function ProductDetail() {
               transition={{ duration: 0.5, delay: 0.28 }}
               className="text-xs text-red-600 font-semibold mb-8"
             >
-              someone else could grab this anytime
+              spotted by someone else too
             </motion.p>
 
             {/* Description */}
@@ -240,12 +240,12 @@ export default function ProductDetail() {
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-5.031 1.378c-3.055 2.044-4.661 5.147-4.661 8.905 0 .789.083 1.553.246 2.308L2.75 22l2.502-.826c.63.321 1.335.572 2.07.75 5.256 1.476 10.931-2.026 12.407-7.282s-2.026-10.931-7.282-12.407c-.955-.268-1.922-.401-2.901-.401zM0 11.993C0 5.366 5.366 0 12 0s12 5.366 12 12-5.366 12-12 12c-2.125 0-4.129-.515-5.893-1.728L0 24l1.735-5.221C.516 16.107 0 14.105 0 11.993z" />
                 </svg>
-                Buy via WhatsApp
+                claim this piece
               </motion.a>
 
               {/* Microcopy for primary CTA */}
               <p className="text-xs text-text-light text-center -mt-2">
-                takes 10 seconds • get a reply within minutes
+                10 seconds. reply in minutes.
               </p>
 
               {/* Reserve This Piece - SECONDARY CTA */}
@@ -263,10 +263,10 @@ export default function ProductDetail() {
                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    Added to Cart
+                    added to cart
                   </span>
                 ) : (
-                  'Reserve This Piece'
+                  'save for later'
                 )}
               </motion.button>
             </motion.div>
@@ -280,7 +280,7 @@ export default function ProductDetail() {
               transition={{ duration: 0.5, delay: 0.35 }}
               whileHover={{ scale: 1.01 }}
             >
-              Continue Shopping
+              see more pieces
             </motion.button>
 
             {/* Product Details Section */}
@@ -291,20 +291,20 @@ export default function ProductDetail() {
               className="mt-12 pt-8 border-t border-neutral-light-beige"
             >
               <h3 className="text-xs font-semibold text-text-dark uppercase tracking-widest mb-4">
-                About This Piece
+                why this piece
               </h3>
               <ul className="text-sm text-text-medium space-y-2.5">
                 <li>
-                  Thoughtfully sourced authentic vintage
+                  100% authentic vintage. no fakes.
                 </li>
                 <li>
-                  Inspected & gently restored to wear
+                  inspected & restored. ready to wear.
                 </li>
                 <li>
-                  One of a kind — will not restock
+                  one of a kind. will never restock.
                 </li>
                 <li>
-                  Sustainably sourced alternative
+                  conscious choice. sustainable fashion.
                 </li>
               </ul>
             </motion.div>

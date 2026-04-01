@@ -101,7 +101,7 @@ export default function Hero() {
               variants={textVariants}
               className="text-lg md:text-xl text-text-medium leading-relaxed max-w-md"
             >
-              Curated vintage pieces. One of a kind. Always.
+              picked better. not more.
             </motion.p>
 
             {/* Description - supporting text */}
@@ -109,7 +109,7 @@ export default function Hero() {
               variants={textVariants}
               className="text-base text-text-light max-w-md leading-relaxed"
             >
-              Discover hand-selected, pre-loved fashion that tells a story. Quality, conscious, and designed for those who value authenticity over trends.
+              one of a kind pieces. no restocks. vintage that actually means something.
             </motion.p>
 
             {/* CTA Buttons */}
@@ -127,7 +127,7 @@ export default function Hero() {
                   to="/shop"
                   className="px-8 py-4 bg-accent-brown text-white font-semibold text-lg rounded-minimal shadow-soft hover:shadow-hover transition-shadow duration-300 hover:bg-accent-green w-fit block"
                 >
-                  Shop Now
+                  explore pieces
                 </Link>
               </motion.div>
 
@@ -141,7 +141,7 @@ export default function Hero() {
                   to="/about"
                   className="px-8 py-4 border-2 border-text-dark text-text-dark font-semibold text-lg rounded-minimal hover:bg-neutral-warm-beige transition-colors duration-300 w-fit block"
                 >
-                  Our Story
+                  why we exist
                 </Link>
               </motion.div>
             </motion.div>
@@ -162,7 +162,7 @@ export default function Hero() {
                   ⭐
                 </div>
               </div>
-              <span className="text-sm text-text-light">Join 1000+ conscious shoppers</span>
+              <span className="text-sm text-text-light">1000+ of us know better.</span>
             </motion.div>
           </motion.div>
 

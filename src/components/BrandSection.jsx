@@ -6,18 +6,18 @@ export default function BrandSection() {
   const values = [
     {
       icon: '♻️',
-      title: 'Second Life',
-      description: 'Every piece gets a fresh start. No waste, just possibility.'
+      title: 'No Mass Production',
+      description: 'One piece only. Period.'
     },
     {
       icon: '⭐',
-      title: 'Quality Over Trends',
-      description: 'We hunt for pieces that last. Fashion that actually means something.'
+      title: 'Quality That Lasts',
+      description: 'We hunt pieces worth keeping. Timeless > trendy.'
     },
     {
       icon: '👗',
-      title: 'One of a Kind',
-      description: 'No mass production. Each item is unique and carries its own story.'
+      title: 'Every Piece Matters',
+      description: 'Unique. Authentic. With a story to tell.'
     }
   ];
 
@@ -42,10 +42,12 @@ export default function BrandSection() {
         {/* Left: Brand message */}
         <motion.div variants={textVariants}>
           <h2 className="text-4xl md:text-5xl font-bold text-text-dark mb-6">
-            Why Thriftonyte
+            not fast fashion.
+            <br/>
+            <span className="text-accent-brown">better.</span>
           </h2>
           <p className="text-lg text-text-medium leading-relaxed mb-8">
-            We believe fashion should be better. Better for you, better for the planet. That's why we curate pre-loved pieces—authentic, unique, and meaningful. No fast fashion here, just timeless style that actually lasts.
+            no mass production. no repeats. just pieces worth keeping.
           </p>
 
           {/* Values */}
@@ -71,7 +73,7 @@ export default function BrandSection() {
               to="/about"
               className="inline-block px-8 py-4 bg-accent-brown text-white font-semibold rounded-minimal hover:bg-accent-green transition-colors duration-300"
             >
-              Learn Our Story
+              see our story
             </Link>
           </motion.div>
         </motion.div>
@@ -84,8 +86,8 @@ export default function BrandSection() {
           <div className="aspect-square rounded-minimal overflow-hidden shadow-hover bg-gradient-to-br from-neutral-warm-beige to-neutral-off-white flex items-center justify-center">
             <div className="text-center px-8">
               <p className="text-6xl mb-4">♻️</p>
-              <p className="text-xl font-semibold text-text-dark mb-3">From Closet to Closet</p>
-              <p className="text-text-medium">Where pre-loved fashion finds its next passionate owner</p>
+              <p className="text-xl font-semibold text-text-dark mb-3">closet to closet</p>
+              <p className="text-text-medium">your fashion finds its next home here</p>
             </div>
           </div>
         </motion.div>

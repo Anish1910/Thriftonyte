@@ -24,10 +24,10 @@ export default function ProductGrid({ products, showHeading = true }) {
           className="text-center mb-12 md:mb-16"
         >
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-text-dark mb-4 md:mb-6">
-            Featured Finds
+            all available pieces
           </h2>
           <p className="text-text-medium text-lg max-w-2xl mx-auto">
-            This week's most loved pieces from our community. Carefully curated for quality and style.
+            limited. unique. yours to own.
           </p>
         </motion.div>
       )}

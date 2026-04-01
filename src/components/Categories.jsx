@@ -17,10 +17,10 @@ export default function Categories({ categories }) {
         className="text-center mb-12 md:mb-16"
       >
         <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-text-dark mb-4 md:mb-6">
-          Shop by Category
+          explore by type
         </h2>
         <p className="text-lg text-text-medium max-w-2xl mx-auto">
-          Explore our curated collections. Each category handpicked for quality and style.
+          curated collections. everything handpicked.
         </p>
       </motion.div>
 

@@ -77,7 +77,7 @@ export default function ProductCard({ product }) {
           onClick={handleAddToCart}
           className="w-full px-4 py-3 bg-accent-brown text-white font-semibold rounded-b-minimal hover:bg-accent-green transition-colors duration-300"
         >
-         Reserve This Piece
+         claim this piece
         </button>
       </motion.div>
     </motion.div>
