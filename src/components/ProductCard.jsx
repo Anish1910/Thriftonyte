@@ -3,23 +3,34 @@ import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { cardVariants, imageVariants } from '../constants/animations';
 import { BADGE_STYLES } from '../constants/product';
+import { urlFor } from '../lib/sanity';
+import { useState } from 'react';
 
 export default function ProductCard({ product }) {
   const { addToCart } = useCart();
   const navigate = useNavigate();
+  const [isHovering, setIsHovering] = useState(false);
 
   const handleCardClick = (e) => {
     // Don't navigate if clicking the add to cart button
     if (e.target.closest('button')) {
       return;
     }
-    navigate(`/product/${product.id}`);
+    navigate(`/product/${product.slug?.current || product.id}`);
   };
 
   const handleAddToCart = (e) => {
     e.stopPropagation();
     addToCart(product);
   };
+
+  // Build Sanity image URLs
+  const mainImage = product.images?.[0] ? urlFor(product.images[0]).url() : '';
+  const hoverImage = product.hoverGif ? urlFor(product.hoverGif).url() : null;
+  const displayImage = isHovering && hoverImage ? hoverImage : mainImage;
+
+  // Get category name
+  const categoryName = product.category?.name || product.category;
 
   return (
     <motion.div
@@ -33,6 +44,8 @@ export default function ProductCard({ product }) {
         className="relative bg-neutral-off-white rounded-minimal overflow-hidden shadow-soft group h-full flex flex-col cursor-pointer"
         whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}
         onClick={handleCardClick}
+        onMouseEnter={() => setIsHovering(true)}
+        onMouseLeave={() => setIsHovering(false)}
       >
         {/* Badge */}
         {product.badge && (
@@ -45,18 +58,29 @@ export default function ProductCard({ product }) {
 
         {/* Image Section */}
         <motion.div
-          className="relative overflow-hidden bg-neutral-warm-beige h-64 md:h-72 flex items-center justify-center text-6xl md:text-7xl"
+          className="relative overflow-hidden bg-neutral-warm-beige h-64 md:h-72 flex items-center justify-center"
           initial="rest"
           whileHover="hover"
           variants={imageVariants}
         >
-          {product.image}
+          {displayImage ? (
+            <motion.img
+              src={displayImage}
+              alt={product.title}
+              className="w-full h-full object-cover"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
+            />
+          ) : (
+            <span className="text-gray-300 text-sm">no image</span>
+          )}
         </motion.div>
 
         {/* Content Section */}
         <div className="p-4 md:p-6 flex-grow flex flex-col justify-between">
           <div>
-            <p className="text-xs text-text-light uppercase tracking-wider mb-2">{product.category}</p>
+            <p className="text-xs text-text-light uppercase tracking-wider mb-2">{categoryName}</p>
             <h3 className="text-lg md:text-xl font-semibold text-text-dark mb-2 line-clamp-2">
               {product.title}
             </h3>
@@ -69,13 +93,17 @@ export default function ProductCard({ product }) {
             <p className="text-xl md:text-2xl font-bold text-accent-brown">
               ₹{product.price}
             </p>
+            {product.status === 'sold_out' && (
+              <span className="text-xs font-semibold text-red-600">sold out</span>
+            )}
           </div>
         </div>
 
         {/* Add to Cart Button - ALWAYS VISIBLE */}
         <button
           onClick={handleAddToCart}
-          className="w-full px-4 py-3 bg-accent-brown text-white font-semibold rounded-b-minimal hover:bg-accent-green transition-colors duration-300"
+          disabled={product.status === 'sold_out'}
+          className="w-full px-4 py-3 bg-accent-brown text-white font-semibold rounded-b-minimal hover:bg-accent-green transition-colors duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed"
         >
          claim this piece
         </button>

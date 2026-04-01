@@ -1,16 +1,30 @@
 import { motion } from 'framer-motion';
 import { useSearchParams, Link } from 'react-router-dom';
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import ShopHeader from '../components/ShopHeader';
 import ShopFilters from '../components/ShopFilters';
 import ProductGrid from '../components/ProductGrid';
 import Footer from '../components/Footer';
-import { products } from '../data/products';
+import { client } from '../lib/sanity';
+
 
 export default function Shop() {
   const [searchParams] = useSearchParams();
   const categoryParam = searchParams.get('category');
   const productGridRef = useRef(null);
+
+  // Fetch all products on mount
+  const [products, setProducts] = useState([]);
+
+      useEffect(() => {
+      client
+        .fetch(`*[_type == "product"]`)
+        .then((data) => {
+          console.log("SANITY DATA:", data);
+          setProducts(data);
+        })
+        .catch(console.error);
+    }, []);
 
   // Filter products by category if provided
   const filteredProducts = categoryParam

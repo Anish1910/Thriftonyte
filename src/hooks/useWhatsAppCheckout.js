@@ -8,16 +8,13 @@ export const useWhatsAppCheckout = () => {
 
     let message = "Hey, i'd like to order these items:\n\n";
 
-
     cartItems.forEach((item, index) => {
-      const itemTotal = item.price * item.quantity;
-       message += `${index + 1}. ${item.title} - ₹${item.price} (qty: ${item.quantity})\n`;
+      message += `${index + 1}. ${item.title} - ₹${item.price} (qty: ${item.quantity})\n`;
     });
 
-     message += `\n total: ₹${total}\n\n`;
-     message += "Name: \nAddress: \nPhone: \n\n";
-     message += "Are these available?";
-
+    message += `\n total: ₹${total}\n\n`;
+    message += "Name: \nAddress: \nPhone: \n\n";
+    message += "Are these available?";
 
     return message;
   };
@@ -25,8 +22,7 @@ export const useWhatsAppCheckout = () => {
   const sendWhatsAppMessage = (cartItems, total) => {
     const message = generateWhatsAppMessage(cartItems, total);
     const encodedMessage = encodeURIComponent(message);
-    const phoneNumber = CONFIG.whatsappNumber.replace(/\D/g, '');
-    const whatsappURL = `https://wa.me/${919510381376}?text=${encodedMessage}`;
+    const whatsappURL = `https://wa.me/${CONFIG.whatsappNumber.replace(/\D/g, '')}?text=${encodedMessage}`;
 
     window.open(whatsappURL, '_blank');
   };
