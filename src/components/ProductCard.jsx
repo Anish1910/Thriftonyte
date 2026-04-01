@@ -29,8 +29,13 @@ export default function ProductCard({ product }) {
   const hoverImage = getImage(product.hoverGif);
   const displayImage = isHovering && hoverImage ? hoverImage : mainImage;
 
-  // Get category name
-  const categoryName = product.category?.name || product.category;
+  // Get category name - safely handle both string and object types
+  const categoryName = (() => {
+    if (!product.category) return '';
+    if (typeof product.category === 'string') return product.category;
+    if (typeof product.category === 'object' && product.category.name) return product.category.name;
+    return '';
+  })();
 
   return (
     <motion.div

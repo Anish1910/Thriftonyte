@@ -138,7 +138,7 @@ export default function ProductDetail() {
             {/* Badge & Category */}
             <div className="flex items-center gap-3 mb-5">
               <span className="text-xs text-text-light uppercase tracking-wider font-semibold">
-                {product.category}
+                {product.category?.name || ''}
               </span>
               {product.badge && (
                 <motion.span

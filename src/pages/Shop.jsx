@@ -20,15 +20,31 @@ export default function Shop() {
       client
         .fetch(`*[_type == "product"]`)
         .then((data) => {
-          console.log("SANITY DATA:", data);
+          console.log("🔍 SANITY DATA RECEIVED:", data);
+          data.forEach((product, idx) => {
+            console.log(`Product ${idx}:`, {
+              title: product.title,
+              category: product.category,
+              categoryType: typeof product.category,
+              images: product.images ? product.images.length : 0
+            });
+          });
           setProducts(data);
         })
         .catch(console.error);
     }, []);
 
-  // Filter products by category if provided
+  // Filter products by category if provided - safely handle both string and object categories
   const filteredProducts = categoryParam
-    ? products.filter((p) => p.category.toLowerCase() === categoryParam.toLowerCase())
+    ? products.filter((p) => {
+        let categoryName = '';
+        if (typeof p.category === 'string') {
+          categoryName = p.category;
+        } else if (typeof p.category === 'object' && p.category?.name) {
+          categoryName = p.category.name;
+        }
+        return categoryName.toLowerCase() === categoryParam.toLowerCase();
+      })
     : products;
 
   // Format category name for display (capitalize first letter)
