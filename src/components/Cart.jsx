@@ -3,7 +3,7 @@ import { useCart } from '../context/CartContext';
 import { useWhatsAppCheckout } from '../hooks/useWhatsAppCheckout';
 
 export default function Cart({ isOpen, onClose }) {
-  const { cartItems, removeFromCart, updateQuantity, getTotalPrice, clearCart } = useCart();
+  const { cartItems, removeFromCart, getTotalPrice, clearCart } = useCart();
   const { sendWhatsAppMessage } = useWhatsAppCheckout();
   const total = getTotalPrice();
 
@@ -27,7 +27,6 @@ export default function Cart({ isOpen, onClose }) {
 
   return (
     <>
-      {/* Backdrop */}
       {isOpen && (
         <motion.div
           className="fixed inset-0 bg-black z-50 cursor-pointer"
@@ -39,7 +38,6 @@ export default function Cart({ isOpen, onClose }) {
         />
       )}
 
-      {/* Drawer */}
       <motion.div
         className="fixed right-0 top-0 h-full w-full sm:w-96 bg-white shadow-hover z-50 flex flex-col"
         variants={drawerVariants}
@@ -47,7 +45,6 @@ export default function Cart({ isOpen, onClose }) {
         animate={isOpen ? 'visible' : 'hidden'}
         style={{ pointerEvents: isOpen ? 'auto' : 'none' }}
       >
-        {/* Header */}
         <div className="p-6 border-b border-neutral-light-beige flex justify-between items-center">
           <h2 className="text-2xl font-bold text-text-dark">your picks</h2>
           <button
@@ -60,7 +57,6 @@ export default function Cart({ isOpen, onClose }) {
           </button>
         </div>
 
-        {/* Items */}
         <div className="flex-1 overflow-y-auto p-6">
           {cartItems.length === 0 ? (
             <div className="flex items-center justify-center h-full text-center">
@@ -77,44 +73,22 @@ export default function Cart({ isOpen, onClose }) {
                   <div className="flex-1 min-w-0">
                     <h3 className="font-semibold text-text-dark truncate">{item.title}</h3>
                     <p className="text-sm text-text-medium">₹{item.price}</p>
-                    <div className="flex items-center gap-2 mt-2">
-                      <button
-                        onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                        className="px-2 py-1 border border-neutral-light-beige rounded text-sm hover:bg-neutral-warm-beige transition-colors"
-                      >
-                        −
-                      </button>
-                      <span className="w-8 text-center text-sm font-medium">{item.quantity}</span>
-                      <button
-                        onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                        className="px-2 py-1 border border-neutral-light-beige rounded text-sm hover:bg-neutral-warm-beige transition-colors"
-                      >
-                        +
-                      </button>
-                      <button
-                        onClick={() => removeFromCart(item.id)}
-                        className="ml-auto px-2 py-1 text-xs text-accent-brown hover:text-red-600 transition-colors"
-                      >
-                        Remove
-                      </button>
-
-
-                    
-                    </div>
+                    <button
+                      onClick={() => removeFromCart(item._id)}
+                      className="mt-2 text-xs text-accent-brown hover:text-red-600 transition-colors"
+                    >
+                      remove
+                    </button>
                   </div>
                 </div>
               ))}
             </div>
           )}
-          <p className="text-xs text-accent-brown">
-        not reserved until you confirm on whatsapp
-        </p>
+          <p className="text-xs text-accent-brown mt-4">
+            not reserved until you confirm on whatsapp
+          </p>
         </div>
 
-
-        
-
-        {/* Footer */}
         {cartItems.length > 0 && (
           <div className="border-t border-neutral-light-beige p-6 space-y-4">
             <div className="flex justify-between items-center">

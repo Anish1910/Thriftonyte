@@ -6,12 +6,12 @@ import FeaturedProducts from '../components/FeaturedProducts';
 import BrandSection from '../components/BrandSection';
 import LearnSection from '../components/LearnSection';
 import Footer from '../components/Footer';
-import { products, CATEGORIES } from '../data/products';
 import { articles } from '../data/articles';
 import { client, urlFor } from '../lib/sanity';
 
 export default function Home() {
   const [banner, setBanner] = useState(null);
+  const [homepageSettings, setHomepageSettings] = useState(null);
 
   useEffect(() => {
     client
@@ -19,6 +19,21 @@ export default function Home() {
       .then(setBanner)
       .catch(console.error);
   }, []);
+
+  useEffect(() => {
+    client
+      .fetch(`*[_type == "homepageSettings"][0]{
+        heroImages,
+        heroText,
+        featuredProducts[]->{_id, title, slug, price, images, description, badge},
+        featuredCategories[]->{_id, name, slug, image, description}
+      }`)
+      .then(setHomepageSettings)
+      .catch(console.error);
+  }, []);
+
+  const featuredProducts = homepageSettings?.featuredProducts || [];
+  const featuredCategories = homepageSettings?.featuredCategories || [];
 
   return (
     <main>
@@ -79,9 +94,9 @@ export default function Home() {
         </motion.section>
       )}
 
-      <Categories categories={CATEGORIES} />
+      {featuredCategories.length > 0 && <Categories categories={featuredCategories} />}
 
-      <FeaturedProducts products={products} />
+      {featuredProducts.length > 0 && <FeaturedProducts products={featuredProducts} />}
 
       <BrandSection />
 
