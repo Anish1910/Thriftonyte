@@ -16,14 +16,16 @@ export default function Hero({ settings }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
+    if (heroImageUrls.length === 0) return;
+
     const interval = setInterval(() => {
       setCurrentImageIndex((prevIndex) =>
-        (prevIndex + 1) % carouselImages.length
+        (prevIndex + 1) % heroImageUrls.length
       );
     }, 2500);
 
     return () => clearInterval(interval);
-  }, [carouselImages.length]);
+  }, [heroImageUrls.length]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -69,11 +71,6 @@ export default function Hero({ settings }) {
     tap: { scale: 0.98 }
   };
 
-  const getImageUrl = (img) => {
-    if (typeof img === 'string') return img;
-    return urlFor(img).url();
-  };
-
   return (
     <section className="relative w-full min-h-screen bg-white overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-neutral-off-white via-white to-neutral-warm-beige/30 pointer-events-none"></div>
@@ -88,17 +85,11 @@ export default function Hero({ settings }) {
           <motion.div className="flex flex-col space-y-8">
             <motion.div variants={headlineVariants}>
               <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold text-text-dark leading-tight tracking-tight">
-                {settings?.heroText ? (
-                  settings.heroText
-                ) : (
-                  <>
-                    not fast
-                    <br />
-                    <span className="text-accent-brown">fashion.</span>
-                    <br />
-                    <span className="text-accent-green">better.</span>
-                  </>
-                )}
+                not fast
+                <br />
+                <span className="text-accent-brown">fashion.</span>
+                <br />
+                <span className="text-accent-green">better.</span>
               </h1>
             </motion.div>
 
@@ -106,7 +97,7 @@ export default function Hero({ settings }) {
               variants={textVariants}
               className="text-lg md:text-xl text-text-medium leading-relaxed max-w-md"
             >
-              picked better. not more.
+              {settings?.heroText || 'curated thrift. effortless style.'}
             </motion.p>
 
             <motion.p
@@ -174,7 +165,7 @@ export default function Hero({ settings }) {
               <AnimatePresence mode="wait">
                 <motion.img
                   key={currentImageIndex}
-                  src={getImageUrl(carouselImages[currentImageIndex])}
+                  src={heroImageUrls[currentImageIndex]}
                   alt="Curated vintage fashion collection"
                   className="w-full h-full object-cover"
                   initial={{ opacity: 0 }}
