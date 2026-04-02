@@ -40,7 +40,7 @@ export default function ProductGrid({ products, showHeading = true }) {
         viewport={{ once: true }}
       >
         {products.map(product => (
-          <ProductCard key={product.id} product={product} />
+          <ProductCard key={product._id} product={product} />
         ))}
       </motion.div>
     </section>

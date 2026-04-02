@@ -13,38 +13,39 @@ export default function Shop() {
   const categoryParam = searchParams.get('category');
   const productGridRef = useRef(null);
 
+  // Fetch categories for filter
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    client
+      .fetch(`*[_type == "category"]{ name, slug }`)
+      .then(setCategories)
+      .catch(console.error);
+  }, []);
+
   // Fetch all products on mount
   const [products, setProducts] = useState([]);
 
       useEffect(() => {
       client
-        .fetch(`*[_type == "product"]`)
+        .fetch(`*[_type == "product"]{
+          ...,
+          category->{
+            name,
+            slug
+          }
+        }`)
         .then((data) => {
-          console.log("🔍 SANITY DATA RECEIVED:", data);
-          data.forEach((product, idx) => {
-            console.log(`Product ${idx}:`, {
-              title: product.title,
-              category: product.category,
-              categoryType: typeof product.category,
-              images: product.images ? product.images.length : 0
-            });
-          });
           setProducts(data);
         })
         .catch(console.error);
     }, []);
 
-  // Filter products by category if provided - safely handle both string and object categories
+  // Filter products by category if provided
   const filteredProducts = categoryParam
-    ? products.filter((p) => {
-        let categoryName = '';
-        if (typeof p.category === 'string') {
-          categoryName = p.category;
-        } else if (typeof p.category === 'object' && p.category?.name) {
-          categoryName = p.category.name;
-        }
-        return categoryName.toLowerCase() === categoryParam.toLowerCase();
-      })
+    ? products.filter(
+        (p) => p.category?.slug?.current === categoryParam
+      )
     : products;
 
   // Format category name for display (capitalize first letter)
@@ -67,7 +68,7 @@ export default function Shop() {
 
       {/* Filter bar with spacing */}
       <div className="mt-8">
-        <ShopFilters />
+        <ShopFilters categories={categories} />
       </div>
 
       {/* Active category filter UI */}

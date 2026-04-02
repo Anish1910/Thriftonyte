@@ -37,7 +37,7 @@ export default function FeaturedProducts({ products, limit = 6 }) {
       >
         {displayedProducts.map((product) => (
           <ProductCard
-            key={product.id}
+            key={product._id}
             product={product}
           />
         ))}

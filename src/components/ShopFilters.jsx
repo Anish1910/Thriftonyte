@@ -1,9 +1,9 @@
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
-import { CATEGORIES } from '../data/products';
 
-export default function ShopFilters() {
+export default function ShopFilters({ categories = [] }) {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+
 
   // Get all selected categories from URL (supports multiple)
   const selectedCategories = searchParams.getAll('category');
@@ -29,6 +29,10 @@ export default function ShopFilters() {
       newCategories.forEach((cat) => params.append('category', cat));
       navigate(`/shop?${params.toString()}`);
     }
+
+
+    
+    
   };
 
   return (
@@ -49,12 +53,12 @@ export default function ShopFilters() {
           </Link>
 
           {/* Category buttons with toggle */}
-          {CATEGORIES.map((category) => {
-            const isSelected = selectedCategories.includes(category.slug);
+          {categories.map((category) => {
+            const isSelected = selectedCategories.includes(category.slug.current);
             return (
               <button
-                key={category.slug}
-                onClick={() => handleCategoryToggle(category.slug)}
+                key={category.slug.current}
+                onClick={() => handleCategoryToggle(category.slug.current)}
                 className={`px-5 py-2.5 rounded-full font-medium transition-all duration-250 flex items-center gap-2 ${
                   isSelected
                     ? 'bg-accent-brown text-white shadow-soft'

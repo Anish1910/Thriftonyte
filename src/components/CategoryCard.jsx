@@ -9,7 +9,7 @@ export default function CategoryCard({ category }) {
       className="group"
     >
       <Link
-        to={`/shop?category=${category.slug}`}
+        to={`/shop?category=${category.slug.current}`}
         className="block overflow-hidden rounded-minimal shadow-soft hover:shadow-hover transition-shadow duration-300"
       >
         {/* Image container */}

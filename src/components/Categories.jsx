@@ -6,6 +6,8 @@ export default function Categories({ categories }) {
   // Display only first 3-4 categories for curated feel
   const displayedCategories = categories.slice(0, 4);
 
+
+
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
       {/* Section header */}
@@ -34,7 +36,7 @@ export default function Categories({ categories }) {
       >
         {displayedCategories.map((category) => (
           <CategoryCard
-            key={category.slug}
+            key={category.slug.current}
             category={category}
           />
         ))}

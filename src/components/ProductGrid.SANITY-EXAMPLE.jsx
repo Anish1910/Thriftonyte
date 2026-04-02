@@ -73,7 +73,7 @@ export default function ProductGrid({ showHeading = true, categorySlug = null })
         viewport={{ once: true }}
       >
         {products.map(product => (
-          <ProductCard key={product.id} product={product} />
+          <ProductCard key={product._id} product={product} />
         ))}
       </motion.div>
     </section>

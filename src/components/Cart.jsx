@@ -72,7 +72,7 @@ export default function Cart({ isOpen, onClose }) {
           ) : (
             <div className="space-y-4">
               {cartItems.map(item => (
-                <div key={item.id} className="flex gap-4 pb-4 border-b border-neutral-light-beige">
+                <div key={item._id} className="flex gap-4 pb-4 border-b border-neutral-light-beige">
                   <div className="text-4xl flex-shrink-0">{item.image}</div>
                   <div className="flex-1 min-w-0">
                     <h3 className="font-semibold text-text-dark truncate">{item.title}</h3>

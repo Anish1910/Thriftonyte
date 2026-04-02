@@ -16,7 +16,7 @@ export default function ProductCard({ product }) {
     if (e.target.closest('button')) {
       return;
     }
-    navigate(`/product/${product.slug?.current || product.id}`);
+    navigate(`/product/${product._id}`);
   };
 
   const handleAddToCart = (e) => {

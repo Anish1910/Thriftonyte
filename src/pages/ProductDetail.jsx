@@ -1,11 +1,11 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { products } from '../data/products';
 import { useCart } from '../context/CartContext';
 import { fadeInVariants } from '../constants/animations';
 import { BADGE_STYLES } from '../constants/product';
 import { getImage } from '../lib/image';
+import { client } from '../lib/sanity';
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -13,12 +13,33 @@ export default function ProductDetail() {
   const { addToCart } = useCart();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [addedToCart, setAddedToCart] = useState(false);
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const productId = parseInt(id, 10);
-  const product = useMemo(() =>
-    products.find(p => p.id === productId),
-    [productId]
-  );
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const data = await client.fetch(
+          `*[_type == "product" && _id == $id][0]{
+            ...,
+            category->{
+              name,
+              slug
+            }
+          }`,
+          { id }
+        );
+        setProduct(data || null);
+      } catch (error) {
+        console.error('Error fetching product:', error);
+        setProduct(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProduct();
+  }, [id]);
 
   useEffect(() => {
     let timer;
@@ -28,16 +49,26 @@ export default function ProductDetail() {
     return () => clearTimeout(timer);
   }, [addedToCart]);
 
-  if (isNaN(productId) || !product) {
+  if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-3xl font-bold text-text-dark mb-4">Product not found</h2>
+          <p className="text-lg text-text-medium">loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!product) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-3xl font-bold text-text-dark mb-4">product not found</h2>
           <button
             onClick={() => navigate('/shop')}
             className="px-6 py-3 bg-accent-brown text-white font-semibold rounded-minimal hover:bg-accent-green transition-colors"
           >
-            Back to Shop
+            back to shop
           </button>
         </div>
       </div>
@@ -137,9 +168,11 @@ export default function ProductDetail() {
           >
             {/* Badge & Category */}
             <div className="flex items-center gap-3 mb-5">
-              <span className="text-xs text-text-light uppercase tracking-wider font-semibold">
-                {product.category?.name || ''}
-              </span>
+              {product.category?.name && (
+                <span className="text-xs text-text-light uppercase tracking-wider font-semibold">
+                  {product.category.name}
+                </span>
+              )}
               {product.badge && (
                 <motion.span
                   initial={{ scale: 0.95, opacity: 0 }}
@@ -182,10 +215,9 @@ export default function ProductDetail() {
               className="text-sm font-semibold text-accent-brown mb-10"
             >
               only 1 piece. ever.
-
-              <p className="text-xs text-text-light mt-1">
-               move fast or lose this.
-              </p>
+              <span className="block text-xs text-text-light mt-1">
+                move fast or lose this.
+              </span>
             </motion.p>
 
             {/* Stock Message */}
