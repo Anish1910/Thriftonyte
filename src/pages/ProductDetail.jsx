@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '../context/CartContext';
 import { fadeInVariants } from '../constants/animations';
@@ -11,10 +11,12 @@ export default function ProductDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { addToCart } = useCart();
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [addedToCart, setAddedToCart] = useState(false);
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const scrollLockRef = useRef(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -48,6 +50,47 @@ export default function ProductDetail() {
     }
     return () => clearTimeout(timer);
   }, [addedToCart]);
+
+  useEffect(() => {
+    if (isFullscreen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [isFullscreen]);
+
+  const handlePrevImage = () => {
+    if (!product?.images) return;
+    setSelectedImageIndex((prev) => (prev - 1 + product.images.length) % product.images.length);
+  };
+
+  const handleNextImage = () => {
+    if (!product?.images) return;
+    setSelectedImageIndex((prev) => (prev + 1) % product.images.length);
+  };
+
+  const handleWheel = (e) => {
+    if (!product?.images || product.images.length <= 1) return;
+
+    if (scrollLockRef.current) return;
+
+    e.preventDefault();
+
+    scrollLockRef.current = true;
+    setTimeout(() => {
+      scrollLockRef.current = false;
+    }, 300);
+
+    if (e.deltaY > 0) {
+      handleNextImage();
+    } else {
+      handlePrevImage();
+    }
+  };
 
   if (loading) {
     return (
@@ -112,51 +155,57 @@ export default function ProductDetail() {
             className="flex flex-col"
           >
             {/* Main Image */}
-            <div className="relative bg-neutral-off-white rounded-lg overflow-hidden mb-6 aspect-square flex items-center justify-center">
+            <div
+              className="relative bg-neutral-off-white rounded-lg overflow-hidden mb-6 aspect-square flex items-center justify-center cursor-pointer group"
+              onClick={() => setIsFullscreen(true)}
+            >
               <AnimatePresence mode="wait">
                 <motion.img
-                  key={currentImageIndex}
-                  src={getImage(product.images?.[currentImageIndex])}
+                  key={selectedImageIndex}
+                  src={getImage(product.images?.[selectedImageIndex])}
                   alt={product.title}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover transition-opacity duration-300"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  transition={{ duration: 0.4 }}
-                  whileHover={{ scale: 1.05 }}
+                  transition={{ duration: 0.3 }}
                 />
               </AnimatePresence>
-            </div>
 
-            {/* Thumbnail Gallery */}
-            {product.images && product.images.length > 1 && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                className="flex gap-3 overflow-x-auto pb-2"
-              >
-                {product.images.map((image, idx) => (
-                  <motion.button
-                    key={idx}
-                    onClick={() => setCurrentImageIndex(idx)}
-                    className={`relative flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-all duration-300 ${
-                      idx === currentImageIndex
-                        ? 'border-accent-brown shadow-md opacity-100'
-                        : 'border-neutral-light-beige hover:border-text-light opacity-60'
-                    }`}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <img
-                      src={getImage(image)}
-                      alt={`${product.title} ${idx + 1}`}
-                      className="w-full h-full object-cover"
-                    />
-                  </motion.button>
-                ))}
-              </motion.div>
-            )}
+              {/* Previous Button */}
+              {product.images && product.images.length > 1 && (
+                <motion.button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handlePrevImage();
+                  }}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/70 hover:bg-white p-3 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <svg className="w-5 h-5 text-text-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                </motion.button>
+              )}
+
+              {/* Next Button */}
+              {product.images && product.images.length > 1 && (
+                <motion.button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleNextImage();
+                  }}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/70 hover:bg-white p-3 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <svg className="w-5 h-5 text-text-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </motion.button>
+              )}
+            </div>
           </motion.div>
 
           {/* Product Details */}
@@ -344,6 +393,85 @@ export default function ProductDetail() {
           </motion.div>
         </div>
       </div>
+
+      {/* Fullscreen Modal */}
+      <AnimatePresence>
+        {isFullscreen && (
+          <motion.div
+            className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            onClick={() => setIsFullscreen(false)}
+            onWheel={handleWheel}
+          >
+            {/* Close Button */}
+            <button
+              onClick={() => setIsFullscreen(false)}
+              className="absolute top-6 right-6 text-white hover:text-gray-300 transition-colors z-20"
+            >
+              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            {/* Container */}
+            <div
+              className="relative flex items-center justify-center w-full h-full px-4 md:px-8"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Image */}
+              <AnimatePresence mode="wait">
+                <motion.img
+                  key={selectedImageIndex}
+                  src={getImage(product.images?.[selectedImageIndex])}
+                  alt={product.title}
+                  className="max-w-4xl max-h-screen object-contain transition-opacity duration-300"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                />
+              </AnimatePresence>
+
+              {/* Previous Button */}
+              {product.images && product.images.length > 1 && (
+                <motion.button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handlePrevImage();
+                  }}
+                  className="absolute left-4 md:left-6 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 p-3 rounded-full transition-colors"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <svg className="w-5 h-5 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                </motion.button>
+              )}
+
+              {/* Next Button */}
+              {product.images && product.images.length > 1 && (
+                <motion.button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleNextImage();
+                  }}
+                  className="absolute right-4 md:right-6 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 p-3 rounded-full transition-colors"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <svg className="w-5 h-5 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </motion.button>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </main>
   );
 }

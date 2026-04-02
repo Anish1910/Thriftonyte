@@ -1,103 +1,161 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { client } from '../lib/sanity';
 import LearnCard from '../components/LearnCard';
-import { articles } from '../data/articles';
+import LearnModal from '../components/LearnModal';
 
 export default function LearnPage() {
-  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [tips, setTips] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedTip, setSelectedTip] = useState(null);
+  const [modalIndex, setModalIndex] = useState(0);
 
-  const categories = ['All', ...new Set(articles.map(a => a.category))];
+  const categories = ['all', 'style', 'care', 'think', 'hacks'];
 
-  const filteredArticles = selectedCategory === 'All'
-    ? articles
-    : articles.filter(a => a.category === selectedCategory);
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2
+  useEffect(() => {
+    const fetchTips = async () => {
+      try {
+        const data = await client.fetch(
+          `*[_type == "learnTip"] | order(_createdAt desc){
+            _id,
+            title,
+            category,
+            coverImage,
+            short,
+            tips
+          }`
+        );
+        setTips(data || []);
+      } catch (error) {
+        console.error('Error fetching tips:', error);
+      } finally {
+        setLoading(false);
       }
-    }
+    };
+
+    fetchTips();
+  }, []);
+
+  const filteredTips = selectedCategory === 'all'
+    ? tips
+    : tips.filter(tip => tip.category?.toLowerCase() === selectedCategory);
+
+  const handleCardClick = (tip, index) => {
+    setSelectedTip(tip);
+    setModalIndex(index);
   };
 
+  const handleNextTip = () => {
+    const currentIndex = filteredTips.findIndex(t => t._id === selectedTip._id);
+    const nextIndex = (currentIndex + 1) % filteredTips.length;
+    setSelectedTip(filteredTips[nextIndex]);
+    setModalIndex(nextIndex);
+  };
+
+  const handlePrevTip = () => {
+    const currentIndex = filteredTips.findIndex(t => t._id === selectedTip._id);
+    const prevIndex = (currentIndex - 1 + filteredTips.length) % filteredTips.length;
+    setSelectedTip(filteredTips[prevIndex]);
+    setModalIndex(prevIndex);
+  };
+
+  if (loading) {
+    return (
+      <main className="min-h-screen bg-white flex items-center justify-center">
+        <p className="text-lg text-text-medium">loading tips...</p>
+      </main>
+    );
+  }
+
   return (
-    <main className="min-h-screen bg-neutral-white">
+    <main className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 md:pt-24 pb-12 text-center">
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 md:pt-28 pb-16 md:pb-20">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
+          className="text-center"
         >
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-text-dark mb-6">
-            Learn & Explore
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-text-dark mb-4 lowercase">
+            learn thrift. style better.
           </h1>
-          <p className="text-lg md:text-xl text-text-medium max-w-2xl mx-auto">
-            Dive deep into thrifting, sustainability, and fashion history with our curated guides and insights.
+          <p className="text-base md:text-lg text-text-light max-w-2xl mx-auto lowercase font-medium">
+            quick reads. real tips. no fluff.
           </p>
         </motion.div>
       </section>
 
-      {/* Filter Buttons */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
-        <div className="flex flex-wrap justify-center gap-3 md:gap-4">
-          {categories.map(category => (
+      {/* Filter Pills */}
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sticky top-0 bg-white/80 backdrop-blur-sm z-40">
+        <motion.div
+          className="flex flex-wrap justify-center gap-2 md:gap-3"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          {categories.map((category) => (
             <motion.button
               key={category}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setSelectedCategory(category)}
-              className={`px-6 py-2 rounded-minimal font-medium transition-all duration-300 ${
+              whileHover={{ scale: 1.08 }}
+              onClick={() => {
+                setSelectedCategory(category);
+                setSelectedTip(null);
+              }}
+              animate={{
+                scale: selectedCategory === category ? 1.05 : 1,
+              }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              className={`px-4 md:px-5 py-2 rounded-full font-medium text-sm transition-all duration-300 ${
                 selectedCategory === category
-                  ? 'bg-accent-green text-white shadow-soft'
-                  : 'bg-neutral-off-white text-text-medium border border-neutral-light-beige hover:border-accent-green'
+                  ? 'bg-accent-brown text-white shadow-soft'
+                  : 'bg-neutral-off-white text-text-medium hover:bg-neutral-warm-beige border border-neutral-light-beige'
               }`}
             >
               {category}
             </motion.button>
           ))}
-        </div>
+        </motion.div>
       </section>
 
-      {/* Articles Grid */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 md:pb-24">
+      {/* Tips Grid */}
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 md:pb-28">
         <motion.div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           key={selectedCategory}
         >
-          {filteredArticles.map(article => (
-            <LearnCard key={article.id} article={article} />
+          {filteredTips.map((tip, index) => (
+            <LearnCard
+              key={tip._id}
+              tip={tip}
+              onClick={() => handleCardClick(tip, index)}
+            />
           ))}
         </motion.div>
 
-        {filteredArticles.length === 0 && (
+        {filteredTips.length === 0 && (
           <motion.div
-            className="text-center py-12"
+            className="text-center py-16"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
           >
-            <p className="text-text-medium text-lg">No articles found in this category.</p>
+            <p className="text-text-light text-lg lowercase">no tips here yet. check back soon!</p>
           </motion.div>
         )}
       </section>
 
-      {/* Footer */}
-      <footer className="bg-text-dark text-white py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-neutral-off-white/80 mb-2">
-            &copy; 2024 Thriftonyte. All rights reserved.
-          </p>
-          <p className="text-sm text-neutral-off-white/60">
-            Sustainable Fashion Marketplace - Pre-loved, Carefully Curated
-          </p>
-        </div>
-      </footer>
+      {/* Modal */}
+      <LearnModal
+        selectedTip={selectedTip}
+        filteredTips={filteredTips}
+        modalIndex={modalIndex}
+        onClose={() => setSelectedTip(null)}
+        onNext={handleNextTip}
+        onPrev={handlePrevTip}
+      />
     </main>
   );
 }
