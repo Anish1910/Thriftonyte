@@ -1,8 +1,10 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { urlFor } from '../lib/sanity';
 import { cardVariants } from '../constants/animations';
 
 export default function CategoryCard({ category }) {
+  const imageUrl = category.image ? urlFor(category.image).url() : null;
   return (
     <motion.div
       variants={cardVariants}
@@ -14,13 +16,19 @@ export default function CategoryCard({ category }) {
       >
         {/* Image container */}
         <div className="relative h-48 overflow-hidden bg-neutral-warm-beige">
-          <motion.img
-            src={category.imageUrl}
-            alt={category.name}
-            className="w-full h-full object-cover"
-            whileHover={{ scale: 1.05 }}
-            transition={{ duration: 0.4 }}
-          />
+          {imageUrl ? (
+            <motion.img
+              src={imageUrl}
+              alt={category.name}
+              className="w-full h-full object-cover"
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.4 }}
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-text-light">
+              <span className="text-sm">no image available</span>
+            </div>
+          )}
 
           {/* Overlay gradient */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
