@@ -12,7 +12,7 @@ export const useWhatsAppCheckout = () => {
       message += `${index + 1}. ${item.title} - ₹${item.price} (qty: ${item.quantity})\n`;
     });
 
-    message += `\n total: ₹${total}\n\n`;
+    message += `\n Total: ₹${total}\n\n`;
     message += "Name: \nAddress: \nPhone: \n\n";
     message += "Are these available?";
 

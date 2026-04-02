@@ -2,26 +2,29 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { products } from '../data/products';
+import { urlFor } from '../lib/sanity';
 
-export default function Hero() {
-  // Select 3-4 featured products for carousel
-  const carouselImages = products.slice(0, 4).flatMap(p => p.images.slice(0, 1));
+export default function Hero({ settings }) {
+  const defaultImages = products.slice(0, 4).flatMap(p => p.images.slice(0, 1));
+  const heroImages = settings?.heroImages?.length > 0 ? settings.heroImages : [];
+  const carouselImages = heroImages.length > 0 ? heroImages : defaultImages;
 
-  // State for current image index
+  const heroImageUrls = carouselImages.map(img =>
+    typeof img === 'string' ? img : urlFor(img).url()
+  );
+
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  // Auto-rotate images every 5 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImageIndex((prevIndex) =>
         (prevIndex + 1) % carouselImages.length
       );
-    }, 5000);
+    }, 2500);
 
     return () => clearInterval(interval);
   }, [carouselImages.length]);
 
-  // Container animation - stagger children
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -33,7 +36,6 @@ export default function Hero() {
     }
   };
 
-  // Text fade-in with upward motion
   const textVariants = {
     hidden: { opacity: 0, y: 30 },
     visible: {
@@ -43,7 +45,6 @@ export default function Hero() {
     }
   };
 
-  // Headline - larger, slower entrance
   const headlineVariants = {
     hidden: { opacity: 0, y: 40 },
     visible: {
@@ -53,7 +54,6 @@ export default function Hero() {
     }
   };
 
-  // Image slide and fade from right
   const imageVariants = {
     hidden: { opacity: 0, x: 60, scale: 0.95 },
     visible: {
@@ -64,18 +64,20 @@ export default function Hero() {
     }
   };
 
-  // Button hover state
   const buttonHoverVariants = {
     hover: { scale: 1.05, transition: { duration: 0.3 } },
     tap: { scale: 0.98 }
   };
 
+  const getImageUrl = (img) => {
+    if (typeof img === 'string') return img;
+    return urlFor(img).url();
+  };
+
   return (
     <section className="relative w-full min-h-screen bg-white overflow-hidden">
-      {/* Subtle background gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-neutral-off-white via-white to-neutral-warm-beige/30 pointer-events-none"></div>
 
-      {/* Main content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-screen flex items-center">
         <motion.div
           className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center w-full"
@@ -83,20 +85,23 @@ export default function Hero() {
           initial="hidden"
           animate="visible"
         >
-          {/* Left: Text Content */}
           <motion.div className="flex flex-col space-y-8">
-            {/* Headline */}
             <motion.div variants={headlineVariants}>
               <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold text-text-dark leading-tight tracking-tight">
-                not fast
-                <br />
-                <span className="text-accent-brown">fashion.</span>
-                <br />
-                <span className="text-accent-green">better.</span>
+                {settings?.heroText ? (
+                  settings.heroText
+                ) : (
+                  <>
+                    not fast
+                    <br />
+                    <span className="text-accent-brown">fashion.</span>
+                    <br />
+                    <span className="text-accent-green">better.</span>
+                  </>
+                )}
               </h1>
             </motion.div>
 
-            {/* Subheading - secondary message */}
             <motion.p
               variants={textVariants}
               className="text-lg md:text-xl text-text-medium leading-relaxed max-w-md"
@@ -104,7 +109,6 @@ export default function Hero() {
               picked better. not more.
             </motion.p>
 
-            {/* Description - supporting text */}
             <motion.p
               variants={textVariants}
               className="text-base text-text-light max-w-md leading-relaxed"
@@ -112,12 +116,10 @@ export default function Hero() {
               one of a kind pieces. no restocks. vintage that actually means something.
             </motion.p>
 
-            {/* CTA Buttons */}
             <motion.div
               variants={textVariants}
               className="flex flex-col sm:flex-row gap-4 pt-4"
             >
-              {/* Primary Button */}
               <motion.div
                 variants={buttonHoverVariants}
                 whileHover="hover"
@@ -131,7 +133,6 @@ export default function Hero() {
                 </Link>
               </motion.div>
 
-              {/* Secondary Link */}
               <motion.div
                 variants={buttonHoverVariants}
                 whileHover="hover"
@@ -146,7 +147,6 @@ export default function Hero() {
               </motion.div>
             </motion.div>
 
-            {/* Trust badge */}
             <motion.div
               variants={textVariants}
               className="flex items-center gap-3 pt-6"
@@ -166,18 +166,15 @@ export default function Hero() {
             </motion.div>
           </motion.div>
 
-          {/* Right: Visual Content */}
           <motion.div
             variants={imageVariants}
             className="relative h-96 md:h-[500px] lg:h-[600px] overflow-hidden"
           >
-            {/* Image container with rounded corners */}
             <div className="relative w-full h-full rounded-3xl overflow-hidden shadow-hover">
-              {/* Rotating image carousel with fade transition */}
               <AnimatePresence mode="wait">
                 <motion.img
                   key={currentImageIndex}
-                  src={carouselImages[currentImageIndex]}
+                  src={getImageUrl(carouselImages[currentImageIndex])}
                   alt="Curated vintage fashion collection"
                   className="w-full h-full object-cover"
                   initial={{ opacity: 0 }}
@@ -187,10 +184,8 @@ export default function Hero() {
                 />
               </AnimatePresence>
 
-              {/* Subtle overlay gradient for readability */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none"></div>
 
-              {/* Subtle badge or text overlay */}
               <motion.div
                 className="absolute bottom-6 left-6 bg-white/95 backdrop-blur-md px-4 py-2 rounded-lg shadow-soft"
                 initial={{ opacity: 0, y: 10 }}

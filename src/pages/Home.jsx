@@ -32,12 +32,13 @@ export default function Home() {
       .catch(console.error);
   }, []);
 
+
   const featuredProducts = homepageSettings?.featuredProducts || [];
   const featuredCategories = homepageSettings?.featuredCategories || [];
 
   return (
     <main>
-      <Hero />
+      <Hero settings={homepageSettings} />
 
       {banner && (
         <motion.section
@@ -98,6 +99,7 @@ export default function Home() {
 
       {featuredProducts.length > 0 && <FeaturedProducts products={featuredProducts} />}
 
+      
       <BrandSection />
 
       <LearnSection articles={articles} />
