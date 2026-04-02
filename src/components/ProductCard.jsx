@@ -9,10 +9,9 @@ import { useState } from 'react';
 export default function ProductCard({ product }) {
   const { addToCart } = useCart();
   const navigate = useNavigate();
-  const [isHovering, setIsHovering] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   const handleCardClick = (e) => {
-    // Don't navigate if clicking the add to cart button
     if (e.target.closest('button')) {
       return;
     }
@@ -24,12 +23,10 @@ export default function ProductCard({ product }) {
     addToCart(product);
   };
 
-  // Safe image handling - supports both Sanity objects and string URLs
   const mainImage = getImage(product.images?.[0]);
   const hoverImage = getImage(product.hoverGif);
-  const displayImage = isHovering && hoverImage ? hoverImage : mainImage;
+  const displayImage = isHovered && hoverImage ? hoverImage : mainImage;
 
-  // Get category name - safely handle both string and object types
   const categoryName = (() => {
     if (!product.category) return '';
     if (typeof product.category === 'string') return product.category;
@@ -49,10 +46,9 @@ export default function ProductCard({ product }) {
         className="relative bg-neutral-off-white rounded-minimal overflow-hidden shadow-soft group h-full flex flex-col cursor-pointer"
         whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}
         onClick={handleCardClick}
-        onMouseEnter={() => setIsHovering(true)}
-        onMouseLeave={() => setIsHovering(false)}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
       >
-        {/* Badge */}
         {product.badge && (
           <div className="absolute top-4 right-4 z-20 pointer-events-none">
             <span className={`px-3 py-1 text-xs font-semibold rounded-minimal ${BADGE_STYLES[product.badge] || 'bg-accent-brown text-white'}`}>
@@ -61,7 +57,6 @@ export default function ProductCard({ product }) {
           </div>
         )}
 
-        {/* Image Section */}
         <motion.div
           className="relative overflow-hidden bg-neutral-warm-beige h-64 md:h-72 flex items-center justify-center"
           initial="rest"
@@ -82,7 +77,6 @@ export default function ProductCard({ product }) {
           )}
         </motion.div>
 
-        {/* Content Section */}
         <div className="p-4 md:p-6 flex-grow flex flex-col justify-between">
           <div>
             <p className="text-xs text-text-light uppercase tracking-wider mb-2">{categoryName}</p>
@@ -104,13 +98,12 @@ export default function ProductCard({ product }) {
           </div>
         </div>
 
-        {/* Add to Cart Button - ALWAYS VISIBLE */}
         <button
           onClick={handleAddToCart}
           disabled={product.status === 'sold_out'}
           className="w-full px-4 py-3 bg-accent-brown text-white font-semibold rounded-b-minimal hover:bg-accent-green transition-colors duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed"
         >
-         claim this piece
+          claim this piece
         </button>
       </motion.div>
     </motion.div>
