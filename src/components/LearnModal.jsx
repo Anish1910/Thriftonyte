@@ -14,7 +14,6 @@ function LearnModal({
   return (
     <div
       className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-100 transition-opacity duration-200"
-      style={{ display: selectedTip ? 'flex' : 'none' }}
       onClick={onClose}
     >
       <motion.div
@@ -27,7 +26,7 @@ function LearnModal({
         {/* Modal Header */}
         <div className="sticky top-0 bg-white border-b border-neutral-light-beige p-4 md:p-6 flex items-center justify-between z-10">
           <h2 className="text-2xl md:text-3xl font-bold text-text-dark lowercase flex-grow">
-            {selectedTip.title}
+            {selectedTip?.title || 'untitled'}
           </h2>
           <motion.button
             onClick={onClose}
@@ -42,11 +41,11 @@ function LearnModal({
 
         {/* Modal Content */}
         <div className="p-4 md:p-6">
-          <span className="text-xs font-semibold text-accent-brown uppercase tracking-wider capitalize mb-4 inline-block">
-            {selectedTip.category}
+          <span className="text-xs font-semibold text-accent-brown uppercase tracking-wider mb-4 inline-block">
+            {selectedTip?.category || 'uncategorized'}
           </span>
 
-          {selectedTip.tips && selectedTip.tips.length > 0 && (
+          {selectedTip?.tips && selectedTip.tips.length > 0 && (
             <div className="mt-6">
               <h3 className="text-lg font-bold text-text-dark mb-4 lowercase">
                 tips:
@@ -70,7 +69,7 @@ function LearnModal({
         </div>
 
         {/* Modal Footer - Navigation */}
-        {filteredTips.length > 1 && (
+        {filteredTips?.length > 1 && (
           <div className="sticky bottom-0 bg-white border-t border-neutral-light-beige p-4 md:p-6 flex items-center justify-between">
             <motion.button
               onClick={onPrev}
@@ -80,7 +79,7 @@ function LearnModal({
               ← prev
             </motion.button>
             <span className="text-sm text-text-light font-medium">
-              {modalIndex + 1} / {filteredTips.length}
+              {(modalIndex + 1) || 0} / {filteredTips?.length || 0}
             </span>
             <motion.button
               onClick={onNext}

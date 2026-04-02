@@ -5,20 +5,23 @@ import { fadeInVariants, cardVariants } from '../constants/animations';
 export default function BrandSection() {
   const values = [
     {
-      icon: '♻️',
       title: 'No Mass Production',
       description: 'One piece only. Period.'
     },
     {
-      icon: '⭐',
       title: 'Quality That Lasts',
       description: 'We hunt pieces worth keeping. Timeless > trendy.'
     },
     {
-      icon: '👗',
       title: 'Every Piece Matters',
       description: 'Unique. Authentic. With a story to tell.'
     }
+  ];
+
+  const imageGrid = [
+    { id: 1, color: 'from-accent-brown/20 to-accent-brown/5' },
+    { id: 2, color: 'from-neutral-warm-beige/40 to-neutral-warm-beige/10', overlay: 'picked better. not more.' },
+    { id: 3, color: 'from-accent-green/20 to-accent-green/5' }
   ];
 
   const textVariants = {
@@ -58,10 +61,10 @@ export default function BrandSection() {
                 variants={cardVariants}
                 className="flex gap-4"
               >
-                <div className="text-3xl flex-shrink-0">{value.icon}</div>
+                <div className="w-1 bg-accent-brown flex-shrink-0 rounded-full" />
                 <div>
                   <h3 className="font-semibold text-text-dark mb-1">{value.title}</h3>
-                  <p className="text-text-light">{value.description}</p>
+                  <p className="text-text-light text-sm">{value.description}</p>
                 </div>
               </motion.div>
             ))}
@@ -71,25 +74,41 @@ export default function BrandSection() {
           <motion.div variants={cardVariants} className="mt-10">
             <Link
               to="/about"
-              className="inline-block px-8 py-4 bg-accent-brown text-white font-semibold rounded-minimal hover:bg-accent-green transition-colors duration-300"
+              className="inline-block px-8 py-4 bg-accent-brown text-white font-semibold rounded-minimal hover:bg-accent-green transition-colors duration-300 lowercase"
             >
               see our story
             </Link>
           </motion.div>
         </motion.div>
 
-        {/* Right: Visual element */}
+        {/* Right: Image Grid */}
         <motion.div
           variants={fadeInVariants}
-          className="relative"
+          className="grid grid-cols-1 md:grid-cols-3 gap-4"
         >
-          <div className="aspect-square rounded-minimal overflow-hidden shadow-hover bg-gradient-to-br from-neutral-warm-beige to-neutral-off-white flex items-center justify-center">
-            <div className="text-center px-8">
-              <p className="text-6xl mb-4">♻️</p>
-              <p className="text-xl font-semibold text-text-dark mb-3">closet to closet</p>
-              <p className="text-text-medium">your fashion finds its next home here</p>
-            </div>
-          </div>
+          {imageGrid.map((item, index) => (
+            <motion.div
+              key={item.id}
+              whileHover={{ scale: 1.03 }}
+              transition={{ duration: 0.3 }}
+              className="relative"
+            >
+              <div className={`aspect-square rounded-lg overflow-hidden shadow-soft bg-gradient-to-br ${item.color} flex items-center justify-center group`}>
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              </div>
+              {item.overlay && (
+                <motion.div
+                  className="absolute inset-0 rounded-lg flex items-end justify-start p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  initial={{ opacity: 0 }}
+                  whileHover={{ opacity: 1 }}
+                >
+                  <p className="text-sm md:text-base font-bold text-white drop-shadow-lg lowercase">
+                    {item.overlay}
+                  </p>
+                </motion.div>
+              )}
+            </motion.div>
+          ))}
         </motion.div>
       </motion.div>
     </section>

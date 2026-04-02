@@ -26,9 +26,10 @@ export default function LearnPage() {
             tips
           }`
         );
-        setTips(data || []);
+        setTips(data?.filter(Boolean) || []);
       } catch (error) {
         console.error('Error fetching tips:', error);
+        setTips([]);
       } finally {
         setLoading(false);
       }
@@ -37,24 +38,30 @@ export default function LearnPage() {
     fetchTips();
   }, []);
 
+  const safeTips = tips.filter(Boolean);
+
   const filteredTips = selectedCategory === 'all'
-    ? tips
-    : tips.filter(tip => tip.category?.toLowerCase() === selectedCategory);
+    ? safeTips
+    : safeTips.filter(tip => tip?.category?.toLowerCase() === selectedCategory);
 
   const handleCardClick = (tip, index) => {
-    setSelectedTip(tip);
-    setModalIndex(index);
+    if (tip?._id) {
+      setSelectedTip(tip);
+      setModalIndex(index);
+    }
   };
 
   const handleNextTip = () => {
-    const currentIndex = filteredTips.findIndex(t => t._id === selectedTip._id);
+    if (!selectedTip) return;
+    const currentIndex = filteredTips.findIndex(t => t?._id === selectedTip?._id);
     const nextIndex = (currentIndex + 1) % filteredTips.length;
     setSelectedTip(filteredTips[nextIndex]);
     setModalIndex(nextIndex);
   };
 
   const handlePrevTip = () => {
-    const currentIndex = filteredTips.findIndex(t => t._id === selectedTip._id);
+    if (!selectedTip) return;
+    const currentIndex = filteredTips.findIndex(t => t?._id === selectedTip?._id);
     const prevIndex = (currentIndex - 1 + filteredTips.length) % filteredTips.length;
     setSelectedTip(filteredTips[prevIndex]);
     setModalIndex(prevIndex);
@@ -128,11 +135,13 @@ export default function LearnPage() {
           key={selectedCategory}
         >
           {filteredTips.map((tip, index) => (
-            <LearnCard
-              key={tip._id}
-              tip={tip}
-              onClick={() => handleCardClick(tip, index)}
-            />
+            tip && (
+              <LearnCard
+                key={tip?._id}
+                tip={tip}
+                onClick={() => handleCardClick(tip, index)}
+              />
+            )
           ))}
         </motion.div>
 
@@ -148,14 +157,16 @@ export default function LearnPage() {
       </section>
 
       {/* Modal */}
-      <LearnModal
-        selectedTip={selectedTip}
-        filteredTips={filteredTips}
-        modalIndex={modalIndex}
-        onClose={() => setSelectedTip(null)}
-        onNext={handleNextTip}
-        onPrev={handlePrevTip}
-      />
+      {selectedTip && (
+        <LearnModal
+          selectedTip={selectedTip}
+          filteredTips={filteredTips}
+          modalIndex={modalIndex}
+          onClose={() => setSelectedTip(null)}
+          onNext={handleNextTip}
+          onPrev={handlePrevTip}
+        />
+      )}
     </main>
   );
 }
