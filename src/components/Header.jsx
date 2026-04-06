@@ -5,7 +5,6 @@ import { useCart } from '../context/CartContext';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const NAV_ITEMS = [
-  { to: '/', label: 'Home', end: true, color: 'accent-brown' },
   { to: '/shop', label: 'Shop', color: 'accent-brown' },
   { to: '/about', label: 'About', color: 'accent-green' },
   { to: '/learn', label: 'Learn', color: 'accent-green' }

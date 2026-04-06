@@ -96,21 +96,23 @@ export default function ProductCard({ product }) {
           </div>
 
           {/* Claim This Piece — always visible, centered below details */}
-          <motion.button
-            onClick={handleAddToCart}
-            disabled={isSoldOut}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.96 }}
-            className={`mt-auto w-full rounded-minimal py-2.5 text-xs font-semibold transition-all duration-300 sm:text-sm ${
-              addedToCart
-                ? 'bg-accent-green text-white'
-                : isSoldOut
-                  ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                  : 'bg-accent-brown text-white hover:bg-accent-green'
-            }`}
-          >
-            {addedToCart ? '✓ added' : isSoldOut ? 'sold out' : 'claim this piece'}
-          </motion.button>
+          <div className="mt-auto flex justify-center pt-1">
+            <motion.button
+              onClick={handleAddToCart}
+              disabled={isSoldOut}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.96 }}
+              className={`rounded-minimal px-5 py-2 text-xs font-semibold transition-all duration-300 sm:text-sm ${
+                addedToCart
+                  ? 'bg-accent-green text-white'
+                  : isSoldOut
+                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                    : 'bg-accent-brown text-white hover:bg-accent-green'
+              }`}
+            >
+              {addedToCart ? '✓ added' : isSoldOut ? 'sold out' : 'claim this piece'}
+            </motion.button>
+          </div>
         </div>
       </motion.div>
     </motion.div>

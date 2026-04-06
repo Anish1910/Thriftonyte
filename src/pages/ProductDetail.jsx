@@ -18,6 +18,8 @@ export default function ProductDetail() {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const scrollLockRef = useRef(false);
 
+  const isSoldOut = product?.status === 'sold_out';
+
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -119,6 +121,7 @@ export default function ProductDetail() {
   }
 
   const handleAddToCart = () => {
+    if (isSoldOut) return;
     addToCart(product);
     setAddedToCart(true);
   };
@@ -154,9 +157,10 @@ export default function ProductDetail() {
             variants={fadeInVariants}
             className="flex flex-col"
           >
-            {/* Main Image */}
+            {/* Main Image — 1:1 square aspect ratio */}
             <div
-              className="relative bg-neutral-off-white rounded-lg overflow-hidden mb-6 min-h-[400px] md:min-h-[500px] flex items-center justify-center cursor-pointer group"
+              className="relative bg-neutral-off-white rounded-lg overflow-hidden mb-6 cursor-pointer group"
+              style={{ aspectRatio: '1 / 1' }}
               onClick={() => setIsFullscreen(true)}
             >
               <AnimatePresence mode="wait">
@@ -164,7 +168,7 @@ export default function ProductDetail() {
                   key={selectedImageIndex}
                   src={getImage(product.images?.[selectedImageIndex])}
                   alt={product.title}
-                  className="w-full h-auto max-h-[600px] object-contain transition-opacity duration-300"
+                  className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
@@ -303,42 +307,69 @@ export default function ProductDetail() {
               </p>
             </motion.div>
 
+            {/* Sold Out Notice */}
+            {isSoldOut && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.32 }}
+                className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg"
+              >
+                <p className="text-sm font-semibold text-red-600">
+                  this piece has been sold
+                </p>
+              </motion.div>
+            )}
+
             {/* CTA Section */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.35 }}
-              className="space-y-4"
+              className="space-y-4 max-w-sm mx-auto"
             >
               {/* Buy via WhatsApp - PRIMARY CTA */}
-              <motion.a
-                href={`https://wa.me/1234567890?text=${getWhatsAppMessage()}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full px-6 py-4 bg-accent-brown text-white font-semibold rounded-lg hover:bg-opacity-90 transition-all duration-300 shadow-soft hover:shadow-md flex items-center justify-center gap-2 text-lg"
-                whileHover={{ scale: 1.01 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-5.031 1.378c-3.055 2.044-4.661 5.147-4.661 8.905 0 .789.083 1.553.246 2.308L2.75 22l2.502-.826c.63.321 1.335.572 2.07.75 5.256 1.476 10.931-2.026 12.407-7.282s-2.026-10.931-7.282-12.407c-.955-.268-1.922-.401-2.901-.401zM0 11.993C0 5.366 5.366 0 12 0s12 5.366 12 12-5.366 12-12 12c-2.125 0-4.129-.515-5.893-1.728L0 24l1.735-5.221C.516 16.107 0 14.105 0 11.993z" />
-                </svg>
-                claim this piece
-              </motion.a>
+              {isSoldOut ? (
+                <div
+                  className="w-full px-6 py-4 bg-gray-300 text-gray-500 font-semibold rounded-lg flex items-center justify-center gap-2 text-lg cursor-not-allowed"
+                >
+                  sold out
+                </div>
+              ) : (
+                <motion.a
+                  href={`https://wa.me/1234567890?text=${getWhatsAppMessage()}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full px-6 py-4 bg-accent-brown text-white font-semibold rounded-lg hover:bg-opacity-90 transition-all duration-300 shadow-soft hover:shadow-md flex items-center justify-center gap-2 text-lg"
+                  whileHover={{ scale: 1.01 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-5.031 1.378c-3.055 2.044-4.661 5.147-4.661 8.905 0 .789.083 1.553.246 2.308L2.75 22l2.502-.826c.63.321 1.335.572 2.07.75 5.256 1.476 10.931-2.026 12.407-7.282s-2.026-10.931-7.282-12.407c-.955-.268-1.922-.401-2.901-.401zM0 11.993C0 5.366 5.366 0 12 0s12 5.366 12 12-5.366 12-12 12c-2.125 0-4.129-.515-5.893-1.728L0 24l1.735-5.221C.516 16.107 0 14.105 0 11.993z" />
+                  </svg>
+                  claim this piece
+                </motion.a>
+              )}
 
               {/* Microcopy for primary CTA */}
-              <p className="text-xs text-text-light text-center -mt-2">
-                10 seconds. reply in minutes.
-              </p>
+              {!isSoldOut && (
+                <p className="text-xs text-text-light text-center -mt-2">
+                  10 seconds. reply in minutes.
+                </p>
+              )}
 
               {/* Reserve This Piece - SECONDARY CTA */}
               <motion.button
                 onClick={handleAddToCart}
-                className={`w-full px-6 py-3 border-2 border-text-dark text-text-dark font-semibold rounded-lg hover:bg-neutral-off-white transition-all duration-300 flex items-center justify-center gap-2 ${
-                  addedToCart
-                    ? 'bg-accent-green border-accent-green text-white'
-                    : ''
+                disabled={isSoldOut}
+                className={`w-full px-6 py-3 border-2 font-semibold rounded-lg transition-all duration-300 flex items-center justify-center gap-2 ${
+                  isSoldOut
+                    ? 'border-gray-300 text-gray-400 cursor-not-allowed'
+                    : addedToCart
+                      ? 'bg-accent-green border-accent-green text-white'
+                      : 'border-text-dark text-text-dark hover:bg-neutral-off-white'
                 }`}
-                whileTap={{ scale: 0.98 }}
+                whileTap={isSoldOut ? {} : { scale: 0.98 }}
               >
                 {addedToCart ? (
                   <span className="flex items-center justify-center gap-2">
@@ -347,6 +378,8 @@ export default function ProductDetail() {
                     </svg>
                     added to cart
                   </span>
+                ) : isSoldOut ? (
+                  'unavailable'
                 ) : (
                   'save for later'
                 )}
