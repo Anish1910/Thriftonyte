@@ -6,7 +6,7 @@ import { fadeInVariants } from '../constants/animations';
 export default function BrandSection({ sections }) {
   const navigate = useNavigate();
 
-  const brandSections = sections?.brandSections || [];
+  const brandSections = sections || [];
 
   if (!brandSections?.length) return null;
 
