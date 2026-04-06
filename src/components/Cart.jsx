@@ -39,7 +39,7 @@ export default function Cart({ isOpen, onClose }) {
       )}
 
       <motion.div
-        className="fixed right-0 top-0 h-full w-full sm:w-96 bg-white shadow-hover z-50 flex flex-col"
+        className="fixed right-0 top-0 h-full w-11/12 sm:w-96 bg-white shadow-hover z-50 flex flex-col"
         variants={drawerVariants}
         initial="hidden"
         animate={isOpen ? 'visible' : 'hidden'}
