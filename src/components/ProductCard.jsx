@@ -50,15 +50,15 @@ export default function ProductCard({ product }) {
         onMouseLeave={() => setIsHovered(false)}
       >
         {product.badge && (
-          <div className="absolute top-4 right-4 z-20 pointer-events-none">
-            <span className={`px-3 py-1 text-xs font-semibold rounded-minimal ${BADGE_STYLES[product.badge] || 'bg-accent-brown text-white'}`}>
+          <div className="absolute top-2 right-2 z-20 pointer-events-none">
+            <span className={`px-2 py-1 text-xs font-semibold rounded-minimal ${BADGE_STYLES[product.badge] || 'bg-accent-brown text-white'}`}>
               {product.badge}
             </span>
           </div>
         )}
 
         <motion.div
-          className="relative overflow-hidden bg-neutral-warm-beige h-64 md:h-72 flex items-center justify-center"
+          className="relative overflow-hidden bg-neutral-warm-beige aspect-square flex items-center justify-center"
           initial="rest"
           whileHover="hover"
           variants={imageVariants}
@@ -77,19 +77,19 @@ export default function ProductCard({ product }) {
           )}
         </motion.div>
 
-        <div className="p-4 md:p-6 flex-grow flex flex-col justify-between">
+        <div className="p-3 flex-grow flex flex-col justify-between">
           <div>
-            <p className="text-xs text-text-light uppercase tracking-wider mb-2">{categoryName}</p>
-            <h3 className="text-lg md:text-xl font-semibold text-text-dark mb-2 line-clamp-2">
+            <p className="text-xs text-text-light uppercase tracking-wider mb-1">{categoryName}</p>
+            <h3 className="text-sm md:text-base font-semibold text-text-dark mb-1 line-clamp-2">
               {product.title}
             </h3>
-            <p className="text-sm text-text-medium mb-4 line-clamp-2">
+            <p className="text-xs text-text-medium mb-2 line-clamp-2 hidden md:block">
               {product.description}
             </p>
           </div>
 
-          <div className="flex items-center justify-between mb-4">
-            <p className="text-xl md:text-2xl font-bold text-accent-brown">
+          <div className="flex items-center justify-between mb-2">
+            <p className="text-base md:text-xl font-bold text-accent-brown">
               ₹{product.price}
             </p>
             {product.status === 'sold_out' && (
@@ -101,7 +101,7 @@ export default function ProductCard({ product }) {
         <button
           onClick={handleAddToCart}
           disabled={product.status === 'sold_out'}
-          className="w-full px-4 py-3 bg-accent-brown text-white font-semibold rounded-b-minimal hover:bg-accent-green transition-colors duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed"
+          className="w-full px-3 py-2 text-sm bg-accent-brown text-white font-semibold rounded-b-minimal hover:bg-accent-green transition-colors duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed"
         >
           claim this piece
         </button>

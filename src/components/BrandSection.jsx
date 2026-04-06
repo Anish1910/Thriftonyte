@@ -19,14 +19,14 @@ export default function BrandSection({ sections }) {
   };
 
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-16">
       <motion.div
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
         variants={fadeInVariants}
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-3 md:gap-4">
           {brandSections.map((item, index) => {
             const imageUrl = item?.image ? urlFor(item.image).url() : null;
 
@@ -35,11 +35,9 @@ export default function BrandSection({ sections }) {
             return (
               <motion.div
                 key={item._key || index}
-                className={`relative overflow-hidden rounded-lg group cursor-pointer ${
-                  index === 0 ? 'md:col-span-2' : ''
+                className={`relative overflow-hidden rounded-lg cursor-pointer ${
+                  index === 0 ? 'col-span-2' : ''
                 }`}
-                whileHover={{ scale: 1.04 }}
-                transition={{ duration: 0.3, ease: 'easeOut' }}
                 onClick={() => handleImageClick(item?.link)}
               >
                 <div
@@ -53,13 +51,10 @@ export default function BrandSection({ sections }) {
                     className="w-full h-full object-cover"
                   />
 
-                  {/* Hover Overlay */}
-                  <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-15 transition-opacity duration-300" />
-
                   {/* Text Overlay - Bottom Left with Subtle Gradient */}
                   {item?.text && (
-                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4 md:p-6">
-                      <p className="text-lg md:text-xl font-bold text-white lowercase">
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-3 md:p-6">
+                      <p className="text-sm md:text-lg font-bold text-white lowercase">
                         {item.text}
                       </p>
                     </div>
