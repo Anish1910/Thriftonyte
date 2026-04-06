@@ -43,6 +43,33 @@ export default {
           to: [{ type: 'category' }]
         }
       ]
+    },
+    {
+      name: 'brandSections',
+      title: 'Brand Sections',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            {
+              name: 'image',
+              title: 'Image',
+              type: 'image'
+            },
+            {
+              name: 'link',
+              title: 'Redirect Link',
+              type: 'string'
+            },
+            {
+              name: 'text',
+              title: 'Overlay Text',
+              type: 'string'
+            }
+          ]
+        }
+      ]
     }
   ]
 }

@@ -1,115 +1,74 @@
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import { fadeInVariants, cardVariants } from '../constants/animations';
+import { useNavigate } from 'react-router-dom';
+import { urlFor } from '../lib/sanity';
+import { fadeInVariants } from '../constants/animations';
 
-export default function BrandSection() {
-  const values = [
-    {
-      title: 'No Mass Production',
-      description: 'One piece only. Period.'
-    },
-    {
-      title: 'Quality That Lasts',
-      description: 'We hunt pieces worth keeping. Timeless > trendy.'
-    },
-    {
-      title: 'Every Piece Matters',
-      description: 'Unique. Authentic. With a story to tell.'
-    }
-  ];
+export default function BrandSection({ sections }) {
+  const navigate = useNavigate();
 
-  const imageGrid = [
-    { id: 1, color: 'from-accent-brown/20 to-accent-brown/5' },
-    { id: 2, color: 'from-neutral-warm-beige/40 to-neutral-warm-beige/10', overlay: 'picked better. not more.' },
-    { id: 3, color: 'from-accent-green/20 to-accent-green/5' }
-  ];
+  const brandSections = sections?.brandSections || [];
 
-  const textVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.5, ease: 'easeOut' }
+  if (!brandSections?.length) return null;
+
+  const handleImageClick = (link) => {
+    if (link?.startsWith('/')) {
+      navigate(link);
+    } else if (link) {
+      window.location.href = link;
     }
   };
 
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
       <motion.div
-        className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
         variants={fadeInVariants}
       >
-        {/* Left: Brand message */}
-        <motion.div variants={textVariants}>
-          <h2 className="text-4xl md:text-5xl font-bold text-text-dark mb-6">
-            not fast fashion.
-            <br/>
-            <span className="text-accent-brown">better.</span>
-          </h2>
-          <p className="text-lg text-text-medium leading-relaxed mb-8">
-            no mass production. no repeats. just pieces worth keeping.
-          </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {brandSections.map((item, index) => {
+            const imageUrl = item?.image ? urlFor(item.image).url() : null;
 
-          {/* Values */}
-          <div className="space-y-6">
-            {values.map((value, index) => (
+            if (!imageUrl) return null;
+
+            return (
               <motion.div
-                key={index}
-                variants={cardVariants}
-                className="flex gap-4"
+                key={item._key || index}
+                className={`relative overflow-hidden rounded-lg group cursor-pointer ${
+                  index === 0 ? 'md:col-span-2' : ''
+                }`}
+                whileHover={{ scale: 1.04 }}
+                transition={{ duration: 0.3, ease: 'easeOut' }}
+                onClick={() => handleImageClick(item?.link)}
               >
-                <div className="w-1 bg-accent-brown flex-shrink-0 rounded-full" />
-                <div>
-                  <h3 className="font-semibold text-text-dark mb-1">{value.title}</h3>
-                  <p className="text-text-light text-sm">{value.description}</p>
+                <div
+                  className={`${
+                    index === 0 ? 'aspect-video' : 'aspect-square'
+                  } relative bg-neutral-warm-beige/10`}
+                >
+                  <img
+                    src={imageUrl}
+                    alt={item?.text || 'brand section image'}
+                    className="w-full h-full object-cover"
+                  />
+
+                  {/* Hover Overlay */}
+                  <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-15 transition-opacity duration-300" />
+
+                  {/* Text Overlay - Bottom Left with Subtle Gradient */}
+                  {item?.text && (
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4 md:p-6">
+                      <p className="text-lg md:text-xl font-bold text-white lowercase">
+                        {item.text}
+                      </p>
+                    </div>
+                  )}
                 </div>
               </motion.div>
-            ))}
-          </div>
-
-          {/* CTA */}
-          <motion.div variants={cardVariants} className="mt-10">
-            <Link
-              to="/about"
-              className="inline-block px-8 py-4 bg-accent-brown text-white font-semibold rounded-minimal hover:bg-accent-green transition-colors duration-300 lowercase"
-            >
-              see our story
-            </Link>
-          </motion.div>
-        </motion.div>
-
-        {/* Right: Image Grid */}
-        <motion.div
-          variants={fadeInVariants}
-          className="grid grid-cols-1 md:grid-cols-3 gap-4"
-        >
-          {imageGrid.map((item, index) => (
-            <motion.div
-              key={item.id}
-              whileHover={{ scale: 1.03 }}
-              transition={{ duration: 0.3 }}
-              className="relative"
-            >
-              <div className={`aspect-square rounded-lg overflow-hidden shadow-soft bg-gradient-to-br ${item.color} flex items-center justify-center group`}>
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </div>
-              {item.overlay && (
-                <motion.div
-                  className="absolute inset-0 rounded-lg flex items-end justify-start p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  initial={{ opacity: 0 }}
-                  whileHover={{ opacity: 1 }}
-                >
-                  <p className="text-sm md:text-base font-bold text-white drop-shadow-lg lowercase">
-                    {item.overlay}
-                  </p>
-                </motion.div>
-              )}
-            </motion.div>
-          ))}
-        </motion.div>
+            );
+          })}
+        </div>
       </motion.div>
     </section>
   );
