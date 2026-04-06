@@ -26,7 +26,8 @@ export default function Home() {
         heroImages,
         heroText,
         featuredProducts[]->{_id, title, slug, price, images, description, badge},
-        featuredCategories[]->{_id, name, slug, image, description}
+        featuredCategories[]->{_id, name, slug, image, description},
+        brandSections[]{image, link, text}
       }`)
       .then(setHomepageSettings)
       .catch(console.error);
@@ -99,8 +100,7 @@ export default function Home() {
 
       {featuredProducts.length > 0 && <FeaturedProducts products={featuredProducts} />}
 
-      
-      <BrandSection />
+      <BrandSection sections={homepageSettings?.brandSections} />
 
       <LearnSection articles={articles} />
 
