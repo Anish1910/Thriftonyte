@@ -74,17 +74,6 @@ export default function ProductCard({ product }) {
           ) : (
             <span className="text-gray-300 text-sm">no image</span>
           )}
-
-          {/* Add to Cart Button - Middle of card, overlay on image */}
-          <motion.button
-            onClick={handleAddToCart}
-            disabled={product.status === 'sold_out'}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[132px] px-4 py-2.5 text-xs md:text-sm bg-accent-brown text-white font-semibold rounded-minimal opacity-0 group-hover:opacity-100 hover:bg-accent-green md:hover:shadow-md transition-all duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed"
-          >
-            claim this piece
-          </motion.button>
         </motion.div>
 
         <div className="p-2.5 flex-grow flex flex-col gap-2">
@@ -94,6 +83,17 @@ export default function ProductCard({ product }) {
               {product.title}
             </h3>
           </div>
+
+          {/* Add to Cart Button - Middle (above price) */}
+          <motion.button
+            onClick={handleAddToCart}
+            disabled={product.status === 'sold_out'}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="w-fit px-4 py-2 text-xs md:text-sm bg-accent-brown text-white font-semibold rounded-minimal hover:bg-accent-green md:hover:shadow-md transition-all duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed"
+          >
+            claim this piece
+          </motion.button>
 
           <div className="flex items-center justify-between">
             <p className="text-sm md:text-lg font-bold text-accent-brown">
