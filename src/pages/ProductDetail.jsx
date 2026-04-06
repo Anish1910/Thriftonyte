@@ -156,7 +156,7 @@ export default function ProductDetail() {
           >
             {/* Main Image */}
             <div
-              className="relative bg-neutral-off-white rounded-lg overflow-hidden mb-6 aspect-square flex items-center justify-center cursor-pointer group"
+              className="relative bg-neutral-off-white rounded-lg overflow-hidden mb-6 min-h-[400px] md:min-h-[500px] flex items-center justify-center cursor-pointer group"
               onClick={() => setIsFullscreen(true)}
             >
               <AnimatePresence mode="wait">
@@ -164,7 +164,7 @@ export default function ProductDetail() {
                   key={selectedImageIndex}
                   src={getImage(product.images?.[selectedImageIndex])}
                   alt={product.title}
-                  className="w-full h-full object-cover transition-opacity duration-300"
+                  className="w-full h-auto max-h-[600px] object-contain transition-opacity duration-300"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}

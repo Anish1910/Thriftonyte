@@ -74,6 +74,17 @@ export default function ProductCard({ product }) {
           ) : (
             <span className="text-gray-300 text-sm">no image</span>
           )}
+
+          {/* Add to Cart Button - Middle of card, overlay on image */}
+          <motion.button
+            onClick={handleAddToCart}
+            disabled={product.status === 'sold_out'}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[132px] px-4 py-2.5 text-xs md:text-sm bg-accent-brown text-white font-semibold rounded-minimal opacity-0 group-hover:opacity-100 hover:bg-accent-green md:hover:shadow-md transition-all duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed"
+          >
+            claim this piece
+          </motion.button>
         </motion.div>
 
         <div className="p-2.5 flex-grow flex flex-col gap-2">
@@ -92,17 +103,6 @@ export default function ProductCard({ product }) {
               <span className="text-xs font-semibold text-red-600">sold out</span>
             )}
           </div>
-
-          {/* Add to Cart Button - Below details */}
-          <motion.button
-            onClick={handleAddToCart}
-            disabled={product.status === 'sold_out'}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className="w-[132px] px-4 md:px-6 py-2.5 md:py-3 text-xs md:text-sm bg-accent-brown text-white font-semibold rounded-minimal hover:bg-accent-green md:hover:shadow-md transition-all duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed"
-          >
-            claim this piece
-          </motion.button>
         </div>
       </motion.div>
     </motion.div>
