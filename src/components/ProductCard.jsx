@@ -77,15 +77,6 @@ export default function ProductCard({ product }) {
         </motion.div>
 
         <div className="p-2.5 flex-grow flex flex-col gap-2">
-          {/* Add to Cart Button - Above details (desktop only layout) */}
-          <button
-            onClick={handleAddToCart}
-            disabled={product.status === 'sold_out'}
-            className="w-full px-2 py-2 text-xs md:text-sm bg-accent-brown text-white font-semibold rounded-minimal hover:bg-accent-green md:hover:shadow-md transition-all duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed"
-          >
-            claim this piece
-          </button>
-
           <div>
             <p className="text-[10px] text-text-light uppercase tracking-wider mb-1">{categoryName}</p>
             <h3 className="text-xs md:text-sm font-semibold text-text-dark mb-1 line-clamp-2 leading-tight">
@@ -101,6 +92,17 @@ export default function ProductCard({ product }) {
               <span className="text-xs font-semibold text-red-600">sold out</span>
             )}
           </div>
+
+          {/* Add to Cart Button - Below details */}
+          <motion.button
+            onClick={handleAddToCart}
+            disabled={product.status === 'sold_out'}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="w-auto px-4 md:px-6 py-2.5 md:py-3 text-xs md:text-sm bg-accent-brown text-white font-semibold rounded-minimal hover:bg-accent-green md:hover:shadow-md transition-all duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed"
+          >
+            claim this piece
+          </motion.button>
         </div>
       </motion.div>
     </motion.div>
