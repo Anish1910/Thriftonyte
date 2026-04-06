@@ -77,31 +77,25 @@ export default function ProductCard({ product }) {
           )}
         </motion.div>
 
-        <div className="p-3 flex-grow flex flex-col justify-between">
+        <div className="p-2.5 flex-grow flex flex-col justify-between">
           <div>
-            <p className="text-xs text-text-light uppercase tracking-wider mb-1">{categoryName}</p>
-            <h3 className="text-sm md:text-base font-semibold text-text-dark mb-1 line-clamp-2">
+            <p className="text-[10px] text-text-light uppercase tracking-wider mb-1">{categoryName}</p>
+            <h3 className="text-xs md:text-sm font-semibold text-text-dark mb-1 line-clamp-2 leading-tight">
               {product.title}
             </h3>
-            <p className="text-xs text-text-medium mb-2 line-clamp-2 hidden md:block">
-              {product.description}
-            </p>
           </div>
 
           <div className="flex items-center justify-between mb-2">
-            <p className="text-base md:text-xl font-bold text-accent-brown">
+            <p className="text-sm md:text-lg font-bold text-accent-brown">
               ₹{product.price}
             </p>
-            {product.status === 'sold_out' && (
-              <span className="text-xs font-semibold text-red-600">sold out</span>
-            )}
           </div>
         </div>
 
         <button
           onClick={handleAddToCart}
           disabled={product.status === 'sold_out'}
-          className="w-full px-3 py-2 text-sm bg-accent-brown text-white font-semibold rounded-b-minimal hover:bg-accent-green transition-colors duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed"
+          className="w-full px-2 py-2 text-xs md:text-sm bg-accent-brown text-white font-semibold rounded-b-minimal hover:bg-accent-green transition-colors duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed"
         >
           claim this piece
         </button>

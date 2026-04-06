@@ -19,14 +19,14 @@ export default function BrandSection({ sections }) {
   };
 
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-16">
+    <section className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-8 md:py-16">
       <motion.div
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
         variants={fadeInVariants}
       >
-        <div className="grid grid-cols-2 gap-3 md:gap-4">
+        <div className="grid grid-cols-2 gap-2 md:gap-4">
           {brandSections.map((item, index) => {
             const imageUrl = item?.image ? urlFor(item.image).url() : null;
 
