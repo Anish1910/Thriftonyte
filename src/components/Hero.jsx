@@ -72,19 +72,19 @@ export default function Hero({ settings }) {
   };
 
   return (
-    <section className="relative w-full min-h-screen bg-white overflow-hidden">
+    <section className="relative w-full bg-white overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-neutral-off-white via-white to-neutral-warm-beige/30 pointer-events-none"></div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-screen flex items-center">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-16 min-h-screen flex items-center">
         <motion.div
-          className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center w-full"
+          className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center w-full"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
-          <motion.div className="flex flex-col space-y-8">
+          <motion.div className="flex flex-col space-y-4 md:space-y-8">
             <motion.div variants={headlineVariants}>
-              <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold text-text-dark leading-tight tracking-tight">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-text-dark leading-tight tracking-tight">
                 not fast
                 <br />
                 <span className="text-accent-brown">fashion.</span>
@@ -95,21 +95,21 @@ export default function Hero({ settings }) {
 
             <motion.p
               variants={textVariants}
-              className="text-lg md:text-xl text-text-medium leading-relaxed max-w-md"
+              className="text-sm md:text-lg lg:text-xl text-text-medium leading-relaxed max-w-md"
             >
               {settings?.heroText || 'curated thrift. effortless style.'}
             </motion.p>
 
             <motion.p
               variants={textVariants}
-              className="text-base text-text-light max-w-md leading-relaxed"
+              className="text-xs md:text-base text-text-light max-w-md leading-relaxed"
             >
               one of a kind pieces. no restocks. vintage that actually means something.
             </motion.p>
 
             <motion.div
               variants={textVariants}
-              className="flex flex-col sm:flex-row gap-4 pt-4"
+              className="flex flex-col sm:flex-row gap-3 md:gap-4 pt-2 md:pt-4"
             >
               <motion.div
                 variants={buttonHoverVariants}
@@ -118,7 +118,7 @@ export default function Hero({ settings }) {
               >
                 <Link
                   to="/shop"
-                  className="px-8 py-4 bg-accent-brown text-white font-semibold text-lg rounded-minimal shadow-soft hover:shadow-hover transition-shadow duration-300 hover:bg-accent-green w-fit block"
+                  className="px-6 py-3 md:px-8 md:py-4 bg-accent-brown text-white font-semibold text-sm md:text-lg rounded-minimal shadow-soft hover:shadow-hover transition-shadow duration-300 hover:bg-accent-green w-fit block"
                 >
                   explore pieces
                 </Link>
@@ -131,7 +131,7 @@ export default function Hero({ settings }) {
               >
                 <Link
                   to="/about"
-                  className="px-8 py-4 border-2 border-text-dark text-text-dark font-semibold text-lg rounded-minimal hover:bg-neutral-warm-beige transition-colors duration-300 w-fit block"
+                  className="px-6 py-3 md:px-8 md:py-4 border-2 border-text-dark text-text-dark font-semibold text-sm md:text-lg rounded-minimal hover:bg-neutral-warm-beige transition-colors duration-300 w-fit block"
                 >
                   why we exist
                 </Link>
@@ -140,26 +140,26 @@ export default function Hero({ settings }) {
 
             <motion.div
               variants={textVariants}
-              className="flex items-center gap-3 pt-6"
+              className="flex items-center gap-2 md:gap-3 pt-4 md:pt-6"
             >
               <div className="flex -space-x-2">
-                <div className="w-8 h-8 rounded-full bg-accent-brown text-white flex items-center justify-center text-xs font-bold border-2 border-white">
+                <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-accent-brown text-white flex items-center justify-center text-xs font-bold border-2 border-white">
                   👗
                 </div>
-                <div className="w-8 h-8 rounded-full bg-accent-green text-white flex items-center justify-center text-xs font-bold border-2 border-white">
+                <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-accent-green text-white flex items-center justify-center text-xs font-bold border-2 border-white">
                   ♻️
                 </div>
-                <div className="w-8 h-8 rounded-full bg-accent-brown text-white flex items-center justify-center text-xs font-bold border-2 border-white">
+                <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-accent-brown text-white flex items-center justify-center text-xs font-bold border-2 border-white">
                   ⭐
                 </div>
               </div>
-              <span className="text-sm text-text-light">1000+ of us know better.</span>
+              <span className="text-xs md:text-sm text-text-light">1000+ of us know better.</span>
             </motion.div>
           </motion.div>
 
           <motion.div
             variants={imageVariants}
-            className="relative h-96 md:h-[500px] lg:h-[600px] overflow-hidden"
+            className="relative h-64 sm:h-80 md:h-96 lg:h-[500px] xl:h-[600px] overflow-hidden"
           >
             <div className="relative w-full h-full rounded-3xl overflow-hidden shadow-hover">
               <AnimatePresence mode="wait">
