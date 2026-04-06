@@ -43,8 +43,7 @@ export default function ProductCard({ product }) {
       className="flex flex-col h-full"
     >
       <motion.div
-        className="relative bg-neutral-off-white rounded-minimal overflow-hidden shadow-soft group h-full flex flex-col cursor-pointer"
-        whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}
+        className="relative bg-neutral-off-white rounded-minimal overflow-hidden shadow-soft group h-full flex flex-col cursor-pointer md:hover:scale-105 md:hover:-translate-y-1 transition-all duration-300"
         onClick={handleCardClick}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
@@ -77,7 +76,16 @@ export default function ProductCard({ product }) {
           )}
         </motion.div>
 
-        <div className="p-2.5 flex-grow flex flex-col justify-between">
+        <div className="p-2.5 flex-grow flex flex-col gap-2">
+          {/* Add to Cart Button - Above details (desktop only layout) */}
+          <button
+            onClick={handleAddToCart}
+            disabled={product.status === 'sold_out'}
+            className="w-full px-2 py-2 text-xs md:text-sm bg-accent-brown text-white font-semibold rounded-minimal hover:bg-accent-green md:hover:shadow-md transition-all duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed"
+          >
+            claim this piece
+          </button>
+
           <div>
             <p className="text-[10px] text-text-light uppercase tracking-wider mb-1">{categoryName}</p>
             <h3 className="text-xs md:text-sm font-semibold text-text-dark mb-1 line-clamp-2 leading-tight">
@@ -85,20 +93,15 @@ export default function ProductCard({ product }) {
             </h3>
           </div>
 
-          <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center justify-between">
             <p className="text-sm md:text-lg font-bold text-accent-brown">
               ₹{product.price}
             </p>
+            {product.status === 'sold_out' && (
+              <span className="text-xs font-semibold text-red-600">sold out</span>
+            )}
           </div>
         </div>
-
-        <button
-          onClick={handleAddToCart}
-          disabled={product.status === 'sold_out'}
-          className="w-full px-2 py-2 text-xs md:text-sm bg-accent-brown text-white font-semibold rounded-b-minimal hover:bg-accent-green transition-colors duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed"
-        >
-          claim this piece
-        </button>
       </motion.div>
     </motion.div>
   );
