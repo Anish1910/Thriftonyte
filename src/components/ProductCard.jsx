@@ -99,7 +99,7 @@ export default function ProductCard({ product }) {
             disabled={product.status === 'sold_out'}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="w-auto px-4 md:px-6 py-2.5 md:py-3 text-xs md:text-sm bg-accent-brown text-white font-semibold rounded-minimal hover:bg-accent-green md:hover:shadow-md transition-all duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed"
+            className="w-[132px] px-4 md:px-6 py-2.5 md:py-3 text-xs md:text-sm bg-accent-brown text-white font-semibold rounded-minimal hover:bg-accent-green md:hover:shadow-md transition-all duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed"
           >
             claim this piece
           </motion.button>
