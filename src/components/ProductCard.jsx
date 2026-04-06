@@ -10,6 +10,7 @@ export default function ProductCard({ product }) {
   const { addToCart } = useCart();
   const navigate = useNavigate();
   const [isHovered, setIsHovered] = useState(false);
+  const [addedToCart, setAddedToCart] = useState(false);
 
   const handleCardClick = (e) => {
     if (e.target.closest('button')) return;
@@ -19,6 +20,8 @@ export default function ProductCard({ product }) {
   const handleAddToCart = (e) => {
     e.stopPropagation();
     addToCart(product);
+    setAddedToCart(true);
+    setTimeout(() => setAddedToCart(false), 1500);
   };
 
   const mainImage = getImage(product.images?.[0]);
@@ -31,6 +34,8 @@ export default function ProductCard({ product }) {
     if (typeof product.category === 'object' && product.category.name) return product.category.name;
     return '';
   })();
+
+  const isSoldOut = product.status === 'sold_out';
 
   return (
     <motion.div
@@ -55,26 +60,17 @@ export default function ProductCard({ product }) {
           </div>
         )}
 
-        {/* Image Container with CTA Overlay */}
-        <div className="relative aspect-square w-full overflow-hidden bg-neutral-warm-beige">
+        {/* Image Container — enforced 1:1 square aspect ratio */}
+        <div
+          className="relative w-full overflow-hidden bg-neutral-warm-beige"
+          style={{ aspectRatio: '1 / 1' }}
+        >
           <img
             src={displayImage || ''}
             alt={product.title}
-            className="h-full w-full object-cover transition-transform duration-400 ease-out group-hover:scale-[1.04]"
+            className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.04]"
             loading="lazy"
           />
-
-          {/* CTA Button - Vertically centered, shifted right */}
-          <motion.button
-            onClick={handleAddToCart}
-            disabled={product.status === 'sold_out'}
-            initial={{ opacity: 0, x: 10 }}
-            whileHover={{ opacity: 1, x: 0, scale: 1.02 }}
-            whileTap={{ scale: 0.96 }}
-            className="absolute left-[60%] top-1/2 z-10 -translate-y-1/2 whitespace-nowrap rounded-minimal bg-accent-brown px-5 py-2.5 text-sm font-semibold text-white opacity-0 transition-all duration-300 hover:bg-accent-green disabled:cursor-not-allowed disabled:bg-gray-400 md:opacity-100 md:group-hover:opacity-100"
-          >
-            claim this piece
-          </motion.button>
         </div>
 
         {/* Content Section */}
@@ -94,10 +90,27 @@ export default function ProductCard({ product }) {
             <p className="text-sm font-bold text-accent-brown md:text-lg">
               ₹{product.price}
             </p>
-            {product.status === 'sold_out' && (
+            {isSoldOut && (
               <span className="text-xs font-semibold text-red-600">sold out</span>
             )}
           </div>
+
+          {/* Claim This Piece — always visible, centered below details */}
+          <motion.button
+            onClick={handleAddToCart}
+            disabled={isSoldOut}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.96 }}
+            className={`mt-auto w-full rounded-minimal py-2.5 text-xs font-semibold transition-all duration-300 sm:text-sm ${
+              addedToCart
+                ? 'bg-accent-green text-white'
+                : isSoldOut
+                  ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                  : 'bg-accent-brown text-white hover:bg-accent-green'
+            }`}
+          >
+            {addedToCart ? '✓ added' : isSoldOut ? 'sold out' : 'claim this piece'}
+          </motion.button>
         </div>
       </motion.div>
     </motion.div>
