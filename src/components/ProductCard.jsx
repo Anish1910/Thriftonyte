@@ -105,10 +105,10 @@ export default function ProductCard({ product }) {
         </div>
 
         {/* Content Section */}
-        <div className="flex flex-grow flex-col gap-2 p-3">
+        <div className="flex flex-grow flex-col gap-2.5 p-3.5 md:p-4">
           {/* Category & Title */}
           <div>
-            <p className="mb-1 text-[10px] font-medium uppercase tracking-wider text-text-light">
+            <p className="mb-1 text-[10px] font-medium uppercase tracking-wide text-text-light">
               {categoryName}
             </p>
             <h3 className="mb-1 line-clamp-2 text-lg font-extrabold leading-snug text-text-dark md:text-xl">

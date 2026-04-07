@@ -85,7 +85,7 @@ export default function LearnPage() {
           transition={{ duration: 0.6 }}
           className="text-center"
         >
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-text-dark mb-4 uppercase tracking-tight">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-text-dark mb-4 uppercase tracking-tight">
             Learn Thrift. Style Better.
           </h1>
           <p className="text-base md:text-lg text-text-light max-w-2xl mx-auto font-medium">

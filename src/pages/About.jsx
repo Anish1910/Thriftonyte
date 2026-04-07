@@ -12,7 +12,7 @@ export default function About() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-text-dark mb-6 leading-[0.95] tracking-tighter uppercase">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-text-dark mb-6 leading-[1] tracking-tighter uppercase">
             We Don't Follow Trends.
             <br />
             We Find Them.

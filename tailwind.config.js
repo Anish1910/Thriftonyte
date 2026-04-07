@@ -39,8 +39,8 @@ export default {
         'minimal': '8px',
       },
       fontFamily: {
-        'sans': ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
-        'display': ['Playfair Display', 'Georgia', 'serif'],
+        'sans': ['DM Sans', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+        'display': ['Cormorant Garamond', 'Georgia', 'serif'],
       }
     }
   },
