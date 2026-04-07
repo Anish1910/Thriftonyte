@@ -39,7 +39,8 @@ export default {
         'minimal': '8px',
       },
       fontFamily: {
-        'sans': ['Poppins', 'Inter', 'sans-serif'],
+        'sans': ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+        'display': ['Playfair Display', 'Georgia', 'serif'],
       }
     }
   },

@@ -12,13 +12,13 @@ export default function About() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold text-text-dark mb-6 leading-tight lowercase">
-            we don't follow trends.
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-text-dark mb-6 leading-[0.95] tracking-tighter uppercase">
+            We Don't Follow Trends.
             <br />
-            we find them.
+            We Find Them.
           </h1>
-          <p className="text-lg md:text-xl text-text-light max-w-3xl mx-auto font-medium lowercase">
-            no mass production. no restocks. just pieces that matter.
+          <p className="text-base md:text-lg text-text-light max-w-3xl mx-auto font-medium">
+            No mass production. No restocks. Just pieces that matter.
           </p>
         </motion.div>
       </section>
@@ -40,11 +40,11 @@ export default function About() {
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
             >
-              <p className="text-2xl md:text-3xl font-bold text-text-dark leading-tight mb-4 lowercase">
-                fast fashion is loud.
+              <p className="text-2xl md:text-3xl font-extrabold text-text-dark leading-tight mb-4 uppercase tracking-tight">
+                Fast Fashion Is Loud.
               </p>
-              <p className="text-xl text-accent-brown font-semibold lowercase">
-                we're not.
+              <p className="text-xl text-accent-brown font-semibold">
+                We're not.
               </p>
             </motion.div>
 
@@ -55,11 +55,11 @@ export default function About() {
               transition={{ duration: 0.5, delay: 0.1 }}
               viewport={{ once: true }}
             >
-              <p className="text-2xl md:text-3xl font-bold text-text-dark leading-tight mb-4 lowercase">
-                we pick.
+              <p className="text-2xl md:text-3xl font-extrabold text-text-dark leading-tight mb-4 uppercase tracking-tight">
+                We Pick.
               </p>
-              <p className="text-xl text-accent-brown font-semibold lowercase">
-                you wear.
+              <p className="text-xl text-accent-brown font-semibold">
+                You wear.
               </p>
             </motion.div>
 
@@ -70,11 +70,11 @@ export default function About() {
               transition={{ duration: 0.5, delay: 0.2 }}
               viewport={{ once: true }}
             >
-              <p className="text-2xl md:text-3xl font-bold text-text-dark leading-tight mb-4 lowercase">
-                once it's gone,
+              <p className="text-2xl md:text-3xl font-extrabold text-text-dark leading-tight mb-4 uppercase tracking-tight">
+                Once It's Gone,
               </p>
-              <p className="text-xl text-accent-brown font-semibold lowercase">
-                it's gone.
+              <p className="text-xl text-accent-brown font-semibold">
+                It's gone.
               </p>
             </motion.div>
           </motion.div>
@@ -84,19 +84,19 @@ export default function About() {
       {/* How It Works */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
         <motion.h2
-          className="text-4xl md:text-5xl font-bold text-text-dark mb-12 md:mb-16 lowercase"
+          className="text-3xl md:text-4xl font-extrabold text-text-dark mb-12 md:mb-16 uppercase tracking-tight"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
         >
-          how it works
+          How It Works
         </motion.h2>
 
         <div className="space-y-8 md:space-y-12">
           {[
-            { num: '01', title: 'we source pieces', desc: 'hunt for quality. hunt for character. hunt for pieces worth keeping.' },
-            { num: '02', title: 'we curate hard', desc: "no trash. no duplicates. just things we'd actually wear." },
-            { num: '03', title: "you grab before it's gone", desc: 'one piece only. first come, first served. make your move.' }
+            { num: '01', title: 'We Source Pieces', desc: 'Hunt for quality. Hunt for character. Hunt for pieces worth keeping.' },
+            { num: '02', title: 'We Curate Hard', desc: "No trash. No duplicates. Just things we'd actually wear." },
+            { num: '03', title: "You Grab Before It's Gone", desc: 'One piece only. First come, first served. Make your move.' }
           ].map((step, idx) => (
             <motion.div
               key={idx}
@@ -110,10 +110,10 @@ export default function About() {
                 {step.num}
               </div>
               <div className="flex-grow pt-2">
-                <h3 className="text-2xl md:text-3xl font-bold text-text-dark mb-2 lowercase">
+                <h3 className="text-xl md:text-2xl font-bold text-text-dark mb-2">
                   {step.title}
                 </h3>
-                <p className="text-base md:text-lg text-text-light lowercase">
+                <p className="text-base md:text-lg text-text-light">
                   {step.desc}
                 </p>
               </div>
@@ -126,12 +126,12 @@ export default function About() {
       <section className="bg-neutral-off-white/50 py-20 md:py-28">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.h2
-            className="text-4xl md:text-5xl font-bold text-text-dark mb-12 md:mb-16 lowercase"
+            className="text-3xl md:text-4xl font-extrabold text-text-dark mb-12 md:mb-16 uppercase tracking-tight"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
           >
-            why us
+            Why Us
           </motion.h2>
 
           <motion.div
@@ -142,10 +142,10 @@ export default function About() {
             viewport={{ once: true }}
           >
             {[
-              'no duplicates',
-              'no overstock',
-              'no waste',
-              'just curated drops'
+              'No Duplicates',
+              'No Overstock',
+              'No Waste',
+              'Just Curated Drops'
             ].map((item, idx) => (
               <motion.div
                 key={idx}
@@ -156,7 +156,7 @@ export default function About() {
                 viewport={{ once: true }}
               >
                 <div className="w-2 h-2 rounded-full bg-accent-brown flex-shrink-0" />
-                <p className="text-xl md:text-2xl font-semibold text-text-dark lowercase">
+                <p className="text-xl md:text-2xl font-semibold text-text-dark">
                   {item}
                 </p>
               </motion.div>
@@ -173,14 +173,14 @@ export default function About() {
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
-          <p className="text-base md:text-lg text-text-light mb-8 lowercase font-medium">
-            ready? let's go.
+          <p className="text-base md:text-lg text-text-light mb-8 font-medium">
+            Ready? Let's go.
           </p>
           <Link
             to="/shop"
-            className="inline-flex items-center justify-center gap-2 px-8 md:px-10 py-4 md:py-5 bg-accent-brown text-white font-bold text-base md:text-lg rounded-lg hover:bg-accent-green transition-all duration-300 group lowercase"
+            className="inline-flex items-center justify-center gap-2 px-8 md:px-10 py-4 md:py-5 bg-accent-brown text-white font-bold text-sm md:text-base rounded-lg hover:bg-accent-green transition-all duration-300 group uppercase tracking-wider"
           >
-            find your next piece
+            Find Your Next Piece
             <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
           </Link>
         </motion.div>

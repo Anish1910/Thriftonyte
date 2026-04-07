@@ -73,21 +73,21 @@ export default function Home() {
                 transition={{ duration: 0.6 }}
               >
                 {banner.title && (
-                  <h2 className="text-3xl md:text-4xl font-bold text-text-dark mb-4">
+                  <h2 className="text-3xl md:text-4xl font-extrabold text-text-dark mb-4 uppercase tracking-tight">
                     {banner.title}
                   </h2>
                 )}
                 {banner.subtitle && (
-                  <p className="text-lg text-text-medium mb-6">
+                  <p className="text-base md:text-lg text-text-medium mb-6">
                     {banner.subtitle}
                   </p>
                 )}
                 {banner.ctaLink && (
                   <a
                     href={banner.ctaLink}
-                    className="inline-block px-8 py-3 bg-accent-brown text-white font-semibold rounded-minimal hover:bg-accent-green transition-colors duration-300"
+                    className="inline-block px-8 py-3 bg-accent-brown text-white font-semibold rounded-minimal hover:bg-accent-green transition-colors duration-300 uppercase tracking-wide text-sm"
                   >
-                    {banner.ctaText || 'explore'}
+                    {banner.ctaText || 'Explore'}
                   </a>
                 )}
               </motion.div>

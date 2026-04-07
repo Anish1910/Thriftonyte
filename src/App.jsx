@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
 import Header from './components/Header';
 import Cart from './components/Cart';
@@ -10,12 +10,21 @@ import About from './pages/About';
 import LearnPage from './pages/LearnPage';
 import './App.css';
 
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+}
+
 function App() {
   const [isCartOpen, setIsCartOpen] = useState(false);
 
   return (
     <CartProvider>
       <Router>
+        <ScrollToTop />
         <div className="min-h-screen bg-neutral-white">
           <Header onCartToggle={() => setIsCartOpen(!isCartOpen)} />
           <Cart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />

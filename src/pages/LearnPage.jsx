@@ -70,7 +70,7 @@ export default function LearnPage() {
   if (loading) {
     return (
       <main className="min-h-screen bg-white flex items-center justify-center">
-        <p className="text-lg text-text-medium">loading tips...</p>
+        <p className="text-lg text-text-medium">Loading tips...</p>
       </main>
     );
   }
@@ -85,11 +85,11 @@ export default function LearnPage() {
           transition={{ duration: 0.6 }}
           className="text-center"
         >
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-text-dark mb-4 lowercase">
-            learn thrift. style better.
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-text-dark mb-4 uppercase tracking-tight">
+            Learn Thrift. Style Better.
           </h1>
-          <p className="text-base md:text-lg text-text-light max-w-2xl mx-auto lowercase font-medium">
-            quick reads. real tips. no fluff.
+          <p className="text-base md:text-lg text-text-light max-w-2xl mx-auto font-medium">
+            Quick reads. Real tips. No fluff.
           </p>
         </motion.div>
       </section>
@@ -114,7 +114,7 @@ export default function LearnPage() {
                 scale: selectedCategory === category ? 1.05 : 1,
               }}
               transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-              className={`px-4 md:px-5 py-2 rounded-full font-medium text-sm transition-all duration-300 ${
+              className={`px-4 md:px-5 py-2 rounded-full font-medium text-xs uppercase tracking-wider transition-all duration-300 ${
                 selectedCategory === category
                   ? 'bg-accent-brown text-white shadow-soft'
                   : 'bg-neutral-off-white text-text-medium hover:bg-neutral-warm-beige border border-neutral-light-beige'
@@ -151,7 +151,7 @@ export default function LearnPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
           >
-            <p className="text-text-light text-lg lowercase">no tips here yet. check back soon!</p>
+            <p className="text-text-light text-lg">No tips here yet. Check back soon!</p>
           </motion.div>
         )}
       </section>

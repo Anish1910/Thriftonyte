@@ -46,7 +46,7 @@ export default function Cart({ isOpen, onClose }) {
         style={{ pointerEvents: isOpen ? 'auto' : 'none' }}
       >
         <div className="p-6 border-b border-neutral-light-beige flex justify-between items-center">
-          <h2 className="text-2xl font-bold text-text-dark">your picks</h2>
+          <h2 className="text-xl font-extrabold text-text-dark uppercase tracking-wider">Your Picks</h2>
           <button
             onClick={onClose}
             className="p-2 text-text-medium hover:text-text-dark transition-colors"
@@ -61,8 +61,8 @@ export default function Cart({ isOpen, onClose }) {
           {cartItems.length === 0 ? (
             <div className="flex items-center justify-center h-full text-center">
               <div>
-                <p className="text-text-medium mb-2">nothing here yet</p>
-                <p className="text-sm text-text-light">find pieces you love</p>
+                <p className="text-text-medium mb-2">Nothing here yet</p>
+                <p className="text-sm text-text-light">Find pieces you love</p>
               </div>
             </div>
           ) : (
@@ -75,9 +75,9 @@ export default function Cart({ isOpen, onClose }) {
                     <p className="text-sm text-text-medium">₹{item.price}</p>
                     <button
                       onClick={() => removeFromCart(item._id)}
-                      className="mt-2 text-xs text-accent-brown hover:text-red-600 transition-colors"
+                      className="mt-2 text-xs text-accent-brown hover:text-red-600 transition-colors uppercase tracking-wide font-medium"
                     >
-                      remove
+                      Remove
                     </button>
                   </div>
                 </div>
@@ -85,34 +85,34 @@ export default function Cart({ isOpen, onClose }) {
             </div>
           )}
           <p className="text-xs text-accent-brown mt-4">
-            not reserved until you confirm on whatsapp
+            Not reserved until you confirm on WhatsApp
           </p>
         </div>
 
         {cartItems.length > 0 && (
           <div className="border-t border-neutral-light-beige p-6 space-y-4">
             <div className="flex justify-between items-center">
-              <span className="text-lg font-semibold text-text-dark">total:</span>
+              <span className="text-sm font-semibold text-text-dark uppercase tracking-wide">Total</span>
               <span className="text-2xl font-bold text-accent-brown">₹{total}</span>
             </div>
             <button
               onClick={handleCheckout}
-              className="w-full px-4 py-3 bg-accent-brown text-white font-semibold rounded-minimal hover:bg-accent-green transition-colors duration-300 shadow-soft"
+              className="w-full px-4 py-3 bg-accent-brown text-white font-semibold rounded-minimal hover:bg-accent-green transition-colors duration-300 shadow-soft uppercase tracking-wide text-sm"
             >
-              confirm on whatsapp
+              Confirm on WhatsApp
             </button>
 
             <p className="text-xs text-text-light text-center">
-             confirm details + delivery on whatsapp
+              Confirm details + delivery on WhatsApp
             </p>
             <button
               onClick={() => {
                 clearCart();
                 onClose();
               }}
-              className="w-full px-4 py-2 text-text-medium border border-neutral-light-beige rounded-minimal hover:bg-neutral-warm-beige transition-colors"
+              className="w-full px-4 py-2 text-text-medium border border-neutral-light-beige rounded-minimal hover:bg-neutral-warm-beige transition-colors text-sm"
             >
-              clear
+              Clear
             </button>
           </div>
         )}

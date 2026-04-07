@@ -33,15 +33,12 @@ export default function BrandSection({ sections }) {
             if (!imageUrl) return null;
 
             return (
-              <motion.div
+              <div
                 key={item._key || index}
                 className={`relative overflow-hidden rounded-lg cursor-pointer group ${
                   index === 0 ? 'col-span-2' : ''
                 }`}
                 onClick={() => handleImageClick(item?.link)}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                transition={{ duration: 0.3 }}
               >
                 <div
                   className={`${
@@ -51,22 +48,22 @@ export default function BrandSection({ sections }) {
                   <img
                     src={imageUrl}
                     alt={item?.text || 'brand section image'}
-                    className="w-full h-full object-cover transition-all duration-500 ease-out group-hover:scale-110 group-hover:brightness-110"
+                    className="w-full h-full object-cover transition-transform duration-700 ease-out will-change-transform group-hover:scale-105"
                   />
 
                   {/* Hover overlay tint */}
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300" />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500" />
 
                   {/* Text Overlay - Bottom Left with Subtle Gradient */}
                   {item?.text && (
                     <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-3 md:p-6">
-                      <p className="text-sm md:text-lg font-bold text-white lowercase group-hover:underline underline-offset-4 decoration-1">
+                      <p className="text-sm md:text-lg font-semibold text-white uppercase tracking-wider group-hover:tracking-widest transition-all duration-500">
                         {item.text}
                       </p>
                     </div>
                   )}
                 </div>
-              </motion.div>
+              </div>
             );
           })}
         </div>

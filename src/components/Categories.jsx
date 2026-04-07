@@ -6,8 +6,6 @@ export default function Categories({ categories }) {
   // Display only first 3-4 categories for curated feel
   const displayedCategories = categories.slice(0, 4);
 
-
-
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
       {/* Section header */}
@@ -18,11 +16,11 @@ export default function Categories({ categories }) {
         variants={fadeInVariants}
         className="text-center mb-12 md:mb-16"
       >
-        <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-text-dark mb-4 md:mb-6">
-          explore by type
+        <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-text-dark mb-4 md:mb-6 uppercase tracking-tight">
+          Explore By Type
         </h2>
-        <p className="text-lg text-text-medium max-w-2xl mx-auto">
-          curated collections. everything handpicked.
+        <p className="text-base md:text-lg text-text-medium max-w-2xl mx-auto">
+          Curated collections. Everything handpicked.
         </p>
       </motion.div>
 

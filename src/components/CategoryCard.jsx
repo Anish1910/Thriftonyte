@@ -26,7 +26,7 @@ export default function CategoryCard({ category }) {
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-text-light">
-              <span className="text-sm">no image available</span>
+              <span className="text-sm">No image available</span>
             </div>
           )}
 
@@ -44,8 +44,8 @@ export default function CategoryCard({ category }) {
         <div className="p-4 bg-white transition-colors duration-300 group-hover:bg-neutral-off-white">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-base font-semibold text-text-dark group-hover:text-accent-brown transition-colors duration-300">{category.name}</h3>
-              <p className="text-sm text-text-light mt-1">{category.description}</p>
+              <h3 className="text-sm font-semibold text-text-dark uppercase tracking-wide group-hover:text-accent-brown transition-colors duration-300">{category.name}</h3>
+              <p className="text-xs text-text-light mt-1">{category.description}</p>
             </div>
             {/* Arrow indicator */}
             <span className="text-text-light group-hover:text-accent-brown transition-all duration-300 transform translate-x-0 group-hover:translate-x-1 opacity-0 group-hover:opacity-100">

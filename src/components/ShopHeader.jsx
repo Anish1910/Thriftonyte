@@ -8,16 +8,16 @@ export default function ShopHeader() {
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: 'easeOut' }}
-          className="space-y-2"
+          className="space-y-3"
         >
-          {/* Title - Brand-driven, semibold with tight tracking */}
-          <h1 className="text-3xl md:text-4xl font-semibold text-text-dark tracking-tight">
-            limited. authentic. yours.
+          {/* Title - Brand-driven, extrabold with tight tracking */}
+          <h1 className="text-3xl md:text-4xl font-extrabold text-text-dark tracking-tight uppercase">
+            Limited. Authentic. Yours.
           </h1>
 
           {/* Subtext */}
           <p className="text-sm md:text-base text-text-light max-w-lg">
-            one piece only. once gone, gone.
+            One piece only. Once gone, gone.
           </p>
         </motion.div>
       </div>

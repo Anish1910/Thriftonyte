@@ -4,13 +4,14 @@ import { useCart } from '../context/CartContext';
 import { cardVariants } from '../constants/animations';
 import { BADGE_STYLES } from '../constants/product';
 import { getImage } from '../lib/image';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 export default function ProductCard({ product }) {
   const { addToCart } = useCart();
   const navigate = useNavigate();
   const [isHovered, setIsHovered] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
+  const cardRef = useRef(null);
 
   const handleCardClick = (e) => {
     if (e.target.closest('button')) return;
@@ -37,6 +38,30 @@ export default function ProductCard({ product }) {
 
   const isSoldOut = product.status === 'sold_out';
 
+  // Detect mobile for scroll-based hover/GIF simulation
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+
+  // On mobile: use IntersectionObserver to trigger hover state (GIF + lift) when card is in viewport center
+  useEffect(() => {
+    if (!isMobile || !cardRef.current) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsHovered(entry.isIntersecting);
+      },
+      { rootMargin: '-30% 0px -30% 0px', threshold: 0.1 }
+    );
+
+    observer.observe(cardRef.current);
+    return () => observer.disconnect();
+  }, [isMobile]);
+
   return (
     <motion.div
       variants={cardVariants}
@@ -46,15 +71,21 @@ export default function ProductCard({ product }) {
       className="flex flex-col h-full"
     >
       <motion.div
+        ref={cardRef}
         className="group relative flex h-full flex-col overflow-hidden rounded-minimal bg-neutral-off-white shadow-soft transition-all duration-300 md:hover:scale-[1.03] md:hover:-translate-y-1 cursor-pointer"
         onClick={handleCardClick}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
+        {...(isMobile ? {
+          whileInView: { y: -3, boxShadow: '0 8px 24px rgba(0,0,0,0.12)' },
+          viewport: { once: false, margin: '-35% 0px -35% 0px' },
+          transition: { duration: 0.3, ease: 'easeOut' }
+        } : {})}
       >
         {/* Badge */}
         {product.badge && (
           <div className="absolute right-2 top-2 z-20 pointer-events-none">
-            <span className={`rounded-minimal px-2 py-1 text-xs font-semibold ${BADGE_STYLES[product.badge] || 'bg-accent-brown text-white'}`}>
+            <span className={`rounded-minimal px-2 py-1 text-xs font-semibold uppercase tracking-wider ${BADGE_STYLES[product.badge] || 'bg-accent-brown text-white'}`}>
               {product.badge}
             </span>
           </div>
@@ -80,37 +111,37 @@ export default function ProductCard({ product }) {
             <p className="mb-1 text-[10px] font-medium uppercase tracking-wider text-text-light">
               {categoryName}
             </p>
-            <h3 className="mb-1 line-clamp-2 text-xs font-semibold leading-tight text-text-dark md:text-sm">
+            <h3 className="mb-1 line-clamp-2 text-lg font-extrabold leading-snug text-text-dark md:text-xl">
               {product.title}
             </h3>
           </div>
 
           {/* Price & Sold Out */}
           <div className="flex items-center justify-between">
-            <p className="text-sm font-bold text-accent-brown md:text-lg">
+            <p className="text-base font-bold text-accent-brown md:text-xl">
               ₹{product.price}
             </p>
             {isSoldOut && (
-              <span className="text-xs font-semibold text-red-600">sold out</span>
+              <span className="text-xs font-semibold text-red-600 uppercase tracking-wide">Sold Out</span>
             )}
           </div>
 
-          {/* Claim This Piece — always visible, centered below details */}
-          <div className="mt-auto flex justify-center pt-1">
+          {/* Claim This Piece — full-width, anchored at bottom */}
+          <div className="mt-auto pt-2">
             <motion.button
               onClick={handleAddToCart}
               disabled={isSoldOut}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.96 }}
-              className={`rounded-minimal px-5 py-2 text-xs font-semibold transition-all duration-300 sm:text-sm ${
+              whileHover={isSoldOut ? {} : { scale: 1.02 }}
+              whileTap={isSoldOut ? {} : { scale: 0.97 }}
+              className={`w-full rounded-minimal py-2.5 text-xs font-semibold transition-all duration-300 sm:text-sm uppercase tracking-wide ${
                 addedToCart
                   ? 'bg-accent-green text-white'
                   : isSoldOut
-                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                    ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
                     : 'bg-accent-brown text-white hover:bg-accent-green'
               }`}
             >
-              {addedToCart ? '✓ added' : isSoldOut ? 'sold out' : 'claim this piece'}
+              {addedToCart ? '✓ Added' : isSoldOut ? 'Sold Out' : 'Claim This Piece'}
             </motion.button>
           </div>
         </div>

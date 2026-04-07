@@ -17,6 +17,8 @@ export default function ProductDetail() {
   const [loading, setLoading] = useState(true);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const scrollLockRef = useRef(false);
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
 
   const isSoldOut = product?.status === 'sold_out';
 
@@ -94,11 +96,28 @@ export default function ProductDetail() {
     }
   };
 
+  // Touch swipe handlers for mobile image gallery
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e) => {
+    touchEndX.current = e.changedTouches[0].clientX;
+    const diff = touchStartX.current - touchEndX.current;
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) {
+        handleNextImage();
+      } else {
+        handlePrevImage();
+      }
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <p className="text-lg text-text-medium">loading...</p>
+          <p className="text-lg text-text-medium">Loading...</p>
         </div>
       </div>
     );
@@ -108,12 +127,12 @@ export default function ProductDetail() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-3xl font-bold text-text-dark mb-4">product not found</h2>
+          <h2 className="text-3xl font-extrabold text-text-dark mb-4 uppercase tracking-tight">Product Not Found</h2>
           <button
             onClick={() => navigate('/shop')}
-            className="px-6 py-3 bg-accent-brown text-white font-semibold rounded-minimal hover:bg-accent-green transition-colors"
+            className="px-6 py-3 bg-accent-brown text-white font-semibold rounded-minimal hover:bg-accent-green transition-colors uppercase tracking-wide text-sm"
           >
-            back to shop
+            Back to Shop
           </button>
         </div>
       </div>
@@ -127,7 +146,7 @@ export default function ProductDetail() {
   };
 
   const getWhatsAppMessage = () => {
-    const message = `hey, i'm interested in this piece:\n\n${product.title} - ₹${product.price}\n\nis it still available?`;
+    const message = `Hey, I'm interested in this piece:\n\n${product.title} - ₹${product.price}\n\nIs it still available?`;
     return encodeURIComponent(message);
   };
 
@@ -145,7 +164,7 @@ export default function ProductDetail() {
           <svg className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
-          <span className="uppercase tracking-wide">Back</span>
+          <span className="uppercase tracking-wider font-medium">Back</span>
         </motion.button>
 
         {/* Main Grid */}
@@ -157,11 +176,12 @@ export default function ProductDetail() {
             variants={fadeInVariants}
             className="flex flex-col"
           >
-            {/* Main Image — 1:1 square aspect ratio */}
             <div
-              className="relative bg-neutral-off-white rounded-lg overflow-hidden mb-6 cursor-pointer group"
+              className="relative bg-neutral-off-white rounded-lg overflow-hidden mb-2 md:mb-6 cursor-pointer group"
               style={{ aspectRatio: '1 / 1' }}
               onClick={() => setIsFullscreen(true)}
+              onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
             >
               <AnimatePresence mode="wait">
                 <motion.img
@@ -210,6 +230,23 @@ export default function ProductDetail() {
                 </motion.button>
               )}
             </div>
+
+            {/* Dot indicators for mobile swipe */}
+            {product.images && product.images.length > 1 && (
+              <div className="flex justify-center gap-1.5 py-2 md:hidden">
+                {product.images.map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setSelectedImageIndex(idx)}
+                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                      idx === selectedImageIndex
+                        ? 'bg-accent-brown w-4'
+                        : 'bg-neutral-light-beige'
+                    }`}
+                  />
+                ))}
+              </div>
+            )}
           </motion.div>
 
           {/* Product Details */}
@@ -222,7 +259,7 @@ export default function ProductDetail() {
             {/* Badge & Category */}
             <div className="flex items-center gap-3 mb-5">
               {product.category?.name && (
-                <span className="text-xs text-text-light uppercase tracking-wider font-semibold">
+                <span className="text-xs text-text-light uppercase tracking-widest font-semibold">
                   {product.category.name}
                 </span>
               )}
@@ -231,7 +268,7 @@ export default function ProductDetail() {
                   initial={{ scale: 0.95, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ duration: 0.4, delay: 0.1 }}
-                  className={`px-3 py-1 text-xs font-semibold rounded-full ${BADGE_STYLES[product.badge] || 'bg-accent-brown text-white'}`}
+                  className={`px-3 py-1 text-xs font-semibold rounded-full uppercase tracking-wide ${BADGE_STYLES[product.badge] || 'bg-accent-brown text-white'}`}
                 >
                   {product.badge}
                 </motion.span>
@@ -243,7 +280,7 @@ export default function ProductDetail() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className="text-3xl md:text-4xl lg:text-5xl font-bold text-text-dark mb-6 leading-tight"
+              className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-text-dark mb-6 leading-tight tracking-tight"
             >
               {product.title}
             </motion.h1>
@@ -255,7 +292,7 @@ export default function ProductDetail() {
               transition={{ duration: 0.5, delay: 0.15 }}
               className="mb-4"
             >
-              <span className="text-4xl md:text-5xl font-bold text-accent-brown">
+              <span className="text-3xl md:text-4xl font-extrabold text-accent-brown">
                 ₹{product.price}
               </span>
             </motion.div>
@@ -267,9 +304,9 @@ export default function ProductDetail() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="text-sm font-semibold text-accent-brown mb-10"
             >
-              only 1 piece. ever.
+              Only 1 piece. Ever.
               <span className="block text-xs text-text-light mt-1">
-                move fast or lose this.
+                Move fast or lose this.
               </span>
             </motion.p>
 
@@ -281,7 +318,7 @@ export default function ProductDetail() {
               className="mb-4 p-3 bg-neutral-warm-beige/40 rounded-lg"
             >
               <p className="text-sm font-medium text-text-dark">
-                ✓ this is the only one
+                ✓ This is the only one
               </p>
             </motion.div>
 
@@ -292,7 +329,7 @@ export default function ProductDetail() {
               transition={{ duration: 0.5, delay: 0.28 }}
               className="text-xs text-red-600 font-semibold mb-8"
             >
-              spotted by someone else too
+              Spotted by someone else too
             </motion.p>
 
             {/* Description */}
@@ -315,8 +352,8 @@ export default function ProductDetail() {
                 transition={{ duration: 0.5, delay: 0.32 }}
                 className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg"
               >
-                <p className="text-sm font-semibold text-red-600">
-                  this piece has been sold
+                <p className="text-sm font-semibold text-red-600 uppercase tracking-wide">
+                  This piece has been sold
                 </p>
               </motion.div>
             )}
@@ -331,30 +368,30 @@ export default function ProductDetail() {
               {/* Buy via WhatsApp - PRIMARY CTA */}
               {isSoldOut ? (
                 <div
-                  className="w-full px-6 py-4 bg-gray-300 text-gray-500 font-semibold rounded-lg flex items-center justify-center gap-2 text-lg cursor-not-allowed"
+                  className="w-full px-6 py-4 bg-gray-300 text-gray-500 font-semibold rounded-lg flex items-center justify-center gap-2 text-base cursor-not-allowed uppercase tracking-wide"
                 >
-                  sold out
+                  Sold Out
                 </div>
               ) : (
                 <motion.a
                   href={`https://wa.me/1234567890?text=${getWhatsAppMessage()}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full px-6 py-4 bg-accent-brown text-white font-semibold rounded-lg hover:bg-opacity-90 transition-all duration-300 shadow-soft hover:shadow-md flex items-center justify-center gap-2 text-lg"
+                  className="w-full px-6 py-4 bg-accent-brown text-white font-semibold rounded-lg hover:bg-opacity-90 transition-all duration-300 shadow-soft hover:shadow-md flex items-center justify-center gap-2 text-base uppercase tracking-wide"
                   whileHover={{ scale: 1.01 }}
                   whileTap={{ scale: 0.98 }}
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-5.031 1.378c-3.055 2.044-4.661 5.147-4.661 8.905 0 .789.083 1.553.246 2.308L2.75 22l2.502-.826c.63.321 1.335.572 2.07.75 5.256 1.476 10.931-2.026 12.407-7.282s-2.026-10.931-7.282-12.407c-.955-.268-1.922-.401-2.901-.401zM0 11.993C0 5.366 5.366 0 12 0s12 5.366 12 12-5.366 12-12 12c-2.125 0-4.129-.515-5.893-1.728L0 24l1.735-5.221C.516 16.107 0 14.105 0 11.993z" />
                   </svg>
-                  claim this piece
+                  Claim This Piece
                 </motion.a>
               )}
 
               {/* Microcopy for primary CTA */}
               {!isSoldOut && (
                 <p className="text-xs text-text-light text-center -mt-2">
-                  10 seconds. reply in minutes.
+                  10 seconds. Reply in minutes.
                 </p>
               )}
 
@@ -362,7 +399,7 @@ export default function ProductDetail() {
               <motion.button
                 onClick={handleAddToCart}
                 disabled={isSoldOut}
-                className={`w-full px-6 py-3 border-2 font-semibold rounded-lg transition-all duration-300 flex items-center justify-center gap-2 ${
+                className={`w-full px-6 py-3 border-2 font-semibold rounded-lg transition-all duration-300 flex items-center justify-center gap-2 text-sm ${
                   isSoldOut
                     ? 'border-gray-300 text-gray-400 cursor-not-allowed'
                     : addedToCart
@@ -376,12 +413,12 @@ export default function ProductDetail() {
                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    added to cart
+                    Added to Cart
                   </span>
                 ) : isSoldOut ? (
-                  'unavailable'
+                  'Unavailable'
                 ) : (
-                  'save for later'
+                  'Save for Later'
                 )}
               </motion.button>
             </motion.div>
@@ -389,13 +426,13 @@ export default function ProductDetail() {
             {/* Continue Shopping */}
             <motion.button
               onClick={() => navigate('/shop')}
-              className="w-full px-6 py-3 mt-4 text-text-dark font-semibold rounded-lg hover:bg-neutral-warm-beige/40 transition-all duration-300"
+              className="w-full px-6 py-3 mt-4 text-text-dark font-semibold rounded-lg hover:bg-neutral-warm-beige/40 transition-all duration-300 text-sm"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.35 }}
               whileHover={{ scale: 1.01 }}
             >
-              see more pieces
+              See More Pieces
             </motion.button>
 
             {/* Product Details Section */}
@@ -406,20 +443,20 @@ export default function ProductDetail() {
               className="mt-12 pt-8 border-t border-neutral-light-beige"
             >
               <h3 className="text-xs font-semibold text-text-dark uppercase tracking-widest mb-4">
-                why this piece
+                Why This Piece
               </h3>
               <ul className="text-sm text-text-medium space-y-2.5">
                 <li>
-                  100% authentic vintage. no fakes.
+                  100% authentic vintage. No fakes.
                 </li>
                 <li>
-                  inspected & restored. ready to wear.
+                  Inspected & restored. Ready to wear.
                 </li>
                 <li>
-                  one of a kind. will never restock.
+                  One of a kind. Will never restock.
                 </li>
                 <li>
-                  conscious choice. sustainable fashion.
+                  Conscious choice. Sustainable fashion.
                 </li>
               </ul>
             </motion.div>
@@ -451,7 +488,7 @@ export default function ProductDetail() {
 
             {/* Container */}
             <div
-              className="relative flex items-center justify-center w-full h-full px-4 md:px-8"
+              className="relative flex items-center justify-center w-full h-full px-2 md:px-8 overflow-auto"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Image */}
@@ -460,7 +497,7 @@ export default function ProductDetail() {
                   key={selectedImageIndex}
                   src={getImage(product.images?.[selectedImageIndex])}
                   alt={product.title}
-                  className="max-w-4xl max-h-screen object-contain transition-opacity duration-300"
+                  className="w-auto h-auto max-w-full max-h-[85vh] md:max-w-4xl md:max-h-screen object-contain transition-opacity duration-300"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}

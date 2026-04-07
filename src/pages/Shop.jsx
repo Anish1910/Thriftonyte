@@ -82,18 +82,18 @@ export default function Shop() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-text-dark font-semibold">
+                <p className="text-text-dark font-semibold text-sm">
                   Browsing: <span className="text-accent-brown">{displayCategoryName}</span>
                 </p>
-                <p className="text-sm text-text-light mt-1">
+                <p className="text-xs text-text-light mt-1">
                   {filteredProducts.length} {filteredProducts.length === 1 ? 'item' : 'items'} found
                 </p>
               </div>
               <Link
                 to="/shop"
-                className="text-accent-brown hover:text-accent-green font-semibold transition-colors duration-300 flex items-center gap-2"
+                className="text-accent-brown hover:text-accent-green font-semibold transition-colors duration-300 flex items-center gap-2 text-sm uppercase tracking-wide"
               >
-                <span>Clear filter</span>
+                <span>Clear Filter</span>
                 <span className="text-lg">✕</span>
               </Link>
             </div>
@@ -118,7 +118,7 @@ export default function Shop() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="text-sm text-text-light mb-6"
             >
-              limited pieces. once gone, gone.
+              Limited pieces. Once gone, gone.
             </motion.p>
           </div>
 
@@ -133,7 +133,7 @@ export default function Shop() {
             </p>
             <Link
               to="/shop"
-              className="inline-block px-8 py-4 bg-accent-brown text-white font-semibold rounded-minimal hover:bg-accent-green transition-colors duration-300"
+              className="inline-block px-8 py-4 bg-accent-brown text-white font-semibold rounded-minimal hover:bg-accent-green transition-colors duration-300 uppercase tracking-wide text-sm"
             >
               View All Products
             </Link>

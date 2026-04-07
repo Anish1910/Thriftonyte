@@ -11,7 +11,7 @@ const NAV_ITEMS = [
 ];
 
 const getNavLinkClass = ({ isActive }, color = 'accent-brown') =>
-  `text-base font-medium transition-colors ${
+  `text-sm font-medium uppercase tracking-wider transition-colors ${
     isActive
       ? `text-${color}`
       : `text-text-medium hover:text-${color}`
@@ -25,7 +25,7 @@ export default function Header({ onCartToggle }) {
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-neutral-light-beige shadow-soft">
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
-        <Link to="/" className="text-xl sm:text-2xl font-bold text-text-dark hover:text-accent-brown transition-colors">
+        <Link to="/" className="text-xl sm:text-2xl font-extrabold text-text-dark hover:text-accent-brown transition-colors tracking-tight uppercase">
           Thriftonyte
         </Link>
 
@@ -105,7 +105,7 @@ export default function Header({ onCartToggle }) {
             >
               <div className="flex flex-col h-full">
                 <div className="flex justify-between items-center p-4 border-b border-neutral-light-beige">
-                  <span className="text-lg font-bold text-text-dark lowercase">menu</span>
+                  <span className="text-lg font-bold text-text-dark uppercase tracking-wider">Menu</span>
                   <button
                     onClick={() => setMobileMenuOpen(false)}
                     className="p-2 text-text-medium hover:text-accent-brown transition-colors"
@@ -121,7 +121,7 @@ export default function Header({ onCartToggle }) {
                       key={item.to}
                       to={item.to}
                       className={({ isActive }) =>
-                        `block text-xl font-semibold transition-all duration-300 border-l-2 pl-4 ${
+                        `block text-xl font-semibold transition-all duration-300 border-l-2 pl-4 uppercase tracking-wide ${
                           isActive
                             ? `border-${item.color} text-${item.color}`
                             : 'border-transparent text-text-dark hover:border-accent-brown hover:text-accent-brown'
@@ -135,8 +135,8 @@ export default function Header({ onCartToggle }) {
                   ))}
                 </nav>
                 <div className="p-6 border-t border-neutral-light-beige">
-                  <p className="text-xs text-text-light lowercase">
-                    limited pieces. once gone, gone.
+                  <p className="text-xs text-text-light">
+                    Limited pieces. Once gone, gone.
                   </p>
                 </div>
               </div>

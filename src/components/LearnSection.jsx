@@ -26,10 +26,10 @@ export default function LearnSection({ articles }) {
         transition={{ duration: 0.6 }}
         className="text-center mb-12 md:mb-16"
       >
-        <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-text-dark mb-4 md:mb-6">
+        <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-text-dark mb-4 md:mb-6 uppercase tracking-tight">
           Learn About Thrifting
         </h2>
-        <p className="text-text-medium text-lg max-w-2xl mx-auto">
+        <p className="text-text-medium text-base md:text-lg max-w-2xl mx-auto">
           Discover the stories, styles, and sustainability behind pre-loved fashion.
         </p>
       </motion.div>
@@ -55,7 +55,7 @@ export default function LearnSection({ articles }) {
       >
         <Link
           to="/learn"
-          className="inline-block px-8 py-3 border-2 border-accent-green text-accent-green font-semibold rounded-minimal hover:bg-accent-green hover:text-white transition-colors duration-300"
+          className="inline-block px-8 py-3 border-2 border-accent-green text-accent-green font-semibold rounded-minimal hover:bg-accent-green hover:text-white transition-colors duration-300 uppercase tracking-wide text-sm"
         >
           Explore All Articles
         </Link>
