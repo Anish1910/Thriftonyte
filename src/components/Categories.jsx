@@ -16,7 +16,7 @@ export default function Categories({ categories }) {
         variants={fadeInVariants}
         className="text-center mb-12 md:mb-16"
       >
-        <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-text-dark mb-4 md:mb-6 uppercase tracking-tight">
+        <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-text-dark mb-4 md:mb-6 uppercase tracking-wide">
           Explore By Type
         </h2>
         <p className="text-base md:text-lg text-text-medium max-w-2xl mx-auto">

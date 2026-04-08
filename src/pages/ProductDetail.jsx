@@ -127,7 +127,7 @@ export default function ProductDetail() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-3xl font-extrabold text-text-dark mb-4 uppercase tracking-tight">Product Not Found</h2>
+          <h2 className="text-3xl font-extrabold text-text-dark mb-4 uppercase tracking-wide">Product Not Found</h2>
           <button
             onClick={() => navigate('/shop')}
             className="px-6 py-3 bg-accent-brown text-white font-semibold rounded-minimal hover:bg-accent-green transition-colors uppercase tracking-wide text-sm"
@@ -280,7 +280,7 @@ export default function ProductDetail() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-text-dark mb-6 leading-tight tracking-tight"
+              className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-text-dark mb-6 leading-tight tracking-wide"
             >
               {product.title}
             </motion.h1>

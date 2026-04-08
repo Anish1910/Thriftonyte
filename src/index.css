@@ -30,7 +30,7 @@
   }
 
   .section-title {
-    @apply text-3xl md:text-4xl lg:text-5xl font-extrabold text-text-dark uppercase tracking-tight;
+    @apply text-3xl md:text-4xl lg:text-5xl font-extrabold text-text-dark uppercase tracking-wide;
   }
 
   .section-subtitle {

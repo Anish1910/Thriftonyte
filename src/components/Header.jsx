@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { motion, AnimatePresence } from 'framer-motion';
+import logo from '../assets/logo-dark.png';
 
 const NAV_ITEMS = [
   { to: '/shop', label: 'Shop', color: 'accent-brown' },
@@ -11,10 +12,9 @@ const NAV_ITEMS = [
 ];
 
 const getNavLinkClass = ({ isActive }, color = 'accent-brown') =>
-  `text-sm font-medium uppercase tracking-wider transition-colors ${
-    isActive
-      ? `text-${color}`
-      : `text-text-medium hover:text-${color}`
+  `text-sm font-medium uppercase tracking-wider transition-colors ${isActive
+    ? `text-${color}`
+    : `text-text-medium hover:text-${color}`
   }`;
 
 export default function Header({ onCartToggle }) {
@@ -24,9 +24,9 @@ export default function Header({ onCartToggle }) {
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-neutral-light-beige shadow-soft">
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
-        <Link to="/" className="text-xl sm:text-2xl font-extrabold text-text-dark hover:text-accent-brown transition-colors tracking-tight uppercase">
-          Thriftonyte
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2 flex justify-between items-center">
+        <Link to="/" className="block hover:opacity-80 transition-opacity">
+          <img src={logo} alt="Thriftonyte" className="h-10 sm:h-12 w-auto object-contain" />
         </Link>
 
         {/* Desktop nav */}
@@ -121,10 +121,9 @@ export default function Header({ onCartToggle }) {
                       key={item.to}
                       to={item.to}
                       className={({ isActive }) =>
-                        `block text-xl font-semibold transition-all duration-300 border-l-2 pl-4 uppercase tracking-wide ${
-                          isActive
-                            ? `border-${item.color} text-${item.color}`
-                            : 'border-transparent text-text-dark hover:border-accent-brown hover:text-accent-brown'
+                        `block text-xl font-semibold transition-all duration-300 border-l-2 pl-4 uppercase tracking-wide ${isActive
+                          ? `border-${item.color} text-${item.color}`
+                          : 'border-transparent text-text-dark hover:border-accent-brown hover:text-accent-brown'
                         }`
                       }
                       end={item.end}

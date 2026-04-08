@@ -11,7 +11,7 @@ export default function ShopHeader() {
           className="space-y-3"
         >
           {/* Title - Brand-driven, extrabold with tight tracking */}
-          <h1 className="text-3xl md:text-4xl font-extrabold text-text-dark tracking-tight uppercase">
+          <h1 className="text-3xl md:text-4xl font-extrabold text-text-dark tracking-wide uppercase">
             Limited. Authentic. Yours.
           </h1>
 

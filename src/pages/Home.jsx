@@ -73,7 +73,7 @@ export default function Home() {
                 transition={{ duration: 0.6 }}
               >
                 {banner.title && (
-                  <h2 className="text-3xl md:text-4xl font-extrabold text-text-dark mb-4 uppercase tracking-tight">
+                  <h2 className="text-3xl md:text-4xl font-extrabold text-text-dark mb-4 uppercase tracking-wide">
                     {banner.title}
                   </h2>
                 )}

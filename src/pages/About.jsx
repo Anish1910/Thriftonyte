@@ -12,7 +12,7 @@ export default function About() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-text-dark mb-6 leading-[1] tracking-tighter uppercase">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-text-dark mb-6 leading-[1] tracking-wide uppercase">
             We Don't Follow Trends.
             <br />
             We Find Them.
@@ -40,7 +40,7 @@ export default function About() {
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
             >
-              <p className="text-2xl md:text-3xl font-extrabold text-text-dark leading-tight mb-4 uppercase tracking-tight">
+              <p className="text-2xl md:text-3xl font-extrabold text-text-dark leading-tight mb-4 uppercase tracking-wide">
                 Fast Fashion Is Loud.
               </p>
               <p className="text-xl text-accent-brown font-semibold">
@@ -55,7 +55,7 @@ export default function About() {
               transition={{ duration: 0.5, delay: 0.1 }}
               viewport={{ once: true }}
             >
-              <p className="text-2xl md:text-3xl font-extrabold text-text-dark leading-tight mb-4 uppercase tracking-tight">
+              <p className="text-2xl md:text-3xl font-extrabold text-text-dark leading-tight mb-4 uppercase tracking-wide">
                 We Pick.
               </p>
               <p className="text-xl text-accent-brown font-semibold">
@@ -70,7 +70,7 @@ export default function About() {
               transition={{ duration: 0.5, delay: 0.2 }}
               viewport={{ once: true }}
             >
-              <p className="text-2xl md:text-3xl font-extrabold text-text-dark leading-tight mb-4 uppercase tracking-tight">
+              <p className="text-2xl md:text-3xl font-extrabold text-text-dark leading-tight mb-4 uppercase tracking-wide">
                 Once It's Gone,
               </p>
               <p className="text-xl text-accent-brown font-semibold">
@@ -84,7 +84,7 @@ export default function About() {
       {/* How It Works */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
         <motion.h2
-          className="text-3xl md:text-4xl font-extrabold text-text-dark mb-12 md:mb-16 uppercase tracking-tight"
+          className="text-3xl md:text-4xl font-extrabold text-text-dark mb-12 md:mb-16 uppercase tracking-wide"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -126,7 +126,7 @@ export default function About() {
       <section className="bg-neutral-off-white/50 py-20 md:py-28">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.h2
-            className="text-3xl md:text-4xl font-extrabold text-text-dark mb-12 md:mb-16 uppercase tracking-tight"
+            className="text-3xl md:text-4xl font-extrabold text-text-dark mb-12 md:mb-16 uppercase tracking-wide"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
