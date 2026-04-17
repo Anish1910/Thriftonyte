@@ -146,7 +146,7 @@ export default function ProductDetail() {
   };
 
   const getWhatsAppMessage = () => {
-    const message = `Hey, I'm interested in this piece:\n\n${product.title} - ₹${product.price}\n\nIs it still available?`;
+    const message = `Hey, I'm interested in this piece:\n\n${product.title} - ₹${product.price}\n\nName: \nAddress: \nPhone: \nEmail:\n\nIs it still available?`;
     return encodeURIComponent(message);
   };
 
@@ -238,11 +238,10 @@ export default function ProductDetail() {
                   <button
                     key={idx}
                     onClick={() => setSelectedImageIndex(idx)}
-                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                      idx === selectedImageIndex
-                        ? 'bg-accent-brown w-4'
-                        : 'bg-neutral-light-beige'
-                    }`}
+                    className={`w-2 h-2 rounded-full transition-all duration-300 ${idx === selectedImageIndex
+                      ? 'bg-accent-brown w-4'
+                      : 'bg-neutral-light-beige'
+                      }`}
                   />
                 ))}
               </div>
@@ -374,7 +373,7 @@ export default function ProductDetail() {
                 </div>
               ) : (
                 <motion.a
-                  href={`https://wa.me/1234567890?text=${getWhatsAppMessage()}`}
+                  href={`https://wa.me/9510381376?text=${getWhatsAppMessage()}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full px-6 py-4 bg-accent-brown text-white font-semibold rounded-lg hover:bg-opacity-90 transition-all duration-300 shadow-soft hover:shadow-md flex items-center justify-center gap-2 text-base uppercase tracking-wide"
@@ -399,13 +398,12 @@ export default function ProductDetail() {
               <motion.button
                 onClick={handleAddToCart}
                 disabled={isSoldOut}
-                className={`w-full px-6 py-3 border-2 font-semibold rounded-lg transition-all duration-300 flex items-center justify-center gap-2 text-sm ${
-                  isSoldOut
-                    ? 'border-gray-300 text-gray-400 cursor-not-allowed'
-                    : addedToCart
-                      ? 'bg-accent-green border-accent-green text-white'
-                      : 'border-text-dark text-text-dark hover:bg-neutral-off-white'
-                }`}
+                className={`w-full px-6 py-3 border-2 font-semibold rounded-lg transition-all duration-300 flex items-center justify-center gap-2 text-sm ${isSoldOut
+                  ? 'border-gray-300 text-gray-400 cursor-not-allowed'
+                  : addedToCart
+                    ? 'bg-accent-green border-accent-green text-white'
+                    : 'border-text-dark text-text-dark hover:bg-neutral-off-white'
+                  }`}
                 whileTap={isSoldOut ? {} : { scale: 0.98 }}
               >
                 {addedToCart ? (

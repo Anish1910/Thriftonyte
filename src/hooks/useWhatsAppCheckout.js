@@ -13,7 +13,7 @@ export const useWhatsAppCheckout = () => {
     });
 
     message += `\n Total: ₹${total}\n\n`;
-    message += "Name: \nAddress: \nPhone: \n\n";
+    message += "Name: \nAddress: \nPhone: \nEmail: \n\n";
     message += "Are these available?";
 
     return message;
