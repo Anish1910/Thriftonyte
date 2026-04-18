@@ -10,7 +10,7 @@ export default function FeaturedProducts({ products, limit = 6 }) {
   const displayedProducts = (featuredProducts.length > 0 ? featuredProducts : products.slice(0, 4)).slice(0, limit);
 
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-24">
       {/* Section header */}
       <motion.div
         initial="hidden"

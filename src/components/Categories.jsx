@@ -7,7 +7,7 @@ export default function Categories({ categories }) {
   const displayedCategories = categories.slice(0, 4);
 
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-24">
       {/* Section header */}
       <motion.div
         initial="hidden"

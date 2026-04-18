@@ -47,7 +47,7 @@ export default function Home() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="relative w-full bg-neutral-warm-beige/20 overflow-hidden py-12 md:py-16"
+          className="relative w-full bg-neutral-warm-beige/20 overflow-hidden py-6 md:py-16 shadow-sm md:shadow-none"
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">

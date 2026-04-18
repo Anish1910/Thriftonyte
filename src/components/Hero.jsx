@@ -71,13 +71,42 @@ export default function Hero({ settings }) {
     tap: { scale: 0.98 }
   };
 
+  // Shared image carousel JSX (used in both mobile and desktop positions)
+  const imageCarousel = (
+    <div className="relative w-full h-full rounded-xl sm:rounded-3xl overflow-hidden shadow-hover">
+      <AnimatePresence mode="wait">
+        <motion.img
+          key={currentImageIndex}
+          src={heroImageUrls[currentImageIndex]}
+          alt="Curated vintage fashion collection"
+          className="w-full h-full object-cover"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.8, ease: 'easeInOut' }}
+        />
+      </AnimatePresence>
+
+      <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none"></div>
+
+      <motion.div
+        className="absolute bottom-3 left-3 sm:bottom-6 sm:left-6 bg-white/95 backdrop-blur-md px-2 py-1 sm:px-4 sm:py-2 rounded-lg shadow-soft hidden sm:block"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1, duration: 0.8 }}
+      >
+        <p className="text-xs font-semibold text-text-dark uppercase tracking-wider">Curated For You</p>
+      </motion.div>
+    </div>
+  );
+
   return (
     <section className="relative w-full bg-white overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-neutral-off-white via-white to-neutral-warm-beige/30 pointer-events-none"></div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-3 sm:py-6 md:py-16 md:min-h-screen flex items-start md:items-center">
         <motion.div
-          className="grid grid-cols-2 gap-3 sm:gap-6 lg:gap-16 items-center w-full"
+          className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-6 lg:gap-16 items-center w-full"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -157,38 +186,25 @@ export default function Hero({ settings }) {
             </motion.div>
           </motion.div>
 
+          {/* Desktop image — hidden on mobile */}
           <motion.div
             variants={imageVariants}
-            className="relative h-48 sm:h-64 md:h-96 lg:h-[500px] xl:h-[600px] overflow-hidden"
+            className="relative h-96 lg:h-[500px] xl:h-[600px] overflow-hidden hidden md:block"
           >
-            <div className="relative w-full h-full rounded-xl sm:rounded-3xl overflow-hidden shadow-hover">
-              <AnimatePresence mode="wait">
-                <motion.img
-                  key={currentImageIndex}
-                  src={heroImageUrls[currentImageIndex]}
-                  alt="Curated vintage fashion collection"
-                  className="w-full h-full object-cover"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.8, ease: 'easeInOut' }}
-                />
-              </AnimatePresence>
-
-              <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none"></div>
-
-              <motion.div
-                className="absolute bottom-3 left-3 sm:bottom-6 sm:left-6 bg-white/95 backdrop-blur-md px-2 py-1 sm:px-4 sm:py-2 rounded-lg shadow-soft hidden sm:block"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1, duration: 0.8 }}
-              >
-                <p className="text-xs font-semibold text-text-dark uppercase tracking-wider">Curated For You</p>
-              </motion.div>
-            </div>
+            {imageCarousel}
           </motion.div>
         </motion.div>
       </div>
+
+      {/* Mobile image — shown only below md, positioned after hero text as a standalone block */}
+      <motion.div
+        variants={imageVariants}
+        initial="hidden"
+        animate="visible"
+        className="relative mx-3 sm:mx-6 mb-2 h-72 sm:h-80 overflow-hidden rounded-2xl shadow-soft md:hidden"
+      >
+        {imageCarousel}
+      </motion.div>
     </section>
   );
 }
