@@ -67,7 +67,7 @@ export default function Shop() {
       <ShopHeader />
 
       {/* Filter bar with spacing */}
-      <div className="mt-8">
+      <div className="shop-filter-wrapper mt-8">
         <ShopFilters categories={categories} />
       </div>
 
@@ -111,7 +111,7 @@ export default function Shop() {
           transition={{ duration: 0.6 }}
         >
           {/* Microcopy above product grid */}
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 md:pt-16">
+          <div className="shop-grid-top max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 md:pt-16">
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}

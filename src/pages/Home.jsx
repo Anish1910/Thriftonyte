@@ -41,6 +41,8 @@ export default function Home() {
     <main>
       <Hero settings={homepageSettings} />
 
+      {featuredProducts.length > 0 && <FeaturedProducts products={featuredProducts} />}
+
       {banner && (
         <motion.section
           initial={{ opacity: 0 }}
@@ -97,8 +99,6 @@ export default function Home() {
       )}
 
       {featuredCategories.length > 0 && <Categories categories={featuredCategories} />}
-
-      {featuredProducts.length > 0 && <FeaturedProducts products={featuredProducts} />}
 
       <BrandSection sections={homepageSettings?.brandSections} />
 

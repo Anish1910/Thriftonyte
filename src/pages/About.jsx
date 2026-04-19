@@ -6,7 +6,7 @@ export default function About() {
   return (
     <main className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32 text-center">
+      <section className="about-hero max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32 text-center">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -24,7 +24,7 @@ export default function About() {
       </section>
 
       {/* Philosophy Section */}
-      <section className="bg-neutral-off-white/50 py-16 md:py-24">
+      <section className="about-philosophy bg-neutral-off-white/50 py-16 md:py-24">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12"

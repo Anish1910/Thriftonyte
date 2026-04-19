@@ -145,3 +145,35 @@ a:focus {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Mobile-only gap reductions — Shop & About pages
+   Uses max-width to guarantee zero impact on desktop (768px+) */
+@media (max-width: 767px) {
+  /* Shop: reduce header padding */
+  .shop-header-inner {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+  }
+
+  /* Shop: tighten filter bar spacing */
+  .shop-filter-wrapper {
+    margin-top: 0.5rem !important;
+  }
+
+  /* Shop: reduce gap above product grid */
+  .shop-grid-top {
+    padding-top: 1rem !important;
+  }
+
+  /* About: reduce hero section padding */
+  .about-hero {
+    padding-top: 3rem !important;
+    padding-bottom: 3rem !important;
+  }
+
+  /* About: reduce philosophy section padding */
+  .about-philosophy {
+    padding-top: 2.5rem !important;
+    padding-bottom: 2.5rem !important;
+  }
+}
