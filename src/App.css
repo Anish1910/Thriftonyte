@@ -225,4 +225,17 @@ a:focus {
   .hero-text-content > div:last-child {
     justify-content: center;
   }
+
+  /* Logo: reduce size on mobile */
+  header img[alt="Thriftonyte"] {
+    height: 1.75rem !important;
+  }
+
+  /* Smooth image rendering on mobile */
+  img {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
 }

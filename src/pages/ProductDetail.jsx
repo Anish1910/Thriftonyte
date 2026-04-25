@@ -178,7 +178,7 @@ export default function ProductDetail() {
           >
             <div
               className="relative bg-neutral-off-white rounded-lg overflow-hidden mb-2 md:mb-6 cursor-pointer group"
-              style={{ aspectRatio: '1 / 1' }}
+              style={{ aspectRatio: '1 / 1', WebkitOverflowScrolling: 'touch' }}
               onClick={() => setIsFullscreen(true)}
               onTouchStart={handleTouchStart}
               onTouchEnd={handleTouchEnd}
@@ -188,11 +188,12 @@ export default function ProductDetail() {
                   key={selectedImageIndex}
                   src={getImage(product.images?.[selectedImageIndex])}
                   alt={product.title}
-                  className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300"
+                  className="absolute inset-0 w-full h-full object-cover"
+                  style={{ willChange: 'opacity', transform: 'translateZ(0)' }}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  transition={{ duration: 0.3 }}
+                  transition={{ duration: 0.25, ease: 'easeOut' }}
                 />
               </AnimatePresence>
 
@@ -473,6 +474,8 @@ export default function ProductDetail() {
             transition={{ duration: 0.3 }}
             onClick={() => setIsFullscreen(false)}
             onWheel={handleWheel}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
           >
             {/* Close Button */}
             <button
@@ -486,7 +489,7 @@ export default function ProductDetail() {
 
             {/* Container */}
             <div
-              className="relative flex items-center justify-center w-full h-full px-2 md:px-8 overflow-auto"
+              className="relative flex items-center justify-center w-full h-full px-2 md:px-8"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Image */}
@@ -495,11 +498,12 @@ export default function ProductDetail() {
                   key={selectedImageIndex}
                   src={getImage(product.images?.[selectedImageIndex])}
                   alt={product.title}
-                  className="w-auto h-auto max-w-full max-h-[85vh] md:max-w-4xl md:max-h-screen object-contain transition-opacity duration-300"
+                  className="w-auto h-auto max-w-full max-h-[80vh] md:max-w-4xl md:max-h-screen object-contain"
+                  style={{ willChange: 'opacity', transform: 'translateZ(0)' }}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  transition={{ duration: 0.3 }}
+                  transition={{ duration: 0.25, ease: 'easeOut' }}
                 />
               </AnimatePresence>
 
@@ -537,6 +541,26 @@ export default function ProductDetail() {
                 </motion.button>
               )}
             </div>
+
+            {/* Fullscreen dot indicators for mobile */}
+            {product.images && product.images.length > 1 && (
+              <div className="absolute bottom-8 left-0 right-0 flex justify-center gap-2 z-20">
+                {product.images.map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedImageIndex(idx);
+                    }}
+                    className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                      idx === selectedImageIndex
+                        ? 'bg-white w-5'
+                        : 'bg-white/40'
+                    }`}
+                  />
+                ))}
+              </div>
+            )}
           </motion.div>
         )}
       </AnimatePresence>
