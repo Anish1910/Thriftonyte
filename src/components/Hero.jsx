@@ -111,7 +111,7 @@ export default function Hero({ settings }) {
           initial="hidden"
           animate="visible"
         >
-          <motion.div className="flex flex-col space-y-2 sm:space-y-4 md:space-y-8">
+          <motion.div className="hero-text-content flex flex-col space-y-2 sm:space-y-4 md:space-y-8">
             <motion.div variants={headlineVariants}>
               <h1 className="text-[2rem] sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-extrabold text-text-dark leading-[1] tracking-wide uppercase">
                 Not Fast

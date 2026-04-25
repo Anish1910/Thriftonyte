@@ -157,7 +157,7 @@ a:focus {
 
   /* Shop: tighten filter bar spacing */
   .shop-filter-wrapper {
-    margin-top: 0.5rem !important;
+    margin-top: 0.25rem !important;
   }
 
   /* Shop: reduce gap above product grid */
@@ -175,5 +175,54 @@ a:focus {
   .about-philosophy {
     padding-top: 2.5rem !important;
     padding-bottom: 2.5rem !important;
+  }
+
+  /* Hero: highlight text content block on mobile */
+  .hero-text-content {
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(139, 115, 85, 0.15);
+    border-radius: 16px;
+    padding: 1.25rem 0.85rem;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06),
+                0 1px 4px rgba(139, 115, 85, 0.08);
+    /* Center the block content */
+    align-items: center;
+    text-align: center;
+    gap: 0.5rem !important;
+  }
+
+  /* Heading: fill the card width */
+  .hero-text-content h1 {
+    text-align: center;
+    font-size: clamp(3rem, 11vw, 4.5rem) !important;
+    line-height: 0.95 !important;
+    letter-spacing: 0.01em !important;
+    width: 100%;
+  }
+
+  /* Proportional subtext */
+  .hero-text-content > p {
+    font-size: 13px !important;
+    text-align: center;
+    max-width: 100%;
+    line-height: 1.4;
+  }
+
+  /* Center and enlarge CTA buttons */
+  .hero-text-content > div:has(a[href="/shop"]) {
+    justify-content: center;
+  }
+
+  .hero-text-content a[href="/shop"],
+  .hero-text-content a[href="/about"] {
+    padding: 0.7rem 1.4rem !important;
+    font-size: 13px !important;
+  }
+
+  /* Center the social proof row */
+  .hero-text-content > div:last-child {
+    justify-content: center;
   }
 }
