@@ -10,7 +10,6 @@ import About from './pages/About';
 import LearnPage from './pages/LearnPage';
 import Contact from './pages/Contact';
 import LoadingScreen from './components/LoadingScreen';
-import AnimatedRoutes from './components/AnimatedRoutes';
 import './App.css';
 
 function ScrollToTop() {
@@ -37,7 +36,7 @@ function App() {
       <Router>
         <ScrollToTop />
         <div
-          className="min-h-screen"
+          className="min-h-screen bg-neutral-white"
           style={{
             opacity: isLoading ? 0 : 1,
             transition: 'opacity 0.6s ease-out',
@@ -46,7 +45,14 @@ function App() {
           <Header onCartToggle={() => setIsCartOpen(!isCartOpen)} />
           <Cart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
 
-          <AnimatedRoutes />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/shop" element={<Shop />} />
+            <Route path="/product/:id" element={<ProductDetail />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/learn" element={<LearnPage />} />
+            <Route path="/contact" element={<Contact />} />
+          </Routes>
         </div>
       </Router>
     </CartProvider>

@@ -1,5 +1,4 @@
 /** @type {import('tailwindcss').Config} */
-// Force rebuild 1
 export default {
   content: [
     "./index.html",
@@ -8,18 +7,17 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Dark Premium Palette
+        // Light Minimal Palette
         'neutral': {
-          'white': '#141210',
-          'off-white': '#1A1816',
-          'warm-beige': '#24211E',
-          'light-beige': '#322E2B',
-          'dark': '#0A0908',
+          'white': '#FFFFFF',
+          'off-white': '#FAFAF8',
+          'warm-beige': '#F5F3F0',
+          'light-beige': '#E8E6E1',
         },
         'text': {
-          'dark': '#F5F3F0',
-          'medium': '#C8B89A',
-          'light': '#A39887',
+          'dark': '#2C2C2C',
+          'medium': '#5A5A5A',
+          'light': '#8A8A8A',
         },
         'accent': {
           'brown': '#8B7355',

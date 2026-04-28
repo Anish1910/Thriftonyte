@@ -24,10 +24,10 @@ export default function Header({ onCartToggle }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="absolute top-0 w-full z-50 bg-transparent text-text-dark pointer-events-auto">
+    <header className="sticky top-0 z-50 bg-white border-b border-neutral-light-beige shadow-soft">
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2 flex justify-between items-center">
-        <Link to="/" className="block hover:opacity-80 transition-opacity bg-[#F5F3F0] px-3 py-1.5 sm:px-4 sm:py-2 rounded-minimal shadow-inner">
-          <img src={logo} alt="Thriftonyte" className="h-8 sm:h-10 w-auto object-contain" />
+        <Link to="/" className="block hover:opacity-80 transition-opacity">
+          <img src={logo} alt="Thriftonyte" className="h-10 sm:h-12 w-auto object-contain" />
         </Link>
 
         {/* Desktop nav */}
@@ -102,7 +102,7 @@ export default function Header({ onCartToggle }) {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed right-0 top-0 h-full w-3/4 max-w-xs bg-neutral-white z-50 md:hidden shadow-2xl"
+              className="fixed right-0 top-0 h-full w-3/4 max-w-xs bg-white z-50 md:hidden shadow-2xl"
             >
               <div className="flex flex-col h-full">
                 <div className="flex justify-between items-center p-4 border-b border-neutral-light-beige">

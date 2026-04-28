@@ -1,36 +1,12 @@
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
-import FlyingPosters from '../components/FlyingPosters';
 
 export default function About() {
-  const { scrollYProgress } = useScroll();
-  
-  const baseItems = [
-    'https://cdn.sanity.io/images/ac8qp2rd/production/f51fceb427da3a809dcb68083bd9984ed5f06d0f-1086x1448.png',
-    'https://cdn.sanity.io/images/ac8qp2rd/production/e2e54e5c4790b16f7224953ecd5b6e49e371b254-1086x1086.png',
-    'https://cdn.sanity.io/images/ac8qp2rd/production/18d1787fe9bd820877e243bdb6b81dbf55ba3f44-1086x1086.png',
-    'https://cdn.sanity.io/images/ac8qp2rd/production/e0ba6604f5e6d973969a0060d7632e52df8597a2-1086x1086.png',
-    'https://cdn.sanity.io/images/ac8qp2rd/production/efb8881b599073f98ec5a6a5c2944c673a1f7d7e-1086x1448.png'
-  ];
-  // Multiply images to ensure they span the entire length of the scrolling page
-  const posterItems = [...baseItems, ...baseItems, ...baseItems, ...baseItems, ...baseItems];
-
   return (
-    <main className="min-h-screen bg-neutral-white relative overflow-hidden">
-      {/* FlyingPosters Background */}
-      <div className="fixed inset-0 z-0 opacity-40 pointer-events-auto">
-        <FlyingPosters 
-          items={posterItems} 
-          planeWidth={400} 
-          planeHeight={500} 
-          distortion={2} 
-          scrollEase={0.05} 
-        />
-      </div>
-
+    <main className="min-h-screen bg-neutral-white">
       {/* Hero Section */}
-      <section className="about-hero relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-24 md:pt-32 md:pb-32 text-center">
+      <section className="about-hero max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32 text-center">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}

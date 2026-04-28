@@ -1,4 +1,4 @@
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { cardVariants } from '../constants/animations';
@@ -62,37 +62,6 @@ export default function ProductCard({ product }) {
     return () => observer.disconnect();
   }, [isMobile]);
 
-  // 3D Tilt Effect
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  const mouseXSpring = useSpring(x, { stiffness: 300, damping: 20 });
-  const mouseYSpring = useSpring(y, { stiffness: 300, damping: 20 });
-
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["7deg", "-7deg"]);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-7deg", "7deg"]);
-
-  const handleMouseMove = (e) => {
-    if (isMobile) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-    const xPct = mouseX / width - 0.5;
-    const yPct = mouseY / height - 0.5;
-    x.set(xPct);
-    y.set(yPct);
-  };
-
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-    if (!isMobile) {
-      x.set(0);
-      y.set(0);
-    }
-  };
-
   return (
     <motion.div
       variants={cardVariants}
@@ -100,16 +69,13 @@ export default function ProductCard({ product }) {
       whileInView="visible"
       viewport={{ once: true, margin: '-50px' }}
       className="flex flex-col h-full"
-      style={{ perspective: 1000 }}
     >
       <motion.div
         ref={cardRef}
-        className="group relative flex h-full flex-col overflow-hidden rounded-minimal bg-neutral-off-white shadow-soft cursor-pointer border border-neutral-light-beige/10 hover:shadow-[0_0_30px_rgba(139,115,85,0.15)] transition-shadow duration-500"
-        style={!isMobile ? { rotateX, rotateY, transformStyle: "preserve-3d" } : {}}
+        className="group relative flex h-full flex-col overflow-hidden rounded-minimal bg-neutral-off-white shadow-soft transition-all duration-300 md:hover:scale-[1.03] md:hover:-translate-y-1 cursor-pointer"
         onClick={handleCardClick}
-        onMouseMove={handleMouseMove}
         onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={handleMouseLeave}
+        onMouseLeave={() => setIsHovered(false)}
         {...(isMobile ? {
           whileInView: { y: -3, boxShadow: '0 8px 24px rgba(0,0,0,0.12)' },
           viewport: { once: false, margin: '-35% 0px -35% 0px' },
