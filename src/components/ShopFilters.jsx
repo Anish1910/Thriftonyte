@@ -53,7 +53,7 @@ export default function ShopFilters({ categories = [] }) {
               className={`px-5 py-2.5 rounded-full font-medium transition-all duration-250 ${
                 isAllSelected
                   ? 'bg-accent-brown text-white shadow-soft'
-                  : 'text-text-dark hover:bg-white/60 transition-colors duration-250'
+                  : 'text-text-dark hover:bg-neutral-white/60 transition-colors duration-250'
               }`}
             >
               All
@@ -69,7 +69,7 @@ export default function ShopFilters({ categories = [] }) {
                   className={`px-5 py-2.5 rounded-full font-medium transition-all duration-250 flex items-center gap-2 ${
                     isSelected
                       ? 'bg-accent-brown text-white shadow-soft'
-                      : 'text-text-dark hover:bg-white/60 transition-colors duration-250'
+                      : 'text-text-dark hover:bg-neutral-white/60 transition-colors duration-250'
                   }`}
                 >
                   {category.name}
@@ -129,7 +129,7 @@ export default function ShopFilters({ categories = [] }) {
                 className={`px-4 py-2 rounded-full text-xs font-medium transition-all duration-250 ${
                   isAllSelected
                     ? 'bg-accent-brown text-white shadow-soft'
-                    : 'text-text-dark bg-white/70 hover:bg-white'
+                    : 'text-text-dark bg-neutral-white/70 hover:bg-neutral-white'
                 }`}
               >
                 All
@@ -148,7 +148,7 @@ export default function ShopFilters({ categories = [] }) {
                     className={`px-4 py-2 rounded-full text-xs font-medium transition-all duration-250 flex items-center gap-1.5 ${
                       isSelected
                         ? 'bg-accent-brown text-white shadow-soft'
-                        : 'text-text-dark bg-white/70 hover:bg-white'
+                        : 'text-text-dark bg-neutral-white/70 hover:bg-neutral-white'
                     }`}
                   >
                     {category.name}

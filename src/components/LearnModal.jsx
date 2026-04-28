@@ -17,14 +17,14 @@ function LearnModal({
       onClick={onClose}
     >
       <motion.div
-        className="bg-white rounded-lg max-w-2xl w-full max-h-[80vh] overflow-y-auto shadow-2xl opacity-100 transition-opacity duration-200"
+        className="bg-neutral-white rounded-lg max-w-2xl w-full max-h-[80vh] overflow-y-auto shadow-2xl opacity-100 transition-opacity duration-200"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
-        <div className="sticky top-0 bg-white border-b border-neutral-light-beige p-4 md:p-6 flex items-center justify-between z-10">
+        <div className="sticky top-0 bg-neutral-white border-b border-neutral-light-beige p-4 md:p-6 flex items-center justify-between z-10">
           <h2 className="text-2xl md:text-3xl font-bold text-text-dark lowercase flex-grow">
             {selectedTip?.title || 'untitled'}
           </h2>
@@ -70,7 +70,7 @@ function LearnModal({
 
         {/* Modal Footer - Navigation */}
         {filteredTips?.length > 1 && (
-          <div className="sticky bottom-0 bg-white border-t border-neutral-light-beige p-4 md:p-6 flex items-center justify-between">
+          <div className="sticky bottom-0 bg-neutral-white border-t border-neutral-light-beige p-4 md:p-6 flex items-center justify-between">
             <motion.button
               onClick={onPrev}
               whileHover={{ scale: 1.1 }}

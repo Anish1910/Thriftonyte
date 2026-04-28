@@ -171,8 +171,8 @@ export default function ProductDetail() {
   };
 
   return (
-    <main className="min-h-screen bg-white">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-14">
+    <main className="min-h-screen bg-neutral-white">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-8 md:pt-32 md:pb-14">
         {/* Back Button */}
         <motion.button
           onClick={() => navigate('/shop')}
@@ -229,7 +229,7 @@ export default function ProductDetail() {
                     e.stopPropagation();
                     handlePrevImage();
                   }}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/70 hover:bg-white p-3 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
+                  className="absolute left-4 top-1/2 -translate-y-1/2 bg-neutral-white/70 hover:bg-neutral-white p-3 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -246,7 +246,7 @@ export default function ProductDetail() {
                     e.stopPropagation();
                     handleNextImage();
                   }}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/70 hover:bg-white p-3 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-neutral-white/70 hover:bg-neutral-white p-3 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -547,7 +547,7 @@ export default function ProductDetail() {
                     e.stopPropagation();
                     handlePrevImage();
                   }}
-                  className="absolute left-4 md:left-6 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 p-3 rounded-full transition-colors"
+                  className="absolute left-4 md:left-6 top-1/2 -translate-y-1/2 bg-neutral-white/20 hover:bg-neutral-white/30 p-3 rounded-full transition-colors"
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -564,7 +564,7 @@ export default function ProductDetail() {
                     e.stopPropagation();
                     handleNextImage();
                   }}
-                  className="absolute right-4 md:right-6 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 p-3 rounded-full transition-colors"
+                  className="absolute right-4 md:right-6 top-1/2 -translate-y-1/2 bg-neutral-white/20 hover:bg-neutral-white/30 p-3 rounded-full transition-colors"
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -588,8 +588,8 @@ export default function ProductDetail() {
                     }}
                     className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
                       idx === selectedImageIndex
-                        ? 'bg-white w-5'
-                        : 'bg-white/40'
+                        ? 'bg-neutral-white w-5'
+                        : 'bg-neutral-white/40'
                     }`}
                   />
                 ))}

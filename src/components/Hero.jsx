@@ -1,4 +1,5 @@
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import LightRays from './LightRays';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { products } from '../data/products';
@@ -71,6 +72,40 @@ export default function Hero({ settings }) {
     tap: { scale: 0.98 }
   };
 
+  // Magnetic Button Effect
+  function MagneticButton({ children }) {
+    const x = useMotionValue(0);
+    const y = useMotionValue(0);
+    const springX = useSpring(x, { stiffness: 150, damping: 15, mass: 0.1 });
+    const springY = useSpring(y, { stiffness: 150, damping: 15, mass: 0.1 });
+
+    const handleMouseMove = (e) => {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left - rect.width / 2;
+      const mouseY = e.clientY - rect.top - rect.height / 2;
+      x.set(mouseX * 0.3); // Magnetic pull strength
+      y.set(mouseY * 0.3);
+    };
+
+    const handleMouseLeave = () => {
+      x.set(0);
+      y.set(0);
+    };
+
+    return (
+      <motion.div
+        style={{ x: springX, y: springY }}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        variants={buttonHoverVariants}
+        whileHover="hover"
+        whileTap="tap"
+      >
+        {children}
+      </motion.div>
+    );
+  }
+
   // Shared image carousel JSX (used in both mobile and desktop positions)
   const imageCarousel = (
     <div className="relative w-full h-full rounded-xl sm:rounded-3xl overflow-hidden shadow-hover bg-neutral-dark">
@@ -90,7 +125,7 @@ export default function Hero({ settings }) {
       <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none z-10"></div>
 
       <motion.div
-        className="absolute bottom-3 left-3 sm:bottom-6 sm:left-6 bg-white/95 backdrop-blur-md px-2 py-1 sm:px-4 sm:py-2 rounded-lg shadow-soft hidden sm:block z-20"
+        className="absolute bottom-3 left-3 sm:bottom-6 sm:left-6 bg-neutral-white/95 backdrop-blur-md px-2 py-1 sm:px-4 sm:py-2 rounded-lg shadow-soft hidden sm:block z-20"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1, duration: 0.8 }}
@@ -101,10 +136,24 @@ export default function Hero({ settings }) {
   );
 
   return (
-    <section className="relative w-full bg-white overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-neutral-off-white via-white to-neutral-warm-beige/30 pointer-events-none"></div>
+    <section className="relative w-full bg-neutral-white overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-neutral-off-white via-neutral-white to-neutral-warm-beige/30 pointer-events-none z-0"></div>
+      
+      <div className="absolute inset-0 z-[1] opacity-60">
+        <LightRays
+          raysOrigin="top-center"
+          raysColor="#C8B89A"
+          raysSpeed={1.5}
+          lightSpread={0.8}
+          rayLength={1.5}
+          followMouse={true}
+          mouseInfluence={0.1}
+          noiseAmount={0.05}
+          distortion={0.05}
+        />
+      </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-3 sm:py-6 md:py-16 md:min-h-screen flex items-start md:items-center">
+      <div className="relative z-10 max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-20 pb-6 sm:pt-24 sm:pb-10 md:pt-40 md:pb-16 md:min-h-screen flex items-start md:items-center">
         <motion.div
           className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-6 lg:gap-16 items-center w-full"
           variants={containerVariants}
@@ -140,31 +189,23 @@ export default function Hero({ settings }) {
               variants={textVariants}
               className="flex flex-row gap-2 sm:gap-3 md:gap-4 pt-1 md:pt-4"
             >
-              <motion.div
-                variants={buttonHoverVariants}
-                whileHover="hover"
-                whileTap="tap"
-              >
+              <MagneticButton>
                 <Link
                   to="/shop"
                   className="px-3 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4 bg-accent-brown text-white font-semibold text-[10px] sm:text-sm md:text-base tracking-wide rounded-minimal shadow-soft hover:shadow-hover transition-shadow duration-300 hover:bg-accent-green w-fit block uppercase"
                 >
                   Explore Pieces
                 </Link>
-              </motion.div>
+              </MagneticButton>
 
-              <motion.div
-                variants={buttonHoverVariants}
-                whileHover="hover"
-                whileTap="tap"
-              >
+              <MagneticButton>
                 <Link
                   to="/about"
-                  className="px-3 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4 border-2 border-text-dark text-text-dark font-semibold text-[10px] sm:text-sm md:text-base tracking-wide rounded-minimal hover:bg-neutral-warm-beige transition-colors duration-300 w-fit block"
+                  className="px-3 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4 border-2 border-text-dark text-text-dark font-semibold text-[10px] sm:text-sm md:text-base tracking-wide rounded-minimal hover:bg-text-dark hover:text-neutral-white hover:shadow-[0_0_20px_rgba(245,243,240,0.3)] transition-all duration-300 w-fit block"
                 >
                   Why We Exist
                 </Link>
-              </motion.div>
+              </MagneticButton>
             </motion.div>
 
             <motion.div

@@ -41,7 +41,7 @@ export default function CategoryCard({ category }) {
         </div>
 
         {/* Category label (always visible) */}
-        <div className="p-4 bg-white transition-colors duration-300 group-hover:bg-neutral-off-white">
+        <div className="p-4 bg-neutral-white transition-colors duration-300 group-hover:bg-neutral-off-white">
           <div className="flex items-center justify-between">
             <div>
               <h3 className="text-sm font-semibold text-text-dark uppercase tracking-wide group-hover:text-accent-brown transition-colors duration-300">{category.name}</h3>

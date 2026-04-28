@@ -69,16 +69,16 @@ export default function LearnPage() {
 
   if (loading) {
     return (
-      <main className="min-h-screen bg-white flex items-center justify-center">
+      <main className="min-h-screen bg-neutral-white flex items-center justify-center">
         <p className="text-lg text-text-medium">Loading tips...</p>
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-neutral-white">
       {/* Hero Section */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 md:pt-28 pb-16 md:pb-20">
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 md:pt-32 pb-16 md:pb-20">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -95,7 +95,7 @@ export default function LearnPage() {
       </section>
 
       {/* Filter Pills */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sticky top-0 bg-white/80 backdrop-blur-sm z-40">
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sticky top-0 bg-neutral-white/80 backdrop-blur-sm z-40">
         <motion.div
           className="flex flex-wrap justify-center gap-2 md:gap-3"
           initial={{ opacity: 0, y: -10 }}

@@ -60,9 +60,9 @@ export default function Contact() {
   const [openFaqIndex, setOpenFaqIndex] = useState(0);
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-neutral-white">
       {/* Hero Section */}
-      <section className="about-hero max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28 text-center">
+      <section className="about-hero max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-20 md:pt-32 md:pb-28 text-center">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}

@@ -2,8 +2,8 @@ import { motion } from 'framer-motion';
 
 export default function ShopHeader() {
   return (
-    <section className="w-full bg-white">
-      <div className="shop-header-inner max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <section className="w-full bg-neutral-white">
+      <div className="shop-header-inner max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16 md:pt-32 md:pb-24">
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}

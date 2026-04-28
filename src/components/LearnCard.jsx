@@ -18,7 +18,7 @@ function LearnCard({ tip, onClick }) {
       className="cursor-pointer group"
     >
       <motion.div
-        className="bg-white rounded-lg overflow-hidden shadow-soft hover:shadow-md transition-shadow duration-300 h-full flex flex-col"
+        className="bg-neutral-white rounded-lg overflow-hidden shadow-soft hover:shadow-md transition-shadow duration-300 h-full flex flex-col"
         whileHover={{ scale: 1.02 }}
         onClick={onClick}
         transition={{ duration: 0.2 }}

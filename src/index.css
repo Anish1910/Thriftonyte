@@ -37,3 +37,27 @@
     @apply text-base md:text-lg text-text-medium;
   }
 }
+
+/* Force dark mode colors to instantly bypass any stuck Tailwind cache */
+.bg-neutral-white { background-color: #141210 !important; }
+.bg-neutral-off-white { background-color: #1A1816 !important; }
+.bg-neutral-warm-beige { background-color: #24211E !important; }
+.bg-neutral-warm-beige\/20 { background-color: rgba(36, 33, 30, 0.2) !important; }
+.bg-neutral-warm-beige\/40 { background-color: rgba(36, 33, 30, 0.4) !important; }
+
+.text-text-dark { color: #F5F3F0 !important; }
+.text-text-medium { color: #C8B89A !important; }
+.text-text-light { color: #A39887 !important; }
+.border-neutral-light-beige { border-color: #322E2B !important; }
+.border-neutral-warm-beige { border-color: #24211E !important; }
+
+.bg-neutral-white\/95 { background-color: rgba(20, 18, 16, 0.95) !important; }
+.bg-neutral-white\/80 { background-color: rgba(20, 18, 16, 0.8) !important; }
+.bg-neutral-off-white\/50 { background-color: rgba(26, 24, 22, 0.5) !important; }
+
+/* Force Gradients */
+.from-neutral-off-white { --tw-gradient-from: #1A1816 var(--tw-gradient-from-position) !important; --tw-gradient-to: rgba(26, 24, 22, 0) var(--tw-gradient-to-position) !important; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important; }
+.via-neutral-white { --tw-gradient-to: rgba(20, 18, 16, 0) var(--tw-gradient-to-position) !important; --tw-gradient-stops: var(--tw-gradient-from), #141210 var(--tw-gradient-via-position), var(--tw-gradient-to) !important; }
+.to-neutral-warm-beige\/30 { --tw-gradient-to: rgba(36, 33, 30, 0.3) var(--tw-gradient-to-position) !important; }
+
+/* End of index.css */

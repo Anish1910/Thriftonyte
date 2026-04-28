@@ -12,8 +12,8 @@ html {
 
 body {
   font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  color: #2C2C2C;
-  background-color: #FFFFFF;
+  color: #F5F3F0 !important;
+  background-color: #141210 !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   letter-spacing: 0;
@@ -48,7 +48,7 @@ p {
 }
 
 ::-webkit-scrollbar-track {
-  background: #F5F3F0;
+  background: #1A1816;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -151,7 +151,6 @@ a:focus {
 @media (max-width: 767px) {
   /* Shop: reduce header padding */
   .shop-header-inner {
-    padding-top: 2rem !important;
     padding-bottom: 2rem !important;
   }
 
@@ -167,7 +166,6 @@ a:focus {
 
   /* About: reduce hero section padding */
   .about-hero {
-    padding-top: 3rem !important;
     padding-bottom: 3rem !important;
   }
 
@@ -177,16 +175,14 @@ a:focus {
     padding-bottom: 2.5rem !important;
   }
 
-  /* Hero: highlight text content block on mobile */
   .hero-text-content {
-    background: rgba(255, 255, 255, 0.75);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(139, 115, 85, 0.15);
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: none !important;
     border-radius: 16px;
     padding: 1.25rem 0.85rem;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06),
-                0 1px 4px rgba(139, 115, 85, 0.08);
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));
     /* Center the block content */
     align-items: center;
     text-align: center;
