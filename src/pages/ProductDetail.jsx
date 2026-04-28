@@ -7,11 +7,29 @@ import { BADGE_STYLES } from '../constants/product';
 import { getImage } from '../lib/image';
 import { client } from '../lib/sanity';
 
+const slideVariants = {
+  enter: (direction) => ({
+    x: direction > 0 ? '100%' : '-100%',
+    opacity: 0,
+  }),
+  center: {
+    zIndex: 1,
+    x: 0,
+    opacity: 1,
+  },
+  exit: (direction) => ({
+    zIndex: 0,
+    x: direction < 0 ? '100%' : '-100%',
+    opacity: 0,
+  }),
+};
+
 export default function ProductDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { addToCart } = useCart();
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [direction, setDirection] = useState(0);
   const [addedToCart, setAddedToCart] = useState(false);
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -69,11 +87,13 @@ export default function ProductDetail() {
 
   const handlePrevImage = () => {
     if (!product?.images) return;
+    setDirection(-1);
     setSelectedImageIndex((prev) => (prev - 1 + product.images.length) % product.images.length);
   };
 
   const handleNextImage = () => {
     if (!product?.images) return;
+    setDirection(1);
     setSelectedImageIndex((prev) => (prev + 1) % product.images.length);
   };
 
@@ -183,17 +203,22 @@ export default function ProductDetail() {
               onTouchStart={handleTouchStart}
               onTouchEnd={handleTouchEnd}
             >
-              <AnimatePresence mode="wait">
+              <AnimatePresence initial={false} custom={direction}>
                 <motion.img
                   key={selectedImageIndex}
                   src={getImage(product.images?.[selectedImageIndex])}
                   alt={product.title}
+                  custom={direction}
+                  variants={slideVariants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{
+                    x: { type: 'spring', stiffness: 300, damping: 30 },
+                    opacity: { duration: 0.2 },
+                  }}
                   className="absolute inset-0 w-full h-full object-cover"
-                  style={{ willChange: 'opacity', transform: 'translateZ(0)' }}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.25, ease: 'easeOut' }}
+                  style={{ willChange: 'transform, opacity', transform: 'translateZ(0)' }}
                 />
               </AnimatePresence>
 
@@ -238,7 +263,10 @@ export default function ProductDetail() {
                 {product.images.map((_, idx) => (
                   <button
                     key={idx}
-                    onClick={() => setSelectedImageIndex(idx)}
+                    onClick={() => {
+                      setDirection(idx > selectedImageIndex ? 1 : -1);
+                      setSelectedImageIndex(idx);
+                    }}
                     className={`w-2 h-2 rounded-full transition-all duration-300 ${idx === selectedImageIndex
                       ? 'bg-accent-brown w-4'
                       : 'bg-neutral-light-beige'
@@ -489,21 +517,26 @@ export default function ProductDetail() {
 
             {/* Container */}
             <div
-              className="relative flex items-center justify-center w-full h-full px-2 md:px-8"
+              className="relative flex items-center justify-center w-full h-full px-2 md:px-8 overflow-hidden"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Image */}
-              <AnimatePresence mode="wait">
+              <AnimatePresence initial={false} custom={direction}>
                 <motion.img
                   key={selectedImageIndex}
                   src={getImage(product.images?.[selectedImageIndex])}
                   alt={product.title}
-                  className="w-auto h-auto max-w-full max-h-[80vh] md:max-w-4xl md:max-h-screen object-contain"
-                  style={{ willChange: 'opacity', transform: 'translateZ(0)' }}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.25, ease: 'easeOut' }}
+                  custom={direction}
+                  variants={slideVariants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{
+                    x: { type: 'spring', stiffness: 300, damping: 30 },
+                    opacity: { duration: 0.2 },
+                  }}
+                  className="absolute w-auto h-auto max-w-full max-h-[80vh] md:max-w-4xl md:max-h-screen object-contain"
+                  style={{ willChange: 'transform, opacity', transform: 'translateZ(0)' }}
                 />
               </AnimatePresence>
 
@@ -550,6 +583,7 @@ export default function ProductDetail() {
                     key={idx}
                     onClick={(e) => {
                       e.stopPropagation();
+                      setDirection(idx > selectedImageIndex ? 1 : -1);
                       setSelectedImageIndex(idx);
                     }}
                     className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import loadingVideo from '../assets/Oversized_Tee.mp4';
+import loadingVideo from '../assets/Oversized_T-Shirt.mp4';
 
 export default function LoadingScreen({ onFinished }) {
   const [fadeOut, setFadeOut] = useState(false);
@@ -20,7 +20,7 @@ export default function LoadingScreen({ onFinished }) {
     scrollLock.textContent = 'html,body{overflow:hidden!important}';
     document.head.appendChild(scrollLock);
 
-    // Offscreen half-res canvas for processing
+    // Offscreen canvas — FULL resolution to preserve checkerboard detail
     const off = document.createElement('canvas');
     offCanvasRef.current = off;
     const offCtx = off.getContext('2d', { willReadFrequently: true });
@@ -38,70 +38,66 @@ export default function LoadingScreen({ onFinished }) {
       const vw = video.videoWidth;
       const vh = video.videoHeight;
 
-      // Strip 10% bottom (watermark), 3% top
-      const sy = Math.floor(vh * 0.03);
-      const sh = Math.floor(vh * 0.87);
-
-      // Half resolution
-      const W = Math.floor(vw / 2);
-      const H = Math.floor(sh / 2);
+      // Use full resolution to correctly detect checkerboard individual pixels
+      const W = vw;
+      const H = vh;
 
       if (off.width !== W || off.height !== H) {
         off.width = W;
         off.height = H;
       }
 
-      // Draw video at half res
-      offCtx.drawImage(video, 0, sy, vw, sh, 0, 0, W, H);
+      offCtx.drawImage(video, 0, 0, W, H);
 
       try {
         const imgData = offCtx.getImageData(0, 0, W, H);
         const d = imgData.data;
 
-        // ── Sample background from 4 corner blocks (30×30 each) ──
-        const cs = 30;
-        let bgR = 0, bgG = 0, bgB = 0, cnt = 0;
-        const corners = [[0, 0], [W - cs, 0], [0, H - cs], [W - cs, H - cs]];
-        for (const [ox, oy] of corners) {
-          for (let y = oy; y < Math.min(oy + cs, H); y++) {
-            for (let x = ox; x < Math.min(ox + cs, W); x++) {
-              const i = (y * W + x) * 4;
-              bgR += d[i]; bgG += d[i + 1]; bgB += d[i + 2];
-              cnt++;
-            }
-          }
-        }
-        bgR /= cnt; bgG /= cnt; bgB /= cnt;
+        // ── Background removal strategy ──
+        // The video "transparent" checkerboard has two pixel colors:
+        //   Light grey: ~(191,191,191) to ~(204,204,204)
+        //   White:      ~(240,240,240) to ~(255,255,255)
+        // Black bars:   ~(0,0,0) to ~(30,30,30)
+        // Blue edge glow (from video border): has high blue channel
+        //
+        // The shirt is tan/khaki/beige: has actual hue (R > G > B significantly)
+        //
+        // Key insight: checkerboard + black + blue glow are all very desaturated
+        // (grey) OR very dark. The shirt has color saturation.
+        //
+        // We detect "background" as: low saturation AND (very bright OR very dark)
 
-        // ── LUMINANCE THRESHOLD SEPARATION ──
-        // Video: dark grey gradient background (lum ~50-130)
-        //        bright white shirt (lum ~155-255)
-        // Threshold at 148 cleanly separates the two.
         for (let i = 0; i < d.length; i += 4) {
-          const lum = d[i] * 0.299 + d[i + 1] * 0.587 + d[i + 2] * 0.114;
+          const r = d[i], g = d[i + 1], b = d[i + 2];
+          const maxC = Math.max(r, g, b);
+          const minC = Math.min(r, g, b);
+          const chroma = maxC - minC;
 
-          if (lum < 140) {
-            // Background (dark grey) → transparent
-            d[i + 3] = 0;
-          } else if (lum < 165) {
-            // Soft edge feather 140-165
-            const alpha = Math.round(((lum - 140) / 25) * 255);
-            d[i + 3] = alpha;
-            d[i]     = 139;
-            d[i + 1] = 115;
-            d[i + 2] = 85;
-          } else {
-            // Shirt (bright white) → solid brand brown #8B7355
-            d[i]     = 139;
-            d[i + 1] = 115;
-            d[i + 2] = 85;
-            d[i + 3] = 255;
+          // To stop the shirt from looking "flashy" (flickering), we preserve
+          // its natural RGB shading and use smooth alpha gradients for the edges.
+          // Background consists of:
+          // 1. Black bars (maxC is very low)
+          // 2. Checkerboard (grayscale and relatively bright: high minC, low chroma)
+          
+          let alpha = 255;
+
+          if (maxC < 25) {
+            alpha = 0; // Black bars
+          } else if (maxC < 45) {
+            alpha = Math.round(((maxC - 25) / 20) * 255); // Feather black bars
+          } else if (minC > 110 && chroma < 18) {
+            alpha = 0; // Checkerboard interior
+          } else if (minC > 90 && chroma < 35) {
+            alpha = Math.round(((chroma - 18) / 17) * 255); // Feather checkerboard edges
           }
+
+          d[i + 3] = alpha;
+          // We do NOT modify d[i], d[i+1], d[i+2] so the shirt keeps its natural color and lighting!
         }
 
         offCtx.putImageData(imgData, 0, 0);
 
-        // Copy to display canvas
+        // Copy to display canvas (may be different size for display)
         if (canvas.width !== W || canvas.height !== H) {
           canvas.width = W;
           canvas.height = H;
@@ -122,11 +118,11 @@ export default function LoadingScreen({ onFinished }) {
     };
 
     const fadeTimer = setTimeout(() => {
-      removeScrollLock(); // Restore scroll as soon as fade begins
+      removeScrollLock();
       setFadeOut(true);
     }, 4200);
     const hideTimer = setTimeout(() => {
-      removeScrollLock(); // Safety net
+      removeScrollLock();
       setHidden(true);
       if (onFinished) onFinished();
     }, 5400);
@@ -136,7 +132,6 @@ export default function LoadingScreen({ onFinished }) {
       clearTimeout(hideTimer);
       video.removeEventListener('canplay', onCanPlay);
       if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
-      // Always remove scroll lock on cleanup (handles HMR / StrictMode)
       document.getElementById('loading-scroll-lock')?.remove();
     };
   }, [onFinished]);
@@ -166,7 +161,7 @@ export default function LoadingScreen({ onFinished }) {
         style={{ position: 'absolute', width: 0, height: 0, opacity: 0, pointerEvents: 'none' }}
       />
 
-      {/* Canvas: transparent bg so loading screen color shows through cleanly */}
+      {/* Canvas: transparent bg so loading screen color shows through */}
       <canvas
         ref={canvasRef}
         style={{

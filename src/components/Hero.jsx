@@ -22,7 +22,7 @@ export default function Hero({ settings }) {
       setCurrentImageIndex((prevIndex) =>
         (prevIndex + 1) % heroImageUrls.length
       );
-    }, 2500);
+    }, 5000);
 
     return () => clearInterval(interval);
   }, [heroImageUrls.length]);
@@ -73,24 +73,24 @@ export default function Hero({ settings }) {
 
   // Shared image carousel JSX (used in both mobile and desktop positions)
   const imageCarousel = (
-    <div className="relative w-full h-full rounded-xl sm:rounded-3xl overflow-hidden shadow-hover">
-      <AnimatePresence mode="wait">
+    <div className="relative w-full h-full rounded-xl sm:rounded-3xl overflow-hidden shadow-hover bg-neutral-dark">
+      <AnimatePresence>
         <motion.img
           key={currentImageIndex}
           src={heroImageUrls[currentImageIndex]}
           alt="Curated vintage fashion collection"
-          className="w-full h-full object-cover"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.8, ease: 'easeInOut' }}
+          className="absolute inset-0 w-full h-full object-cover"
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -20 }}
+          transition={{ duration: 1.2, ease: [0.25, 0.1, 0.25, 1] }}
         />
       </AnimatePresence>
 
-      <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none"></div>
+      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none z-10"></div>
 
       <motion.div
-        className="absolute bottom-3 left-3 sm:bottom-6 sm:left-6 bg-white/95 backdrop-blur-md px-2 py-1 sm:px-4 sm:py-2 rounded-lg shadow-soft hidden sm:block"
+        className="absolute bottom-3 left-3 sm:bottom-6 sm:left-6 bg-white/95 backdrop-blur-md px-2 py-1 sm:px-4 sm:py-2 rounded-lg shadow-soft hidden sm:block z-20"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1, duration: 0.8 }}

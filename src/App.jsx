@@ -8,6 +8,7 @@ import Shop from './pages/Shop';
 import ProductDetail from './pages/ProductDetail';
 import About from './pages/About';
 import LearnPage from './pages/LearnPage';
+import Contact from './pages/Contact';
 import LoadingScreen from './components/LoadingScreen';
 import './App.css';
 
@@ -50,6 +51,7 @@ function App() {
             <Route path="/product/:id" element={<ProductDetail />} />
             <Route path="/about" element={<About />} />
             <Route path="/learn" element={<LearnPage />} />
+            <Route path="/contact" element={<Contact />} />
           </Routes>
         </div>
       </Router>

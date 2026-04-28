@@ -8,7 +8,8 @@ import logo from '../assets/logo-dark.png';
 const NAV_ITEMS = [
   { to: '/shop', label: 'Shop', color: 'accent-brown' },
   { to: '/about', label: 'About', color: 'accent-green' },
-  { to: '/learn', label: 'Learn', color: 'accent-green' }
+  { to: '/learn', label: 'Learn', color: 'accent-green' },
+  { to: '/contact', label: 'Contact', color: 'accent-brown' }
 ];
 
 const getNavLinkClass = ({ isActive }, color = 'accent-brown') =>
