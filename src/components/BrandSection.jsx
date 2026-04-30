@@ -2,9 +2,20 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { urlFor } from '../lib/sanity';
 import { fadeInVariants } from '../constants/animations';
+import PixelCard from './PixelCard';
+
+import { useState, useEffect } from 'react';
 
 export default function BrandSection({ sections }) {
   const navigate = useNavigate();
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
 
   const brandSections = sections || [];
 
@@ -40,10 +51,12 @@ export default function BrandSection({ sections }) {
                 }`}
                 onClick={() => handleImageClick(item?.link)}
               >
-                <div
+                <PixelCard 
                   className={`${
                     index === 0 ? 'aspect-video' : 'aspect-square'
-                  } relative bg-neutral-warm-beige/10 overflow-hidden`}
+                  } relative bg-neutral-warm-beige/10 overflow-hidden w-full h-full`}
+                  variant="default"
+                  disabled={isMobile}
                 >
                   <img
                     src={imageUrl}
@@ -62,7 +75,7 @@ export default function BrandSection({ sections }) {
                       </p>
                     </div>
                   )}
-                </div>
+                </PixelCard>
               </div>
             );
           })}

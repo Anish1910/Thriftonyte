@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
+import Newsletter from '../components/Newsletter';
 
 export default function About() {
   return (
@@ -186,6 +187,7 @@ export default function About() {
         </motion.div>
       </section>
 
+      <Newsletter />
       <Footer />
     </main>
   );

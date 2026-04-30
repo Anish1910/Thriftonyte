@@ -6,6 +6,8 @@ import FeaturedProducts from '../components/FeaturedProducts';
 import BrandSection from '../components/BrandSection';
 import LearnSection from '../components/LearnSection';
 import Footer from '../components/Footer';
+import ScrollVelocity from '../components/ScrollVelocity';
+import Newsletter from '../components/Newsletter';
 import { articles } from '../data/articles';
 import { client, urlFor } from '../lib/sanity';
 
@@ -25,6 +27,7 @@ export default function Home() {
       .fetch(`*[_type == "homepageSettings"][0]{
         heroImages,
         heroText,
+        scrollingTexts,
         featuredProducts[]->{_id, title, slug, price, images, description, badge},
         featuredCategories[]->{_id, name, slug, image, description},
         brandSections[]{image, link, text}
@@ -40,6 +43,13 @@ export default function Home() {
   return (
     <main>
       <Hero settings={homepageSettings} />
+
+      {homepageSettings?.scrollingTexts && homepageSettings.scrollingTexts.length > 0 && (
+        <ScrollVelocity 
+          texts={homepageSettings.scrollingTexts} 
+          velocity={200} 
+        />
+      )}
 
       {featuredProducts.length > 0 && <FeaturedProducts products={featuredProducts} />}
 
@@ -104,6 +114,7 @@ export default function Home() {
 
       <LearnSection articles={articles} />
 
+      <Newsletter />
       <Footer />
     </main>
   );

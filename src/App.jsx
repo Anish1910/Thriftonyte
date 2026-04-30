@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
 import Header from './components/Header';
@@ -14,9 +14,28 @@ import './App.css';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
+  const prevPathRef = useRef();
+
+  // Force scroll to top on initial page load / refresh
   useEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
     window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    // If we're coming back to /shop from a product detail page, don't scroll to top
+    // This allows the user to maintain their position in the grid
+    const isReturningFromProduct = pathname === '/shop' && prevPathRef.current?.startsWith('/product/');
+
+    if (!isReturningFromProduct) {
+      window.scrollTo(0, 0);
+    }
+
+    prevPathRef.current = pathname;
   }, [pathname]);
+
   return null;
 }
 
@@ -33,7 +52,7 @@ function App() {
       {/* Branded loading screen */}
       <LoadingScreen onFinished={handleLoadingFinished} />
 
-      <Router>
+      <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <ScrollToTop />
         <div
           className="min-h-screen bg-neutral-white"

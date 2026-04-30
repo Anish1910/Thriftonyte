@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { client } from '../lib/sanity';
-import LearnCard from '../components/LearnCard';
+import { client, urlFor } from '../lib/sanity';
 import LearnModal from '../components/LearnModal';
+import Newsletter from '../components/Newsletter';
+import ChromaGrid from '../components/ChromaGrid';
 
 export default function LearnPage() {
   const [tips, setTips] = useState([]);
@@ -128,24 +129,37 @@ export default function LearnPage() {
 
       {/* Tips Grid */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 md:pb-28">
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          key={selectedCategory}
-        >
-          {filteredTips.map((tip, index) => (
-            tip && (
-              <LearnCard
-                key={tip?._id}
-                tip={tip}
-                onClick={() => handleCardClick(tip, index)}
-              />
-            )
-          ))}
-        </motion.div>
+        {filteredTips.length > 0 ? (
+          <ChromaGrid 
+            items={filteredTips.map((tip, index) => {
+              const METALLIC_PALETTES = [
+                { border: '#FFD700', grad: 'linear-gradient(145deg, #FFD700, #4A3B00, #000)' }, // Gold
+                { border: '#C0C0C0', grad: 'linear-gradient(145deg, #C0C0C0, #404040, #000)' }, // Silver
+                { border: '#CD7F32', grad: 'linear-gradient(145deg, #CD7F32, #4A2B0F, #000)' }, // Bronze
+                { border: '#B76E79', grad: 'linear-gradient(145deg, #B76E79, #4A1A24, #000)' }, // Rose Gold
+                { border: '#2A3439', grad: 'linear-gradient(145deg, #2A3439, #0F1316, #000)' }  // Gunmetal
+              ];
+              // Assign pseudo-random metallic color based on index
+              const palette = METALLIC_PALETTES[index % METALLIC_PALETTES.length];
 
-        {filteredTips.length === 0 && (
+              const imageUrl = tip?.coverImage
+                ? urlFor(tip.coverImage).width(400).quality(70).url()
+                : '';
+
+              return {
+                title: tip?.title || 'Untitled',
+                subtitle: tip?.short || '',
+                handle: tip?.category || 'uncategorized',
+                image: imageUrl,
+                borderColor: palette.border,
+                gradient: palette.grad,
+                originalTip: tip,
+                originalIndex: index
+              };
+            })}
+            onItemClick={(item) => handleCardClick(item.originalTip, item.originalIndex)}
+          />
+        ) : (
           <motion.div
             className="text-center py-16"
             initial={{ opacity: 0 }}
@@ -167,6 +181,8 @@ export default function LearnPage() {
           onPrev={handlePrevTip}
         />
       )}
+
+      <Newsletter />
     </main>
   );
 }

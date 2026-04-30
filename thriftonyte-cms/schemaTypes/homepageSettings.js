@@ -23,6 +23,13 @@ export default {
       description: 'Main headline for hero section'
     },
     {
+      name: 'scrollingTexts',
+      title: 'Scrolling Texts',
+      type: 'array',
+      of: [{ type: 'string' }],
+      description: 'Texts to display in the scrolling ticker below the hero section'
+    },
+    {
       name: 'featuredProducts',
       title: 'Featured Products',
       type: 'array',

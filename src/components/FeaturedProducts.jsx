@@ -29,7 +29,7 @@ export default function FeaturedProducts({ products, limit = 6 }) {
 
       {/* Products grid */}
       <motion.div
-        className="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-6"
+        className="grid grid-cols-2 md:grid-cols-3 gap-x-2 gap-y-4 md:gap-x-6 md:gap-y-8 lg:gap-y-10"
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
