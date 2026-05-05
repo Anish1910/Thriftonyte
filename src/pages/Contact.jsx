@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 import Footer from '../components/Footer';
 import Newsletter from '../components/Newsletter';
+import { useFormSubmit } from '../hooks/useFormSubmit';
 
 const FAQS = [
   {
@@ -35,7 +36,10 @@ function ContactForm() {
     subject: '',
     description: ''
   });
-  const [status, setStatus] = useState(null);
+  const { status, message, submit, reset } = useFormSubmit();
+
+  const isSending = status === 'loading';
+  const isSuccess = status === 'success';
 
   const handleSubjectChange = (e) => {
     const newSubject = e.target.value;
@@ -48,30 +52,13 @@ function ContactForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setStatus('sending');
-
-    const data = new FormData(e.target);
-    data.append("access_key", "d11e1e56-27fa-4f61-89a9-66beb014edfa");
-    data.append("from_name", "Thriftonyte Support");
-
-    try {
-      const response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        body: data
-      });
-
-      const res = await response.json();
-
-      if (res.success) {
-        setStatus('success');
-        setFormData({ email: '', subject: '', description: '' });
-        setTimeout(() => setStatus(null), 5000);
-      } else {
-        setStatus('error');
-      }
-    } catch (error) {
-      setStatus('error');
-    }
+    await submit("contact", {
+      email: formData.email,
+      subject: formData.subject,
+      message: formData.description,
+    });
+    setFormData({ email: '', subject: '', description: '' });
+    setTimeout(() => reset(), 5000);
   };
 
   return (
@@ -127,11 +114,11 @@ function ContactForm() {
 
       <button
         type="submit"
-        disabled={status === 'sending' || status === 'success'}
-        className={`w-full py-5 bg-text-dark text-white font-bold uppercase tracking-widest rounded-lg transition-all duration-300 shadow-soft hover:shadow-hover ${(status === 'sending' || status === 'success') ? 'opacity-50 cursor-not-allowed' : 'hover:bg-accent-brown'
+        disabled={isSending || isSuccess}
+        className={`w-full py-5 bg-text-dark text-white font-bold uppercase tracking-widest rounded-lg transition-all duration-300 shadow-soft hover:shadow-hover ${(isSending || isSuccess) ? 'opacity-50 cursor-not-allowed' : 'hover:bg-accent-brown'
           }`}
       >
-        {status === 'sending' ? 'Sending...' : status === 'success' ? 'Message Sent!' : 'Send Message'}
+        {isSending ? 'Sending...' : isSuccess ? 'Message Sent!' : 'Send Message'}
       </button>
 
       {status === 'error' && (
