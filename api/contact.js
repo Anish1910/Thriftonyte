@@ -10,15 +10,20 @@ import nodemailer from 'nodemailer';
 const BREVO_API_KEY = process.env.BREVO_API_KEY;
 const BREVO_LIST_ID = parseInt(process.env.BREVO_LIST_ID) || 2;
 
-const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
-  port: 587,
-  secure: false,
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
-  },
-});
+function getTransporter() {
+  if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
+    throw new Error("SMTP_USER and SMTP_PASS environment variables are required");
+  }
+  return nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false,
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
+    },
+  });
+}
 
 export default async function handler(req, res) {
   // Allow CORS from your domain
@@ -52,7 +57,7 @@ export default async function handler(req, res) {
       }
 
       // 2. Send notification to support@ for n8n to process
-      await transporter.sendMail({
+      await getTransporter().sendMail({
         from: `"Thriftonyte Website" <${process.env.SMTP_USER}>`,
         to: "support@thriftonyte.com",
         replyTo: email,
@@ -71,7 +76,7 @@ export default async function handler(req, res) {
 
     // ── CONTACT / SUPPORT FORM ─────────────────────────────
     if (type === "contact") {
-      await transporter.sendMail({
+      await getTransporter().sendMail({
         from: `"Thriftonyte Website" <${process.env.SMTP_USER}>`,
         to: "support@thriftonyte.com",
         replyTo: email,
@@ -96,7 +101,7 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: "Invalid type" });
 
   } catch (err) {
-    console.error("API Error:", err);
-    return res.status(500).json({ error: "Something went wrong" });
+    console.error("API Error:", err.message, err.stack);
+    return res.status(500).json({ error: "Something went wrong", detail: err.message });
   }
 }
