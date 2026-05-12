@@ -32,6 +32,7 @@ const SUBJECT_TEMPLATES = {
 
 function ContactForm() {
   const [formData, setFormData] = useState({
+    name: '',
     email: '',
     subject: '',
     description: ''
@@ -53,16 +54,32 @@ function ContactForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await submit("contact", {
+      name: formData.name,
       email: formData.email,
       subject: formData.subject,
       message: formData.description,
     });
-    setFormData({ email: '', subject: '', description: '' });
+    setFormData({ name: '', email: '', subject: '', description: '' });
     setTimeout(() => reset(), 5000);
   };
 
   return (
     <form className="space-y-6 text-left max-w-2xl mx-auto" onSubmit={handleSubmit}>
+      <div>
+        <label className="block text-sm font-bold uppercase tracking-widest text-text-dark mb-2">
+          Your Name <span className="text-accent-brown">*</span>
+        </label>
+        <input
+          type="text"
+          name="name"
+          required
+          value={formData.name}
+          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+          className="w-full px-6 py-4 bg-neutral-white border border-neutral-light-beige rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-brown/20 focus:border-accent-brown transition-all"
+          placeholder="e.g. Alex Johnson"
+        />
+      </div>
+
       <div>
         <label className="block text-sm font-bold uppercase tracking-widest text-text-dark mb-2">
           Your Email Address <span className="text-accent-brown">*</span>
