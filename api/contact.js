@@ -1,12 +1,24 @@
 // ============================================================
 // api/contact.js — Vercel Serverless Function
 // Handles contact form + newsletter signups from Thriftonyte
-// Deploy this inside your /api folder in the repo
+// Emails go directly to support@thriftonyte.com for n8n processing
+// Newsletter signups also go to Brevo for list storage
 // ============================================================
 
-const APPS_SCRIPT_URL = process.env.APPS_SCRIPT_URL;
+import nodemailer from 'nodemailer';
+
 const BREVO_API_KEY = process.env.BREVO_API_KEY;
 const BREVO_LIST_ID = parseInt(process.env.BREVO_LIST_ID) || 2;
+
+const transporter = nodemailer.createTransport({
+  host: 'smtp.gmail.com',
+  port: 587,
+  secure: false,
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+  },
+});
 
 export default async function handler(req, res) {
   // Allow CORS from your domain
@@ -22,26 +34,36 @@ export default async function handler(req, res) {
   try {
     // ── NEWSLETTER SIGNUP ──────────────────────────────────
     if (type === "newsletter") {
-      // 1. Add to Brevo list
-      await fetch("https://api.brevo.com/v3/contacts", {
-        method: "POST",
-        headers: {
-          "api-key": BREVO_API_KEY,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          attributes: { FIRSTNAME: name || "" },
-          listIds: [BREVO_LIST_ID],
-          updateEnabled: true,
-        }),
-      });
+      // 1. Add to Brevo list (kept for list storage)
+      if (BREVO_API_KEY) {
+        await fetch("https://api.brevo.com/v3/contacts", {
+          method: "POST",
+          headers: {
+            "api-key": BREVO_API_KEY,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            attributes: { FIRSTNAME: name || "" },
+            listIds: [BREVO_LIST_ID],
+            updateEnabled: true,
+          }),
+        });
+      }
 
-      // 2. Trigger welcome email via Apps Script
-      await fetch(APPS_SCRIPT_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ type: "newsletter", email, name }),
+      // 2. Send notification to support@ for n8n to process
+      await transporter.sendMail({
+        from: `"Thriftonyte Website" <${process.env.SMTP_USER}>`,
+        to: "support@thriftonyte.com",
+        replyTo: email,
+        subject: `[Newsletter Signup] ${email}`,
+        text: `New newsletter signup:\n\nName: ${name || "Not provided"}\nEmail: ${email}\n\nTimestamp: ${new Date().toISOString()}`,
+        html: `
+          <h2>New Newsletter Signup</h2>
+          <p><strong>Name:</strong> ${name || "Not provided"}</p>
+          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Timestamp:</strong> ${new Date().toISOString()}</p>
+        `,
       });
 
       return res.status(200).json({ success: true, message: "Subscribed!" });
@@ -49,17 +71,23 @@ export default async function handler(req, res) {
 
     // ── CONTACT / SUPPORT FORM ─────────────────────────────
     if (type === "contact") {
-      // Send to Apps Script → routes to support@thriftonyte.com
-      await fetch(APPS_SCRIPT_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          type: "contact",
-          name,
-          email,
-          subject: subject || "Website Contact Form",
-          message,
-        }),
+      await transporter.sendMail({
+        from: `"Thriftonyte Website" <${process.env.SMTP_USER}>`,
+        to: "support@thriftonyte.com",
+        replyTo: email,
+        subject: `[Contact Form] ${subject || "Website Contact Form"}`,
+        text: `New contact form submission:\n\nName: ${name || "Not provided"}\nEmail: ${email}\nSubject: ${subject || "Website Contact Form"}\n\nMessage:\n${message}\n\nTimestamp: ${new Date().toISOString()}`,
+        html: `
+          <h2>New Contact Form Submission</h2>
+          <p><strong>Name:</strong> ${name || "Not provided"}</p>
+          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Subject:</strong> ${subject || "Website Contact Form"}</p>
+          <hr />
+          <p><strong>Message:</strong></p>
+          <p>${message?.replace(/\n/g, '<br>')}</p>
+          <hr />
+          <p><small>Timestamp: ${new Date().toISOString()}</small></p>
+        `,
       });
 
       return res.status(200).json({ success: true, message: "Message received!" });

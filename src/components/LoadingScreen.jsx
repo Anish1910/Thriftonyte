@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react';
-import loadingVideo from '../assets/Oversized_T-Shirt.mp4';
 
 export default function LoadingScreen({ onFinished }) {
   const [fadeOut, setFadeOut] = useState(false);
@@ -20,7 +19,7 @@ export default function LoadingScreen({ onFinished }) {
     scrollLock.textContent = 'html,body{overflow:hidden!important}';
     document.head.appendChild(scrollLock);
 
-    // Offscreen canvas — FULL resolution to preserve checkerboard detail
+    // Offscreen canvas — downscaled for performance
     const off = document.createElement('canvas');
     offCanvasRef.current = off;
     const offCtx = off.getContext('2d', { willReadFrequently: true });
@@ -28,6 +27,8 @@ export default function LoadingScreen({ onFinished }) {
 
     video.playbackRate = 1.6;
     video.play().catch(() => {});
+
+    const SCALE = 0.25; // Process at 1/4 resolution for speed
 
     const processFrame = () => {
       if (video.paused || video.ended || !video.videoWidth) {
@@ -38,9 +39,9 @@ export default function LoadingScreen({ onFinished }) {
       const vw = video.videoWidth;
       const vh = video.videoHeight;
 
-      // Use full resolution to correctly detect checkerboard individual pixels
-      const W = vw;
-      const H = vh;
+      // Downscaled dimensions for pixel processing
+      const W = Math.round(vw * SCALE);
+      const H = Math.round(vh * SCALE);
 
       if (off.width !== W || off.height !== H) {
         off.width = W;
@@ -53,32 +54,12 @@ export default function LoadingScreen({ onFinished }) {
         const imgData = offCtx.getImageData(0, 0, W, H);
         const d = imgData.data;
 
-        // ── Background removal strategy ──
-        // The video "transparent" checkerboard has two pixel colors:
-        //   Light grey: ~(191,191,191) to ~(204,204,204)
-        //   White:      ~(240,240,240) to ~(255,255,255)
-        // Black bars:   ~(0,0,0) to ~(30,30,30)
-        // Blue edge glow (from video border): has high blue channel
-        //
-        // The shirt is tan/khaki/beige: has actual hue (R > G > B significantly)
-        //
-        // Key insight: checkerboard + black + blue glow are all very desaturated
-        // (grey) OR very dark. The shirt has color saturation.
-        //
-        // We detect "background" as: low saturation AND (very bright OR very dark)
-
         for (let i = 0; i < d.length; i += 4) {
           const r = d[i], g = d[i + 1], b = d[i + 2];
           const maxC = Math.max(r, g, b);
           const minC = Math.min(r, g, b);
           const chroma = maxC - minC;
 
-          // To stop the shirt from looking "flashy" (flickering), we preserve
-          // its natural RGB shading and use smooth alpha gradients for the edges.
-          // Background consists of:
-          // 1. Black bars (maxC is very low)
-          // 2. Checkerboard (grayscale and relatively bright: high minC, low chroma)
-          
           let alpha = 255;
 
           if (maxC < 25) {
@@ -92,18 +73,19 @@ export default function LoadingScreen({ onFinished }) {
           }
 
           d[i + 3] = alpha;
-          // We do NOT modify d[i], d[i+1], d[i+2] so the shirt keeps its natural color and lighting!
         }
 
         offCtx.putImageData(imgData, 0, 0);
 
-        // Copy to display canvas (may be different size for display)
-        if (canvas.width !== W || canvas.height !== H) {
-          canvas.width = W;
-          canvas.height = H;
+        // Scale up to display canvas at full video resolution
+        if (canvas.width !== vw || canvas.height !== vh) {
+          canvas.width = vw;
+          canvas.height = vh;
         }
-        ctx.clearRect(0, 0, W, H);
-        ctx.drawImage(off, 0, 0);
+        ctx.clearRect(0, 0, vw, vh);
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
+        ctx.drawImage(off, 0, 0, vw, vh);
       } catch (e) {}
 
       animFrameRef.current = requestAnimationFrame(processFrame);
@@ -156,7 +138,7 @@ export default function LoadingScreen({ onFinished }) {
     >
       <video
         ref={videoRef}
-        src={loadingVideo}
+        src="/Oversized_T-Shirt.mp4"
         autoPlay loop muted playsInline
         style={{ position: 'absolute', width: 0, height: 0, opacity: 0, pointerEvents: 'none' }}
       />
