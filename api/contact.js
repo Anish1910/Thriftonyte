@@ -3,31 +3,18 @@
 // Handles contact form + newsletter signups from Thriftonyte
 // Emails go directly to support@thriftonyte.com for n8n processing
 // Newsletter signups also go to Brevo for list storage
+// Powered by Resend for reliable delivery
 // ============================================================
 
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 
+const resend = new Resend(process.env.RESEND_API_KEY);
 const BREVO_API_KEY = process.env.BREVO_API_KEY;
 const BREVO_LIST_ID = parseInt(process.env.BREVO_LIST_ID) || 2;
 
-function getTransporter() {
-  if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
-    throw new Error("SMTP_USER and SMTP_PASS environment variables are required");
-  }
-  return nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 587,
-    secure: false,
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
-    },
-  });
-}
-
 export default async function handler(req, res) {
   // Allow CORS from your domain
-  res.setHeader("Access-Control-Allow-Origin", "https://thriftonyte.com");
+  res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
@@ -56,11 +43,11 @@ export default async function handler(req, res) {
         });
       }
 
-      // 2. Send notification to support@ for n8n to process
-      await getTransporter().sendMail({
-        from: `"Thriftonyte Website" <${process.env.SMTP_USER}>`,
-        to: "support@thriftonyte.com",
-        replyTo: email,
+      // 2. Send notification to support@ for n8n to process via Resend
+      await resend.emails.send({
+        from: 'Thriftonyte <onboarding@resend.dev>',
+        to: 'support@thriftonyte.com',
+        reply_to: email,
         subject: `[Newsletter Signup] ${email}`,
         text: `New newsletter signup:\n\nName: ${name || "Not provided"}\nEmail: ${email}\n\nTimestamp: ${new Date().toISOString()}`,
         html: `
@@ -76,10 +63,10 @@ export default async function handler(req, res) {
 
     // ── CONTACT / SUPPORT FORM ─────────────────────────────
     if (type === "contact") {
-      await getTransporter().sendMail({
-        from: `"Thriftonyte Website" <${process.env.SMTP_USER}>`,
-        to: "support@thriftonyte.com",
-        replyTo: email,
+      await resend.emails.send({
+        from: 'Thriftonyte <onboarding@resend.dev>',
+        to: 'support@thriftonyte.com',
+        reply_to: email,
         subject: `[Contact Form] ${subject || "Website Contact Form"}`,
         text: `New contact form submission:\n\nName: ${name || "Not provided"}\nEmail: ${email}\nSubject: ${subject || "Website Contact Form"}\n\nMessage:\n${message}\n\nTimestamp: ${new Date().toISOString()}`,
         html: `
@@ -101,7 +88,7 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: "Invalid type" });
 
   } catch (err) {
-    console.error("API Error:", err.message, err.stack);
+    console.error("API Error:", err.message);
     return res.status(500).json({ error: "Something went wrong", detail: err.message });
   }
 }
