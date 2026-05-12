@@ -54,7 +54,7 @@ export default async function handler(req, res) {
 
       // 2. Send notification to support@ for n8n to process
       await getTransporter().sendMail({
-        from: `"Thriftonyte Website" <${process.env.SMTP_USER}>`,
+        from: `"${name || email} via Thriftonyte" <${process.env.SMTP_USER}>`,
         to: "support@thriftonyte.com",
         replyTo: email,
         subject: `[Newsletter Signup] ${email}`,
@@ -73,7 +73,7 @@ export default async function handler(req, res) {
     // ── CONTACT / SUPPORT FORM ─────────────────────────────
     if (type === "contact") {
       await getTransporter().sendMail({
-        from: `"Thriftonyte Website" <${process.env.SMTP_USER}>`,
+        from: `"${name || email} via Thriftonyte" <${process.env.SMTP_USER}>`,
         to: "support@thriftonyte.com",
         replyTo: email,
         subject: `[Contact Form] ${subject || "Website Contact Form"}`,
