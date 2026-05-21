@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
 import Header from './components/Header';
@@ -9,7 +9,6 @@ import ProductDetail from './pages/ProductDetail';
 import About from './pages/About';
 import LearnPage from './pages/LearnPage';
 import Contact from './pages/Contact';
-import LoadingScreen from './components/LoadingScreen';
 import './App.css';
 
 function ScrollToTop() {
@@ -41,26 +40,12 @@ function ScrollToTop() {
 
 function App() {
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-
-  const handleLoadingFinished = useCallback(() => {
-    setIsLoading(false);
-  }, []);
 
   return (
     <CartProvider>
-      {/* Branded loading screen */}
-      <LoadingScreen onFinished={handleLoadingFinished} />
-
       <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <ScrollToTop />
-        <div
-          className="min-h-screen bg-neutral-white"
-          style={{
-            opacity: isLoading ? 0 : 1,
-            transition: 'opacity 0.6s ease-out',
-          }}
-        >
+        <div className="min-h-screen bg-neutral-white">
           <Header onCartToggle={() => setIsCartOpen(!isCartOpen)} />
           <Cart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
 
