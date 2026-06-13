@@ -9,7 +9,7 @@ export const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: true,
+  useCdn: import.meta.env.PROD,
 });
 
 const builder = imageUrlBuilder(client);
@@ -30,7 +30,9 @@ export const fetchProducts = async () => {
     badge,
     category -> { name, slug },
     status,
-    tags
+    tags,
+    whyThisPiece,
+    gender
   }`;
 
   try {
@@ -55,7 +57,9 @@ export const fetchProductBySlug = async (slug) => {
     badge,
     category -> { name, slug },
     status,
-    tags
+    tags,
+    whyThisPiece,
+    gender
   }`;
 
   try {
@@ -80,7 +84,9 @@ export const fetchProductsByCategory = async (categorySlug) => {
     badge,
     category -> { name, slug },
     status,
-    tags
+    tags,
+    whyThisPiece,
+    gender
   }`;
 
   try {
@@ -129,5 +135,24 @@ export const fetchActiveBanners = async () => {
   } catch (error) {
     console.error('Error fetching banners:', error);
     return [];
+  }
+};
+
+// SHOP SETTINGS QUERIES
+export const fetchShopSettings = async () => {
+  const query = `*[_type == "shopSettings"][0] {
+    _id,
+    title,
+    subtitle,
+    backgroundImage { asset -> { url } },
+    backgroundVideo { asset -> { url } }
+  }`;
+
+  try {
+    const settings = await client.fetch(query);
+    return settings;
+  } catch (error) {
+    console.error('Error fetching shop settings:', error);
+    return null;
   }
 };

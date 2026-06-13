@@ -30,11 +30,9 @@ export default function ProductCard({ product }) {
   const hoverImage = getImage(product.hoverGif);
   const displayImage = isHovered && hoverImage ? hoverImage : mainImage;
 
-  const categoryName = (() => {
-    if (!product.category) return '';
-    if (typeof product.category === 'string') return product.category;
-    if (typeof product.category === 'object' && product.category.name) return product.category.name;
-    return '';
+  const genderLabel = (() => {
+    if (!product.gender) return '';
+    return product.gender.charAt(0).toUpperCase() + product.gender.slice(1);
   })();
 
   const isSoldOut = product.status === 'sold_out';
@@ -183,10 +181,10 @@ export default function ProductCard({ product }) {
 
             {/* Content Section */}
             <div className="flex flex-col flex-grow gap-2.5 p-3.5 md:p-4 bg-neutral-off-white relative z-10 rounded-b-minimal">
-              {/* Category Tag & Title */}
+              {/* Gender Tag & Title */}
               <div>
                 <p className="mb-1 text-[10px] font-medium uppercase tracking-wide text-text-light">
-                  {categoryName}
+                  {genderLabel}
                 </p>
                 
                 {/* Desktop: Title & Price Side-by-Side | Mobile: Title Only */}

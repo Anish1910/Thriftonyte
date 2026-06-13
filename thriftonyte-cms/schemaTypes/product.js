@@ -80,6 +80,20 @@ export default {
       validation: Rule => Rule.required()
     },
     {
+      name: 'gender',
+      title: 'Gender',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Men', value: 'men' },
+          { title: 'Women', value: 'women' },
+          { title: 'Unisex', value: 'unisex' }
+        ],
+        layout: 'radio'
+      },
+      validation: Rule => Rule.required()
+    },
+    {
       name: 'status',
       title: 'Status',
       type: 'string',
@@ -100,6 +114,13 @@ export default {
       options: {
         layout: 'tags'
       }
+    },
+    {
+      name: 'whyThisPiece',
+      title: 'Why This Piece',
+      type: 'array',
+      of: [{ type: 'string' }],
+      description: 'Unique selling points for this product. Each item appears as a bullet point under "Why This Piece" on the product page.',
     }
   ],
   preview: {

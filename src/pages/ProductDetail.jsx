@@ -39,6 +39,9 @@ export default function ProductDetail() {
   const touchEndX = useRef(0);
 
   const isSoldOut = product?.status === 'sold_out';
+  const genderLabel = product?.gender
+    ? product.gender.charAt(0).toUpperCase() + product.gender.slice(1)
+    : '';
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -49,7 +52,8 @@ export default function ProductDetail() {
             category->{
               name,
               slug
-            }
+            },
+            whyThisPiece
           }`,
           { id }
         );
@@ -284,11 +288,11 @@ export default function ProductDetail() {
             variants={fadeInVariants}
             className="flex flex-col justify-start"
           >
-            {/* Badge & Category */}
+            {/* Badge & Gender */}
             <div className="flex items-center gap-3 mb-5">
-              {product.category?.name && (
+              {genderLabel && (
                 <span className="text-xs text-text-light uppercase tracking-widest font-semibold">
-                  {product.category.name}
+                  {genderLabel}
                 </span>
               )}
               {product.badge && (
@@ -325,40 +329,58 @@ export default function ProductDetail() {
               </span>
             </motion.div>
 
-            {/* Scarcity Message */}
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-sm font-semibold text-accent-brown mb-10"
-            >
-              Only 1 piece. Ever.
-              <span className="block text-xs text-text-light mt-1">
-                Move fast or lose this.
-              </span>
-            </motion.p>
+            {/* Scarcity / Sold-Out Messaging */}
+            {isSoldOut ? (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="mb-10 p-4 bg-neutral-off-white border border-neutral-light-beige rounded-lg"
+              >
+                <p className="text-sm font-semibold text-text-dark mb-1">
+                  This piece found its new home.
+                </p>
+                <p className="text-xs text-text-light">
+                  One of a kind — once it's gone, it's gone forever.
+                </p>
+              </motion.div>
+            ) : (
+              <>
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                  className="text-sm font-semibold text-accent-brown mb-10"
+                >
+                  Only 1 piece. Ever.
+                  <span className="block text-xs text-text-light mt-1">
+                    Move fast or lose this.
+                  </span>
+                </motion.p>
 
-            {/* Stock Message */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.25 }}
-              className="mb-4 p-3 bg-neutral-warm-beige/40 rounded-lg"
-            >
-              <p className="text-sm font-medium text-text-dark">
-                ✓ This is the only one
-              </p>
-            </motion.div>
+                {/* Stock Message */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5, delay: 0.25 }}
+                  className="mb-4 p-3 bg-neutral-warm-beige/40 rounded-lg"
+                >
+                  <p className="text-sm font-medium text-text-dark">
+                    ✓ This is the only one
+                  </p>
+                </motion.div>
 
-            {/* FOMO Message */}
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.28 }}
-              className="text-xs text-red-600 font-semibold mb-8"
-            >
-              Spotted by someone else too
-            </motion.p>
+                {/* FOMO Message */}
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5, delay: 0.28 }}
+                  className="text-xs text-red-600 font-semibold mb-8"
+                >
+                  Spotted by someone else too
+                </motion.p>
+              </>
+            )}
 
             {/* Description */}
             <motion.div
@@ -367,24 +389,11 @@ export default function ProductDetail() {
               transition={{ duration: 0.5, delay: 0.3 }}
               className="mb-12 space-y-3"
             >
-              <p className="text-text-medium text-base md:text-lg leading-relaxed">
+              <p className="text-text-medium text-base md:text-lg leading-relaxed whitespace-pre-line">
                 {product.longDescription}
               </p>
             </motion.div>
 
-            {/* Sold Out Notice */}
-            {isSoldOut && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5, delay: 0.32 }}
-                className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg"
-              >
-                <p className="text-sm font-semibold text-red-600 uppercase tracking-wide">
-                  This piece has been sold
-                </p>
-              </motion.div>
-            )}
 
             {/* CTA Section */}
             <motion.div
@@ -462,31 +471,41 @@ export default function ProductDetail() {
               See More Pieces
             </motion.button>
 
-            {/* Product Details Section */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.5 }}
-              className="mt-12 pt-8 border-t border-neutral-light-beige"
-            >
-              <h3 className="text-xs font-semibold text-text-dark uppercase tracking-widest mb-4">
-                Why This Piece
-              </h3>
-              <ul className="text-sm text-text-medium space-y-2.5">
-                <li>
-                  100% authentic vintage. No fakes.
-                </li>
-                <li>
-                  Inspected & restored. Ready to wear.
-                </li>
-                <li>
-                  One of a kind. Will never restock.
-                </li>
-                <li>
-                  Conscious choice. Sustainable fashion.
-                </li>
-              </ul>
-            </motion.div>
+            {/* Product Details Section - hidden for sold out */}
+            {!isSoldOut && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.5 }}
+                className="mt-12 pt-8 border-t border-neutral-light-beige"
+              >
+                <h3 className="text-xs font-semibold text-text-dark uppercase tracking-widest mb-4">
+                  Why This Piece
+                </h3>
+                {product.whyThisPiece && product.whyThisPiece.length > 0 ? (
+                  <ul className="text-sm text-text-medium space-y-2.5">
+                    {product.whyThisPiece.map((point, idx) => (
+                      <li key={idx}>{point}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <ul className="text-sm text-text-medium space-y-2.5">
+                    <li>
+                      100% authentic vintage. No fakes.
+                    </li>
+                    <li>
+                      Inspected & restored. Ready to wear.
+                    </li>
+                    <li>
+                      One of a kind. Will never restock.
+                    </li>
+                    <li>
+                      Conscious choice. Sustainable fashion.
+                    </li>
+                  </ul>
+                )}
+              </motion.div>
+            )}
           </motion.div>
         </div>
       </div>

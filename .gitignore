@@ -50,3 +50,6 @@ config.local.js
 # Debug
 debug/
 *.debug
+
+# Temporary Scratch Files
+scratch/

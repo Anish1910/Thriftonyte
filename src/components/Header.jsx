@@ -6,10 +6,16 @@ import { motion, AnimatePresence } from 'framer-motion';
 import logo from '../assets/logo-dark.png';
 
 const NAV_ITEMS = [
-  { to: '/shop', label: 'Shop', color: 'accent-brown' },
+  { to: '/shop', label: 'Shop', color: 'accent-brown', hasSubmenu: true },
   { to: '/about', label: 'About', color: 'accent-green' },
   { to: '/learn', label: 'Learn', color: 'accent-green' },
   { to: '/contact', label: 'Contact', color: 'accent-brown' }
+];
+
+const GENDER_OPTIONS = [
+  { label: 'All', value: '' },
+  { label: 'Men', value: 'men' },
+  { label: 'Women', value: 'women' },
 ];
 
 const getNavLinkClass = ({ isActive }, color = 'accent-brown') =>
@@ -22,6 +28,7 @@ export default function Header({ onCartToggle }) {
   const { getTotalItems } = useCart();
   const totalItems = useMemo(() => getTotalItems(), [getTotalItems]);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [shopSubmenuOpen, setShopSubmenuOpen] = useState(false);
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-neutral-light-beige shadow-soft">
@@ -95,7 +102,7 @@ export default function Header({ onCartToggle }) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               className="fixed inset-0 bg-black/60 z-50 md:hidden"
-              onClick={() => setMobileMenuOpen(false)}
+              onClick={() => { setMobileMenuOpen(false); setShopSubmenuOpen(false); }}
             />
             <motion.div
               initial={{ x: '100%' }}
@@ -108,7 +115,7 @@ export default function Header({ onCartToggle }) {
                 <div className="flex justify-between items-center p-4 border-b border-neutral-light-beige">
                   <span className="text-lg font-bold text-text-dark uppercase tracking-wider">Menu</span>
                   <button
-                    onClick={() => setMobileMenuOpen(false)}
+                    onClick={() => { setMobileMenuOpen(false); setShopSubmenuOpen(false); }}
                     className="p-2 text-text-medium hover:text-accent-brown transition-colors"
                   >
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -116,22 +123,80 @@ export default function Header({ onCartToggle }) {
                     </svg>
                   </button>
                 </div>
-                <nav className="flex-1 p-6 space-y-6">
-                  {NAV_ITEMS.map((item, index) => (
-                    <NavLink
-                      key={item.to}
-                      to={item.to}
-                      className={({ isActive }) =>
-                        `block text-xl font-semibold transition-all duration-300 border-l-2 pl-4 uppercase tracking-wide ${isActive
-                          ? `border-${item.color} text-${item.color}`
-                          : 'border-transparent text-text-dark hover:border-accent-brown hover:text-accent-brown'
-                        }`
-                      }
-                      end={item.end}
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      {item.label}
-                    </NavLink>
+                <nav className="flex-1 p-6 space-y-2">
+                  {NAV_ITEMS.map((item) => (
+                    <div key={item.to}>
+                      {item.hasSubmenu ? (
+                        <>
+                          {/* Shop with expandable gender submenu */}
+                          <div className="flex items-center">
+                            <NavLink
+                              to={item.to}
+                              className={({ isActive }) =>
+                                `flex-1 block text-xl font-semibold transition-all duration-300 border-l-2 pl-4 py-2 uppercase tracking-wide ${isActive
+                                  ? `border-${item.color} text-${item.color}`
+                                  : 'border-transparent text-text-dark hover:border-accent-brown hover:text-accent-brown'
+                                }`
+                              }
+                              end={item.end}
+                              onClick={() => { setMobileMenuOpen(false); setShopSubmenuOpen(false); }}
+                            >
+                              {item.label}
+                            </NavLink>
+                            <button
+                              onClick={() => setShopSubmenuOpen((prev) => !prev)}
+                              className="p-2 text-text-light hover:text-accent-brown transition-colors"
+                              aria-label="Expand shop gender options"
+                            >
+                              <svg
+                                className={`w-5 h-5 transition-transform duration-300 ${shopSubmenuOpen ? 'rotate-180' : ''}`}
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                              </svg>
+                            </button>
+                          </div>
+
+                          {/* Gender submenu */}
+                          <div
+                            className="overflow-hidden transition-all duration-300 ease-in-out"
+                            style={{
+                              maxHeight: shopSubmenuOpen ? '200px' : '0px',
+                              opacity: shopSubmenuOpen ? 1 : 0,
+                            }}
+                          >
+                            <div className="pl-6 border-l-2 border-neutral-light-beige ml-0 py-1 space-y-1">
+                              {GENDER_OPTIONS.map((opt) => (
+                                <Link
+                                  key={opt.value}
+                                  to={opt.value ? `/shop?gender=${opt.value}` : '/shop'}
+                                  className="block py-2 pl-4 text-sm font-medium text-text-medium hover:text-accent-brown uppercase tracking-wider transition-colors"
+                                  onClick={() => { setMobileMenuOpen(false); setShopSubmenuOpen(false); }}
+                                >
+                                  {opt.label}
+                                </Link>
+                              ))}
+                            </div>
+                          </div>
+                        </>
+                      ) : (
+                        <NavLink
+                          to={item.to}
+                          className={({ isActive }) =>
+                            `block text-xl font-semibold transition-all duration-300 border-l-2 pl-4 py-2 uppercase tracking-wide ${isActive
+                              ? `border-${item.color} text-${item.color}`
+                              : 'border-transparent text-text-dark hover:border-accent-brown hover:text-accent-brown'
+                            }`
+                          }
+                          end={item.end}
+                          onClick={() => { setMobileMenuOpen(false); setShopSubmenuOpen(false); }}
+                        >
+                          {item.label}
+                        </NavLink>
+                      )}
+                    </div>
                   ))}
                 </nav>
                 <div className="p-6 border-t border-neutral-light-beige">

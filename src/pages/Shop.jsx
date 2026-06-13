@@ -10,8 +10,24 @@ import { client } from '../lib/sanity';
 
 export default function Shop() {
   const [searchParams] = useSearchParams();
-  const categoryParam = searchParams.get('category');
+  const categoryParams = searchParams.getAll('category');
+  const genderParam = searchParams.get('gender');
   const productGridRef = useRef(null);
+
+  // Fetch shop settings (title, subtitle, background)
+  const [shopSettings, setShopSettings] = useState(null);
+
+  useEffect(() => {
+    client
+      .fetch(`*[_type == "shopSettings"][0]{
+        title,
+        subtitle,
+        backgroundImage { asset -> { url } },
+        backgroundVideo { asset -> { url } }
+      }`)
+      .then(setShopSettings)
+      .catch(console.error);
+  }, []);
 
   // Fetch categories for filter
   const [categories, setCategories] = useState([]);
@@ -26,53 +42,73 @@ export default function Shop() {
   // Fetch all products on mount
   const [products, setProducts] = useState([]);
 
-      useEffect(() => {
-      client
-        .fetch(`*[_type == "product"]{
-          ...,
-          category->{
-            name,
-            slug
-          }
-        }`)
-        .then((data) => {
-          setProducts(data);
-        })
-        .catch(console.error);
-    }, []);
-
-  // Filter products by category if provided
-  const filteredProducts = categoryParam
-    ? products.filter(
-        (p) => p.category?.slug?.current === categoryParam
-      )
-    : products;
-
-  // Format category name for display (capitalize first letter)
-  const displayCategoryName = categoryParam
-    ? categoryParam.charAt(0).toUpperCase() + categoryParam.slice(1)
-    : null;
-
-  // Smooth scroll to product grid when category changes
   useEffect(() => {
-    if (categoryParam && productGridRef.current) {
+    client
+      .fetch(`*[_type == "product"]{
+        ...,
+        category->{
+          name,
+          slug
+        }
+      }`)
+      .then((data) => {
+        setProducts(data);
+      })
+      .catch(console.error);
+  }, []);
+
+  // Filter products by category and gender
+  let filteredProducts = products;
+
+  if (categoryParams.length > 0) {
+    filteredProducts = filteredProducts.filter(
+      (p) => p.category?.slug?.current && categoryParams.includes(p.category.slug.current)
+    );
+  }
+
+  if (genderParam) {
+    filteredProducts = filteredProducts.filter(
+      (p) => p.gender === genderParam || p.gender === 'unisex'
+    );
+  }
+
+  const hasActiveFilter = categoryParams.length > 0 || genderParam;
+
+  // Format active filter labels
+  const activeFilterParts = [];
+  if (genderParam) {
+    activeFilterParts.push(genderParam.charAt(0).toUpperCase() + genderParam.slice(1));
+  }
+  if (categoryParams.length > 0) {
+    const categoryNames = categoryParams.map(slug => {
+      const catObj = categories.find(c => c.slug?.current === slug);
+      return catObj ? catObj.name : slug.charAt(0).toUpperCase() + slug.slice(1);
+    });
+    activeFilterParts.push(categoryNames.join(', '));
+  }
+  const displayFilterName = activeFilterParts.join(' · ');
+
+  const serializedCategories = categoryParams.join(',');
+  // Smooth scroll to product grid when filter changes
+  useEffect(() => {
+    if (hasActiveFilter && productGridRef.current) {
       setTimeout(() => {
         productGridRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 100);
     }
-  }, [categoryParam]);
+  }, [serializedCategories, genderParam]);
 
   return (
     <main>
-      <ShopHeader />
+      <ShopHeader settings={shopSettings} />
 
       {/* Filter bar with spacing */}
-      <div className="shop-filter-wrapper mt-8">
+      <div className="shop-filter-wrapper mt-2 md:mt-3">
         <ShopFilters categories={categories} />
       </div>
 
-      {/* Active category filter UI */}
-      {categoryParam && (
+      {/* Active filter UI */}
+      {hasActiveFilter && (
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -83,7 +119,7 @@ export default function Shop() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-text-dark font-semibold text-sm">
-                  Browsing: <span className="text-accent-brown">{displayCategoryName}</span>
+                  Browsing: <span className="text-accent-brown">{displayFilterName}</span>
                 </p>
                 <p className="text-xs text-text-light mt-1">
                   {filteredProducts.length} {filteredProducts.length === 1 ? 'item' : 'items'} found
@@ -111,12 +147,12 @@ export default function Shop() {
           transition={{ duration: 0.6 }}
         >
           {/* Microcopy above product grid */}
-          <div className="shop-grid-top max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 md:pt-16">
+          <div className="shop-grid-top max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 md:pt-12">
             <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-sm text-text-light mb-6"
+              initial={{ opacity: 0, x: -8 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="text-sm text-text-light italic tracking-wide border-l-2 border-accent-brown/40 pl-3 mb-0"
             >
               Limited pieces. Once gone, gone.
             </motion.p>
@@ -129,7 +165,7 @@ export default function Shop() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <div className="text-center">
             <p className="text-xl text-text-medium mb-6">
-              No products found in {displayCategoryName}.
+              No products found{displayFilterName ? ` for ${displayFilterName}` : ''}.
             </p>
             <Link
               to="/shop"

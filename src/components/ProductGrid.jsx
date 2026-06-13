@@ -14,7 +14,7 @@ export default function ProductGrid({ products, showHeading = true }) {
   };
 
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+    <section className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${showHeading ? 'py-16 md:py-24' : 'pt-6 pb-16 md:pt-8 md:pb-24'}`}>
       {showHeading && (
         <motion.div
           initial={{ opacity: 0, y: -20 }}
