@@ -3,11 +3,8 @@ import ProductCard from './ProductCard';
 import { containerVariants, fadeInVariants } from '../constants/animations';
 
 export default function FeaturedProducts({ products, limit = 6 }) {
-  // Filter products by featured tag
-  const featuredProducts = products.filter((p) => p.tags && p.tags.includes('featured'));
-
-  // Fallback: use first 4 products if no featured products
-  const displayedProducts = (featuredProducts.length > 0 ? featuredProducts : products.slice(0, 4)).slice(0, limit);
+  // Products are already curated via homepageSettings.featuredProducts in Sanity
+  const displayedProducts = products.slice(0, limit);
 
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-24">
