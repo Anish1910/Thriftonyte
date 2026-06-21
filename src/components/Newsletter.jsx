@@ -4,6 +4,7 @@ import { useFormSubmit } from '../hooks/useFormSubmit';
 
 export default function Newsletter({ highlighted = false }) {
   const [email, setEmail] = useState('');
+  const [honeypot, setHoneypot] = useState('');
   const { status, message, submit, reset } = useFormSubmit();
 
   const isSending = status === 'loading';
@@ -11,7 +12,8 @@ export default function Newsletter({ highlighted = false }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await submit("newsletter", { email });
+    if (honeypot) return; // honeypot filled — silently bail
+    await submit("newsletter", { email, website: honeypot });
     setEmail('');
     setTimeout(() => reset(), 5000);
   };
@@ -35,6 +37,17 @@ export default function Newsletter({ highlighted = false }) {
           </p>
 
           <form className="flex flex-col sm:flex-row gap-3 md:gap-4 max-w-xl mx-auto" onSubmit={handleSubmit}>
+            {/* Honeypot field — invisible to real users, bots will fill it */}
+            <div style={{ position: 'absolute', left: '-9999px', top: '-9999px', overflow: 'hidden' }} aria-hidden="true">
+              <input
+                type="text"
+                name="website"
+                tabIndex={-1}
+                autoComplete="off"
+                value={honeypot}
+                onChange={(e) => setHoneypot(e.target.value)}
+              />
+            </div>
             <input
               type="email"
               name="email"

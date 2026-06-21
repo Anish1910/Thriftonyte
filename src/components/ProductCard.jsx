@@ -77,6 +77,7 @@ export default function ProductCard({ product }) {
         onMouseLeave={() => setIsHovered(false)}
       >
         <TiltedCard
+          imageSrc={displayImage}
           containerHeight="100%"
           containerWidth="100%"
           imageHeight="auto"

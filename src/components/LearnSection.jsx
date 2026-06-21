@@ -42,7 +42,7 @@ export default function LearnSection({ articles }) {
         viewport={{ once: true }}
       >
         {featuredArticles.map(article => (
-          <LearnCard key={article.id} article={article} />
+          <LearnCard key={article.id} tip={article} />
         ))}
       </motion.div>
 

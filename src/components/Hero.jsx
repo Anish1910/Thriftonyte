@@ -1,10 +1,13 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
 import { products } from '../data/products';
 import { urlFor } from '../lib/sanity';
+import { getImage } from '../lib/image';
 
 export default function Hero({ settings }) {
+  const navigate = useNavigate();
+  const mobileScrollRef = useRef(null);
   const defaultImages = products.slice(0, 4).flatMap(p => p.images.slice(0, 1));
   const heroImages = settings?.heroImages?.length > 0 ? settings.heroImages : [];
   const carouselImages = heroImages.length > 0 ? heroImages : defaultImages;
@@ -13,7 +16,12 @@ export default function Hero({ settings }) {
     typeof img === 'string' ? img : urlFor(img).url()
   );
 
+  const heroProducts = settings?.featuredProducts?.length > 0
+    ? settings.featuredProducts
+    : products.slice(0, 4);
+
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [activeMobileIndex, setActiveMobileIndex] = useState(0);
 
   useEffect(() => {
     if (heroImageUrls.length === 0) return;
@@ -26,6 +34,12 @@ export default function Hero({ settings }) {
 
     return () => clearInterval(interval);
   }, [heroImageUrls.length]);
+
+  const handleMobileScroll = (e) => {
+    const container = e.currentTarget;
+    const index = Math.round(container.scrollLeft / container.clientWidth);
+    setActiveMobileIndex(index);
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -166,24 +180,6 @@ export default function Hero({ settings }) {
                 </Link>
               </motion.div>
             </motion.div>
-
-            <motion.div
-              variants={textVariants}
-              className="flex items-center gap-1 sm:gap-2 md:gap-3 pt-2 md:pt-6"
-            >
-              <div className="flex -space-x-2">
-                <div className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 rounded-full bg-accent-brown text-white flex items-center justify-center text-[10px] sm:text-xs font-bold border-2 border-white">
-                  👗
-                </div>
-                <div className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 rounded-full bg-accent-green text-white flex items-center justify-center text-[10px] sm:text-xs font-bold border-2 border-white">
-                  ♻️
-                </div>
-                <div className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 rounded-full bg-accent-brown text-white flex items-center justify-center text-[10px] sm:text-xs font-bold border-2 border-white">
-                  ⭐
-                </div>
-              </div>
-              <span className="text-[10px] sm:text-xs md:text-sm text-text-light">1000+ of us know better.</span>
-            </motion.div>
           </motion.div>
 
           {/* Desktop image — hidden on mobile */}
@@ -196,14 +192,77 @@ export default function Hero({ settings }) {
         </motion.div>
       </div>
 
-      {/* Mobile image — shown only below md, positioned after hero text as a standalone block */}
+      {/* Mobile view — shown only below md: Interactive scrollable product placeholder */}
       <motion.div
         variants={imageVariants}
         initial="hidden"
         animate="visible"
-        className="relative mx-3 sm:mx-6 mb-2 h-72 sm:h-80 overflow-hidden rounded-2xl shadow-soft md:hidden"
+        className="relative mx-3 sm:mx-6 mb-2 md:hidden"
       >
-        {imageCarousel}
+        <div 
+          ref={mobileScrollRef}
+          className="flex overflow-x-auto scrollbar-none snap-x snap-mandatory rounded-2xl shadow-soft h-72 sm:h-80 bg-neutral-dark"
+          onScroll={handleMobileScroll}
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        >
+          {heroProducts.map((product, idx) => {
+            const productImg = getImage(product.images?.[0] || product.images);
+            const productId = product._id || product.id;
+            
+            return (
+              <div 
+                key={productId || idx}
+                className="w-full h-full flex-shrink-0 snap-start snap-always relative cursor-pointer"
+                onClick={() => navigate(`/product/${productId}`)}
+              >
+                <img 
+                  src={productImg} 
+                  alt={product.title} 
+                  className="w-full h-full object-cover"
+                />
+                
+                {/* Overlay Tint with gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent pointer-events-none z-10" />
+                
+                {/* Product Info Overlay */}
+                <div className="absolute bottom-8 left-4 right-4 z-20 text-left">
+                  <span className="inline-block rounded-minimal px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wider bg-accent-brown text-white mb-2">
+                    {product.badge || 'Curated For You'}
+                  </span>
+                  <h3 className="text-base font-extrabold text-white uppercase tracking-wider truncate">
+                    {product.title}
+                  </h3>
+                  <p className="text-sm font-extrabold text-white/90 mt-0.5">
+                    ₹{product.price}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Dots indicator in the bottom middle */}
+        {heroProducts.length > 1 && (
+          <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-1.5 z-30">
+            {heroProducts.map((_, idx) => (
+              <button
+                key={idx}
+                className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                  idx === activeMobileIndex ? 'bg-white w-5' : 'bg-white/40'
+                }`}
+                onClick={() => {
+                  if (mobileScrollRef.current) {
+                    mobileScrollRef.current.scrollTo({
+                      left: idx * mobileScrollRef.current.clientWidth,
+                      behavior: 'smooth'
+                    });
+                  }
+                }}
+                aria-label={`Go to slide ${idx + 1}`}
+              />
+            ))}
+          </div>
+        )}
       </motion.div>
     </section>
   );

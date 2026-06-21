@@ -28,7 +28,7 @@ function useElementWidth(ref) {
 }
 
 export const ScrollVelocity = ({
-  scrollContainerRef,
+  scrollContainerRef = undefined,
   texts = [],
   velocity = 100,
   className = '',
@@ -38,22 +38,22 @@ export const ScrollVelocity = ({
   velocityMapping = { input: [0, 1000], output: [0, 5] },
   parallaxClassName = 'parallax',
   scrollerClassName = 'scroller',
-  parallaxStyle,
-  scrollerStyle
+  parallaxStyle = undefined,
+  scrollerStyle = undefined
 }) => {
   function VelocityText({
     children,
     baseVelocity = velocity,
-    scrollContainerRef,
+    scrollContainerRef = undefined,
     className = '',
-    damping,
-    stiffness,
-    numCopies,
-    velocityMapping,
-    parallaxClassName,
-    scrollerClassName,
-    parallaxStyle,
-    scrollerStyle
+    damping = undefined,
+    stiffness = undefined,
+    numCopies = undefined,
+    velocityMapping = undefined,
+    parallaxClassName = undefined,
+    scrollerClassName = undefined,
+    parallaxStyle = undefined,
+    scrollerStyle = undefined
   }) {
     const baseX = useMotionValue(0);
     const scrollOptions = scrollContainerRef ? { container: scrollContainerRef } : {};

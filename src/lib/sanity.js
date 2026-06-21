@@ -45,7 +45,7 @@ export const fetchProducts = async () => {
 };
 
 export const fetchProductBySlug = async (slug) => {
-  const query = `*[_type == "product" && slug.current == "${slug}"][0] {
+  const query = `*[_type == "product" && slug.current == $slug][0] {
     _id,
     title,
     slug,
@@ -63,7 +63,7 @@ export const fetchProductBySlug = async (slug) => {
   }`;
 
   try {
-    const product = await client.fetch(query);
+    const product = await client.fetch(query, { slug });
     return product;
   } catch (error) {
     console.error('Error fetching product:', error);
@@ -72,7 +72,7 @@ export const fetchProductBySlug = async (slug) => {
 };
 
 export const fetchProductsByCategory = async (categorySlug) => {
-  const query = `*[_type == "product" && category->slug.current == "${categorySlug}" && status == "available"] | order(_createdAt desc) {
+  const query = `*[_type == "product" && category->slug.current == $categorySlug && status == "available"] | order(_createdAt desc) {
     _id,
     title,
     slug,
@@ -90,7 +90,7 @@ export const fetchProductsByCategory = async (categorySlug) => {
   }`;
 
   try {
-    const products = await client.fetch(query);
+    const products = await client.fetch(query, { categorySlug });
     return products;
   } catch (error) {
     console.error('Error fetching products by category:', error);

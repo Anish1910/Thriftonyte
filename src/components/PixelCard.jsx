@@ -122,7 +122,7 @@ const VARIANTS = {
   }
 };
 
-export default function PixelCard({ variant = 'default', gap, speed, colors, noFocus, className = '', disabled = false, children }) {
+export default function PixelCard({ variant = 'default', gap = undefined, speed = undefined, colors = undefined, noFocus = undefined, className = '', disabled = false, children }) {
   const containerRef = useRef(null);
   const canvasRef = useRef(null);
   const pixelsRef = useRef([]);

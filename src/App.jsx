@@ -13,7 +13,7 @@ import './App.css';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
-  const prevPathRef = useRef();
+  const prevPathRef = useRef('');
 
   // Force scroll to top on initial page load / refresh
   useEffect(() => {

@@ -51,13 +51,17 @@ function ContactForm() {
     }));
   };
 
+  const [honeypot, setHoneypot] = useState('');
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (honeypot) return; // honeypot filled — silently bail
     await submit("contact", {
       name: formData.name,
       email: formData.email,
       subject: formData.subject,
       message: formData.description,
+      website: honeypot,
     });
     setFormData({ name: '', email: '', subject: '', description: '' });
     setTimeout(() => reset(), 5000);
@@ -65,6 +69,17 @@ function ContactForm() {
 
   return (
     <form className="space-y-6 text-left max-w-2xl mx-auto" onSubmit={handleSubmit}>
+      {/* Honeypot field — invisible to real users, bots will fill it */}
+      <div style={{ position: 'absolute', left: '-9999px', top: '-9999px', overflow: 'hidden' }} aria-hidden="true">
+        <input
+          type="text"
+          name="website"
+          tabIndex={-1}
+          autoComplete="off"
+          value={honeypot}
+          onChange={(e) => setHoneypot(e.target.value)}
+        />
+      </div>
       <div>
         <label className="block text-sm font-bold uppercase tracking-widest text-text-dark mb-2">
           Your Name <span className="text-accent-brown">*</span>
@@ -121,7 +136,7 @@ function ContactForm() {
         <textarea
           name="message"
           required
-          rows="6"
+          rows={6}
           value={formData.description}
           onChange={(e) => setFormData({ ...formData, description: e.target.value })}
           className="w-full px-6 py-4 bg-neutral-white border border-neutral-light-beige rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-brown/20 focus:border-accent-brown transition-all resize-none"

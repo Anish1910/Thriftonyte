@@ -83,11 +83,11 @@ export const ChromaGrid = ({
     <div
       ref={rootRef}
       className={`chroma-grid ${className}`}
-      style={{
+      style={/** @type {any} */({
         '--r': `${radius}px`,
         '--cols': columns,
         '--rows': rows
-      }}
+      })}
       onPointerMove={handleMove}
       onPointerLeave={handleLeave}
     >
@@ -97,11 +97,11 @@ export const ChromaGrid = ({
           className="chroma-card"
           onMouseMove={handleCardMove}
           onClick={() => handleCardClick(c, i)}
-          style={{
+          style={/** @type {any} */({
             '--card-border': c.borderColor || 'transparent',
             '--card-gradient': c.gradient,
             cursor: 'pointer'
-          }}
+          })}
         >
           <div className="chroma-img-wrapper">
             {c.image ? (

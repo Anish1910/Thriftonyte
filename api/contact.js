@@ -22,15 +22,44 @@ function getTransporter() {
   });
 }
 
+const ALLOWED_ORIGINS = [
+  "https://thriftonyte.vercel.app",
+  "https://thriftonyte.com",       // add the real custom domain once live
+  "http://localhost:5173",         // local dev
+];
+
 export default async function handler(req, res) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  const origin = req.headers.origin;
+  if (ALLOWED_ORIGINS.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  }
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
   if (req.method === "OPTIONS") return res.status(200).end();
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
 
+  // Honeypot check — if filled, silently reject (bots fill hidden fields)
+  if (req.body.website) {
+    return res.status(200).json({ success: true });
+  }
+
   const { type, name, email, message, subject } = req.body;
+
+  // Basic input validation
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!email || !emailPattern.test(email)) {
+    return res.status(400).json({ error: "Invalid email address" });
+  }
+  if (name && name.length > 2000) {
+    return res.status(400).json({ error: "Name is too long" });
+  }
+  if (message && message.length > 2000) {
+    return res.status(400).json({ error: "Message is too long" });
+  }
+  if (subject && subject.length > 2000) {
+    return res.status(400).json({ error: "Subject is too long" });
+  }
 
   try {
     // ── NEWSLETTER SIGNUP ──────────────────────────────────

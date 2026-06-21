@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { motion } from 'framer-motion';
 import { urlFor } from '../lib/sanity';
 
-function LearnCard({ tip, onClick }) {
+function LearnCard({ tip, onClick = undefined }) {
   if (!tip) return null;
 
   const imageUrl = tip?.coverImage
@@ -24,7 +24,7 @@ function LearnCard({ tip, onClick }) {
         transition={{ duration: 0.2 }}
       >
         {/* Image */}
-        <div className="relative bg-neutral-off-white h-48 md:h-56 overflow-hidden">
+        <div className="relative bg-neutral-off-white h-48 md:h-56 overflow-hidden flex items-center justify-center">
           {imageUrl ? (
             <img
               src={imageUrl}
@@ -33,8 +33,8 @@ function LearnCard({ tip, onClick }) {
               loading="lazy"
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-text-light">
-              No image
+            <div className="w-full h-full flex items-center justify-center text-5xl bg-neutral-warm-beige/30 group-hover:scale-105 transition-transform duration-300">
+              {tip?.emoji || '📖'}
             </div>
           )}
         </div>
@@ -48,10 +48,10 @@ function LearnCard({ tip, onClick }) {
             {tip?.title || 'Untitled'}
           </h3>
           <p className="text-sm md:text-base text-text-light line-clamp-2 flex-grow">
-            {tip?.short || ''}
+            {tip?.short || tip?.excerpt || ''}
           </p>
           <p className="text-xs text-text-light mt-4 font-medium uppercase tracking-wide">
-            {tip?.tips?.length || 0} Tips →
+            {tip?.tips?.length ? `${tip.tips.length} Tips →` : 'Read Article →'}
           </p>
         </div>
       </motion.div>
