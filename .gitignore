@@ -1,4 +1,9 @@
-# Git Ignore Rules for BONZERO Project
+# Git Ignore Rules for Thriftonyte
+
+# Local AI tooling & internal config
+.claude/
+.backup_old_site/
+.dev-notes/
 
 # OS Files
 .DS_Store
@@ -41,7 +46,6 @@ tmp/
 
 # OS Cache
 .cache/
-.DS_Store
 
 # Local Development
 local.conf
