@@ -8,6 +8,7 @@ import Shop from './pages/Shop';
 import ProductDetail from './pages/ProductDetail';
 import About from './pages/About';
 import LearnPage from './pages/LearnPage';
+
 import Contact from './pages/Contact';
 import './App.css';
 

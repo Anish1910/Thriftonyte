@@ -1,9 +1,41 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import Footer from '../components/Footer';
 import Newsletter from '../components/Newsletter';
+import { client } from '../lib/sanity';
 
 export default function About() {
+  const [aboutSettings, setAboutSettings] = useState(null);
+
+  useEffect(() => {
+    client
+      .fetch(`*[_type == "aboutPage"][0]{
+        badgeSectionTitle,
+        badgeSectionSubtitle,
+        badges[]->{name, description, order}
+      }`)
+      .then(setAboutSettings)
+      .catch(console.error);
+  }, []);
+
+  // Fall back to fetching all badges directly if aboutPage settings don't exist yet
+  const [allBadges, setAllBadges] = useState([]);
+
+  useEffect(() => {
+    client
+      .fetch(`*[_type == "badge"] | order(order asc) { name, description, order }`)
+      .then(setAllBadges)
+      .catch(console.error);
+  }, []);
+
+  const badges = aboutSettings?.badges?.length > 0
+    ? [...aboutSettings.badges].sort((a, b) => (a.order || 0) - (b.order || 0))
+    : allBadges;
+
+  const badgeTitle = aboutSettings?.badgeSectionTitle || 'Our Badges';
+  const badgeSubtitle = aboutSettings?.badgeSectionSubtitle || 'Every badge means something. Here\'s what they stand for.';
+
   return (
     <main className="min-h-screen bg-neutral-white">
       {/* Hero Section */}
@@ -82,49 +114,89 @@ export default function About() {
         </div>
       </section>
 
-      {/* How It Works */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
-        <motion.h2
-          className="text-3xl md:text-4xl font-extrabold text-text-dark mb-12 md:mb-16 uppercase tracking-wide"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-        >
-          How It Works
-        </motion.h2>
+      {/* Badges Section */}
+      {badges.length > 0 && (
+        <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-3xl md:text-4xl font-extrabold text-text-dark mb-4 uppercase tracking-wide">
+              {badgeTitle}
+            </h2>
+            <p className="text-base md:text-lg text-text-light mb-12 md:mb-16 max-w-2xl">
+              {badgeSubtitle}
+            </p>
+          </motion.div>
 
-        <div className="space-y-8 md:space-y-12">
-          {[
-            { num: '01', title: 'We Source Pieces', desc: 'Hunt for quality. Hunt for character. Hunt for pieces worth keeping.' },
-            { num: '02', title: 'We Curate Hard', desc: "No trash. No duplicates. Just things we'd actually wear." },
-            { num: '03', title: "You Grab Before It's Gone", desc: 'One piece only. First come, first served. Make your move.' }
-          ].map((step, idx) => (
-            <motion.div
-              key={idx}
-              className="flex gap-6 md:gap-10 items-start"
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: idx * 0.1 }}
-              viewport={{ once: true }}
-            >
-              <div className="text-4xl md:text-5xl font-bold text-neutral-light-beige flex-shrink-0">
-                {step.num}
-              </div>
-              <div className="flex-grow pt-2">
-                <h3 className="text-xl md:text-2xl font-bold text-text-dark mb-2">
-                  {step.title}
-                </h3>
-                <p className="text-base md:text-lg text-text-light">
-                  {step.desc}
+          <div className="border-t border-neutral-light-beige">
+            {badges.map((badge, idx) => (
+              <motion.div
+                key={badge.name}
+                initial={{ opacity: 0, x: -10 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.4, delay: idx * 0.05 }}
+                viewport={{ once: true }}
+                className="grid grid-cols-[auto_1fr] md:grid-cols-[180px_1fr] gap-4 md:gap-8 items-center py-5 md:py-6 border-b border-neutral-light-beige group hover:bg-neutral-off-white/30 transition-colors duration-200 px-2 md:px-4 rounded-sm"
+              >
+                <span className="inline-flex items-center px-4 py-1.5 bg-accent-brown/10 text-accent-brown text-sm font-bold uppercase tracking-wider rounded-full whitespace-nowrap">
+                  {badge.name}
+                </span>
+                <p className="text-base md:text-lg text-text-medium">
+                  {badge.description}
                 </p>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* How It Works */}
+      <section className="bg-neutral-off-white/50 py-20 md:py-28">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.h2
+            className="text-3xl md:text-4xl font-extrabold text-text-dark mb-12 md:mb-16 uppercase tracking-wide"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+          >
+            How It Works
+          </motion.h2>
+
+          <div className="space-y-8 md:space-y-12">
+            {[
+              { num: '01', title: 'We Source Pieces', desc: 'Hunt for quality. Hunt for character. Hunt for pieces worth keeping.' },
+              { num: '02', title: 'We Curate Hard', desc: "No trash. No duplicates. Just things we'd actually wear." },
+              { num: '03', title: "You Grab Before It's Gone", desc: 'One piece only. First come, first served. Make your move.' }
+            ].map((step, idx) => (
+              <motion.div
+                key={idx}
+                className="flex gap-6 md:gap-10 items-start"
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                viewport={{ once: true }}
+              >
+                <div className="text-4xl md:text-5xl font-bold text-neutral-light-beige flex-shrink-0">
+                  {step.num}
+                </div>
+                <div className="flex-grow pt-2">
+                  <h3 className="text-xl md:text-2xl font-bold text-text-dark mb-2">
+                    {step.title}
+                  </h3>
+                  <p className="text-base md:text-lg text-text-light">
+                    {step.desc}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* Why Us */}
-      <section className="bg-neutral-off-white/50 py-20 md:py-28">
+      <section className="py-20 md:py-28">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.h2
             className="text-3xl md:text-4xl font-extrabold text-text-dark mb-12 md:mb-16 uppercase tracking-wide"

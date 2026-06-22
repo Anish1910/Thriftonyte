@@ -12,6 +12,7 @@ export default function Shop() {
   const [searchParams] = useSearchParams();
   const categoryParams = searchParams.getAll('category');
   const genderParam = searchParams.get('gender');
+  const badgeParams = searchParams.getAll('badge');
   const productGridRef = useRef(null);
 
   // Fetch shop settings (title, subtitle, background)
@@ -57,7 +58,10 @@ export default function Shop() {
       .catch(console.error);
   }, []);
 
-  // Filter products by category and gender
+  // Derive unique badge names from fetched products
+  const uniqueBadges = [...new Set(products.map(p => p.badge).filter(Boolean))].sort();
+
+  // Filter products by category, gender, and badge
   let filteredProducts = products;
 
   if (categoryParams.length > 0) {
@@ -72,7 +76,13 @@ export default function Shop() {
     );
   }
 
-  const hasActiveFilter = categoryParams.length > 0 || genderParam;
+  if (badgeParams.length > 0) {
+    filteredProducts = filteredProducts.filter(
+      (p) => p.badge && badgeParams.includes(p.badge)
+    );
+  }
+
+  const hasActiveFilter = categoryParams.length > 0 || genderParam || badgeParams.length > 0;
 
   // Format active filter labels
   const activeFilterParts = [];
@@ -86,9 +96,13 @@ export default function Shop() {
     });
     activeFilterParts.push(categoryNames.join(', '));
   }
+  if (badgeParams.length > 0) {
+    activeFilterParts.push(badgeParams.join(', '));
+  }
   const displayFilterName = activeFilterParts.join(' · ');
 
   const serializedCategories = categoryParams.join(',');
+  const serializedBadges = badgeParams.join(',');
   // Smooth scroll to product grid when filter changes
   useEffect(() => {
     if (hasActiveFilter && productGridRef.current) {
@@ -96,7 +110,7 @@ export default function Shop() {
         productGridRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 100);
     }
-  }, [serializedCategories, genderParam]);
+  }, [serializedCategories, genderParam, serializedBadges]);
 
   return (
     <main>
@@ -104,7 +118,7 @@ export default function Shop() {
 
       {/* Filter bar with spacing */}
       <div className="shop-filter-wrapper mt-2 md:mt-3">
-        <ShopFilters categories={categories} />
+        <ShopFilters categories={categories} badges={uniqueBadges} />
       </div>
 
       {/* Active filter UI */}

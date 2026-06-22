@@ -4,11 +4,11 @@ import Hero from '../components/Hero';
 import Categories from '../components/Categories';
 import FeaturedProducts from '../components/FeaturedProducts';
 import BrandSection from '../components/BrandSection';
-import LearnSection from '../components/LearnSection';
+
 import Footer from '../components/Footer';
 import ScrollVelocity from '../components/ScrollVelocity';
 import Newsletter from '../components/Newsletter';
-import { articles } from '../data/articles';
+
 import { client, urlFor } from '../lib/sanity';
 
 export default function Home() {
@@ -112,7 +112,7 @@ export default function Home() {
 
       <BrandSection sections={homepageSettings?.brandSections} />
 
-      <LearnSection articles={articles} />
+
 
       <Newsletter />
       <Footer />

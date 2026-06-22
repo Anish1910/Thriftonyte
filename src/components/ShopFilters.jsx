@@ -1,7 +1,7 @@
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { useState } from 'react';
 
-export default function ShopFilters({ categories = [] }) {
+export default function ShopFilters({ categories = [], badges = [] }) {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -9,14 +9,17 @@ export default function ShopFilters({ categories = [] }) {
   // Get all selected categories from URL (supports multiple)
   const selectedCategories = searchParams.getAll('category');
   const selectedGender = searchParams.get('gender') || '';
+  const selectedBadges = searchParams.getAll('badge');
   const isAllCategoriesSelected = selectedCategories.length === 0;
   const isAllGenderSelected = !selectedGender;
+  const isAllBadgesSelected = selectedBadges.length === 0;
 
   // Build URL with combined params
-  const buildUrl = (newCategories, newGender) => {
+  const buildUrl = (newCategories, newGender, newBadges) => {
     const params = new URLSearchParams();
     (newCategories || []).forEach((cat) => params.append('category', cat));
     if (newGender) params.set('gender', newGender);
+    (newBadges || []).forEach((b) => params.append('badge', b));
     const qs = params.toString();
     return qs ? `/shop?${qs}` : '/shop';
   };
@@ -29,13 +32,24 @@ export default function ShopFilters({ categories = [] }) {
     } else {
       newCategories = [...selectedCategories, slug];
     }
-    navigate(buildUrl(newCategories, selectedGender));
+    navigate(buildUrl(newCategories, selectedGender, selectedBadges));
   };
 
   // Handle gender selection
   const handleGenderSelect = (gender) => {
     const newGender = gender === selectedGender ? '' : gender;
-    navigate(buildUrl(selectedCategories, newGender));
+    navigate(buildUrl(selectedCategories, newGender, selectedBadges));
+  };
+
+  // Handle badge toggle
+  const handleBadgeToggle = (badge) => {
+    let newBadges;
+    if (selectedBadges.includes(badge)) {
+      newBadges = selectedBadges.filter((b) => b !== badge);
+    } else {
+      newBadges = [...selectedBadges, badge];
+    }
+    navigate(buildUrl(selectedCategories, selectedGender, newBadges));
   };
 
   // Clear all filters
@@ -43,18 +57,7 @@ export default function ShopFilters({ categories = [] }) {
     navigate('/shop');
   };
 
-  // Label for the mobile toggle button
-  const activeCategoryLabel = isAllCategoriesSelected
-    ? 'All'
-    : selectedCategories
-        .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
-        .join(', ');
-
-  const activeGenderLabel = selectedGender
-    ? selectedGender.charAt(0).toUpperCase() + selectedGender.slice(1)
-    : 'All';
-
-  const hasActiveFilters = !isAllCategoriesSelected || !isAllGenderSelected;
+  const hasActiveFilters = !isAllCategoriesSelected || !isAllGenderSelected || !isAllBadgesSelected;
 
   return (
     <div className="bg-neutral-warm-beige/40 border-b border-neutral-warm-beige">
@@ -70,7 +73,7 @@ export default function ShopFilters({ categories = [] }) {
                 <button
                   onClick={handleClearAll}
                   className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                    isAllGenderSelected && isAllCategoriesSelected
+                    isAllGenderSelected && isAllCategoriesSelected && isAllBadgesSelected
                       ? 'bg-accent-brown text-white shadow-soft'
                       : 'text-text-dark hover:bg-neutral-white/60'
                   }`}
@@ -98,7 +101,7 @@ export default function ShopFilters({ categories = [] }) {
               <p className="text-[10px] text-text-light uppercase tracking-[0.2em] mb-3 font-semibold">CATEGORY</p>
               <div className="flex flex-wrap gap-2">
                 <Link
-                  to={buildUrl([], selectedGender)}
+                  to={buildUrl([], selectedGender, selectedBadges)}
                   className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
                     isAllCategoriesSelected
                       ? 'bg-accent-brown text-white shadow-soft'
@@ -127,6 +130,43 @@ export default function ShopFilters({ categories = [] }) {
                 })}
               </div>
             </div>
+
+            {/* Badge Filter */}
+            {badges.length > 0 && (
+              <div>
+                <p className="text-[10px] text-text-light uppercase tracking-[0.2em] mb-3 font-semibold">BADGE</p>
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    onClick={() => navigate(buildUrl(selectedCategories, selectedGender, []))}
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                      isAllBadgesSelected
+                        ? 'bg-accent-brown text-white shadow-soft'
+                        : 'text-text-dark hover:bg-neutral-white/60'
+                    }`}
+                  >
+                    All
+                  </button>
+
+                  {badges.map((badge) => {
+                    const isSelected = selectedBadges.includes(badge);
+                    return (
+                      <button
+                        key={badge}
+                        onClick={() => handleBadgeToggle(badge)}
+                        className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 flex items-center gap-1.5 ${
+                          isSelected
+                            ? 'bg-accent-brown text-white shadow-soft'
+                            : 'text-text-dark hover:bg-neutral-white/60'
+                        }`}
+                      >
+                        {badge}
+                        {isSelected && <span className="text-xs opacity-80">✕</span>}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
 
             {/* Clear all */}
             {hasActiveFilters && (
@@ -179,7 +219,7 @@ export default function ShopFilters({ categories = [] }) {
           <div
             className="overflow-hidden transition-all duration-300 ease-in-out"
             style={{
-              maxHeight: mobileOpen ? '400px' : '0px',
+              maxHeight: mobileOpen ? '600px' : '0px',
               opacity: mobileOpen ? 1 : 0,
             }}
           >
@@ -218,7 +258,7 @@ export default function ShopFilters({ categories = [] }) {
                 <p className="text-[10px] text-text-light uppercase tracking-[0.2em] mb-2 font-semibold">Category</p>
                 <div className="flex flex-wrap gap-2">
                   <Link
-                    to={buildUrl([], selectedGender)}
+                    to={buildUrl([], selectedGender, selectedBadges)}
                     className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all duration-200 ${
                       isAllCategoriesSelected
                         ? 'bg-accent-brown text-white shadow-soft'
@@ -247,6 +287,43 @@ export default function ShopFilters({ categories = [] }) {
                   })}
                 </div>
               </div>
+
+              {/* Badge */}
+              {badges.length > 0 && (
+                <div>
+                  <p className="text-[10px] text-text-light uppercase tracking-[0.2em] mb-2 font-semibold">Badge</p>
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      onClick={() => navigate(buildUrl(selectedCategories, selectedGender, []))}
+                      className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all duration-200 ${
+                        isAllBadgesSelected
+                          ? 'bg-accent-brown text-white shadow-soft'
+                          : 'text-text-dark bg-neutral-white/70 hover:bg-neutral-white'
+                      }`}
+                    >
+                      All
+                    </button>
+
+                    {badges.map((badge) => {
+                      const isSelected = selectedBadges.includes(badge);
+                      return (
+                        <button
+                          key={badge}
+                          onClick={() => handleBadgeToggle(badge)}
+                          className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all duration-200 flex items-center gap-1 ${
+                            isSelected
+                              ? 'bg-accent-brown text-white shadow-soft'
+                              : 'text-text-dark bg-neutral-white/70 hover:bg-neutral-white'
+                          }`}
+                        >
+                          {badge}
+                          {isSelected && <span className="text-[10px] opacity-80">✕</span>}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
 
               {/* Clear all */}
               {hasActiveFilters && (
