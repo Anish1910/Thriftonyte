@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;0,9..40,900;1,9..40,400&family=Cormorant+Garamond:wght@400;500;600;700&display=swap');
+/* Fonts loaded via index.html <link> tag for non-blocking rendering */
 
 * {
   margin: 0;
@@ -237,6 +237,6 @@ a:focus {
     transform: translateZ(0);
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
+    content-visibility: auto;
   }
 }
-

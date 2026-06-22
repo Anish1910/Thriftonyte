@@ -51,8 +51,8 @@ export const fetchProducts = async () => {
     price,
     description,
     longDescription,
-    images[] { asset -> { url } },
-    hoverGif { asset -> { url } },
+    images,
+    hoverGif,
     badge,
     category -> { name, slug },
     status,
@@ -78,8 +78,8 @@ export const fetchProductBySlug = async (slug) => {
     price,
     description,
     longDescription,
-    images[] { asset -> { url } },
-    hoverGif { asset -> { url } },
+    images,
+    hoverGif,
     badge,
     category -> { name, slug },
     status,
@@ -105,8 +105,8 @@ export const fetchProductsByCategory = async (categorySlug) => {
     price,
     description,
     longDescription,
-    images[] { asset -> { url } },
-    hoverGif { asset -> { url } },
+    images,
+    hoverGif,
     badge,
     category -> { name, slug },
     status,
@@ -131,7 +131,7 @@ export const fetchCategories = async () => {
     name,
     slug,
     description,
-    image { asset -> { url } }
+    image
   }`;
 
   try {
@@ -149,7 +149,7 @@ export const fetchActiveBanners = async () => {
     _id,
     title,
     subtitle,
-    image { asset -> { url } },
+    image,
     ctaText,
     ctaLink,
     active
@@ -170,7 +170,7 @@ export const fetchShopSettings = async () => {
     _id,
     title,
     subtitle,
-    backgroundImage { asset -> { url } },
+    backgroundImage,
     backgroundVideo { asset -> { url } }
   }`;
 

@@ -1,4 +1,4 @@
-import { useRef, useLayoutEffect, useState } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import {
   motion,
   useScroll,
@@ -13,7 +13,7 @@ import './ScrollVelocity.css';
 function useElementWidth(ref) {
   const [width, setWidth] = useState(0);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     function updateWidth() {
       if (ref.current) {
         setWidth(ref.current.offsetWidth);
@@ -27,6 +27,9 @@ function useElementWidth(ref) {
   return width;
 }
 
+// Fewer DOM copies on mobile for better performance
+const _defaultCopies = typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches ? 4 : 6;
+
 export const ScrollVelocity = ({
   scrollContainerRef = undefined,
   texts = [],
@@ -34,7 +37,7 @@ export const ScrollVelocity = ({
   className = '',
   damping = 50,
   stiffness = 400,
-  numCopies = 6,
+  numCopies = _defaultCopies,
   velocityMapping = { input: [0, 1000], output: [0, 5] },
   parallaxClassName = 'parallax',
   scrollerClassName = 'scroller',
@@ -109,7 +112,7 @@ export const ScrollVelocity = ({
 
     return (
       <div className={parallaxClassName} style={parallaxStyle}>
-        <motion.div className={scrollerClassName} style={{ x, ...scrollerStyle }}>
+        <motion.div className={scrollerClassName} style={{ x, willChange: 'transform', ...scrollerStyle }}>
           {spans}
         </motion.div>
       </div>

@@ -210,7 +210,7 @@ export default function ProductDetail() {
               <AnimatePresence initial={false} custom={direction}>
                 <motion.img
                   key={selectedImageIndex}
-                  src={getImage(product.images?.[selectedImageIndex])}
+                  src={getImage(product.images?.[selectedImageIndex], { width: 800, quality: 75 })}
                   alt={product.title}
                   custom={direction}
                   variants={slideVariants}
@@ -223,6 +223,7 @@ export default function ProductDetail() {
                   }}
                   className="absolute inset-0 w-full h-full object-cover"
                   style={{ willChange: 'transform, opacity', transform: 'translateZ(0)' }}
+                  decoding="async"
                 />
               </AnimatePresence>
 
@@ -543,7 +544,7 @@ export default function ProductDetail() {
               <AnimatePresence initial={false} custom={direction}>
                 <motion.img
                   key={selectedImageIndex}
-                  src={getImage(product.images?.[selectedImageIndex])}
+                  src={getImage(product.images?.[selectedImageIndex], { width: 1200, quality: 80 })}
                   alt={product.title}
                   custom={direction}
                   variants={slideVariants}
@@ -556,6 +557,7 @@ export default function ProductDetail() {
                   }}
                   className="absolute w-auto h-auto max-w-full max-h-[80vh] md:max-w-4xl md:max-h-screen object-contain"
                   style={{ willChange: 'transform, opacity', transform: 'translateZ(0)' }}
+                  decoding="async"
                 />
               </AnimatePresence>
 

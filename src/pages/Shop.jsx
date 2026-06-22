@@ -101,16 +101,17 @@ export default function Shop() {
   }
   const displayFilterName = activeFilterParts.join(' · ');
 
-  const serializedCategories = categoryParams.join(',');
-  const serializedBadges = badgeParams.join(',');
   // Smooth scroll to product grid when filter changes
+  const categoryKey = categoryParams.join(',');
+  const badgeKey = badgeParams.join(',');
   useEffect(() => {
     if (hasActiveFilter && productGridRef.current) {
       setTimeout(() => {
         productGridRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 100);
     }
-  }, [serializedCategories, genderParam, serializedBadges]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [categoryKey, genderParam, badgeKey]);
 
   return (
     <main>

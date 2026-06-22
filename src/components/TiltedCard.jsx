@@ -84,6 +84,7 @@ export default function TiltedCard({
             alt={altText}
             style={{ width: imageWidth, height: imageHeight, objectFit: 'cover' }}
             loading="lazy"
+            decoding="async"
           />
         )}
       </div>

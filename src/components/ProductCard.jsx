@@ -7,12 +7,25 @@ import { getImage } from '../lib/image';
 import { useState, useEffect, useRef } from 'react';
 import TiltedCard from './TiltedCard';
 
+// Single matchMedia check shared across all cards (no per-card resize listener)
+const isMobileQuery = typeof window !== 'undefined'
+  ? window.matchMedia('(max-width: 767px)')
+  : { matches: false };
+
 export default function ProductCard({ product }) {
   const { addToCart } = useCart();
   const navigate = useNavigate();
   const [isHovered, setIsHovered] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
   const cardRef = useRef(null);
+
+  // Use matchMedia listener instead of per-card resize
+  const [isMobile, setIsMobile] = useState(isMobileQuery.matches);
+  useEffect(() => {
+    const handler = (e) => setIsMobile(e.matches);
+    isMobileQuery.addEventListener('change', handler);
+    return () => isMobileQuery.removeEventListener('change', handler);
+  }, []);
 
   const handleCardClick = (e) => {
     if (e.target.closest('button')) return;
@@ -26,8 +39,9 @@ export default function ProductCard({ product }) {
     setTimeout(() => setAddedToCart(false), 1500);
   };
 
-  const mainImage = getImage(product.images?.[0]);
-  const hoverImage = getImage(product.hoverGif);
+  // Reduced sizes: 400px is plenty for cards displayed at 180-300px
+  const mainImage = getImage(product.images?.[0], { width: 400, quality: 70 });
+  const hoverImage = isMobile ? '' : getImage(product.hoverGif, { width: 400, quality: 70 });
   const displayImage = isHovered && hoverImage ? hoverImage : mainImage;
 
   const genderLabel = (() => {
@@ -36,15 +50,6 @@ export default function ProductCard({ product }) {
   })();
 
   const isSoldOut = product.status === 'sold_out';
-
-  // Detect mobile for scroll-based hover/GIF simulation
-  const [isMobile, setIsMobile] = useState(false);
-  useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 768);
-    check();
-    window.addEventListener('resize', check);
-    return () => window.removeEventListener('resize', check);
-  }, []);
 
   // On mobile: use IntersectionObserver to trigger hover state (GIF + lift) when card is in viewport center
   useEffect(() => {
@@ -113,6 +118,7 @@ export default function ProductCard({ product }) {
                 alt={product.title}
                 className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 ease-out md:group-hover:scale-[1.04]"
                 loading="lazy"
+                decoding="async"
               />
 
               {/* Slide Up Button Overlay (Duo-Tone Mask Effect) - DESKTOP ONLY */}

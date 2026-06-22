@@ -13,7 +13,7 @@ export default function Hero({ settings }) {
   const carouselImages = heroImages.length > 0 ? heroImages : defaultImages;
 
   const heroImageUrls = carouselImages.map(img =>
-    typeof img === 'string' ? img : urlFor(img).url()
+    typeof img === 'string' ? img : urlFor(img).width(800).quality(75).auto('format').url()
   );
 
   const heroProducts = settings?.featuredProducts?.length > 0
@@ -98,6 +98,7 @@ export default function Hero({ settings }) {
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -20 }}
           transition={{ duration: 1.2, ease: [0.25, 0.1, 0.25, 1] }}
+          decoding="async"
         />
       </AnimatePresence>
 
@@ -206,7 +207,7 @@ export default function Hero({ settings }) {
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
           {heroProducts.map((product, idx) => {
-            const productImg = getImage(product.images?.[0] || product.images);
+            const productImg = getImage(product.images?.[0] || product.images, { width: 500, quality: 70 });
             const productId = product._id || product.id;
             
             return (
@@ -219,6 +220,8 @@ export default function Hero({ settings }) {
                   src={productImg} 
                   alt={product.title} 
                   className="w-full h-full object-cover"
+                  loading="lazy"
+                  decoding="async"
                 />
                 
                 {/* Overlay Tint with gradient */}

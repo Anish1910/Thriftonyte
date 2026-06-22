@@ -4,18 +4,10 @@ import { urlFor } from '../lib/sanity';
 import { fadeInVariants } from '../constants/animations';
 import PixelCard from './PixelCard';
 
-import { useState, useEffect } from 'react';
-
 export default function BrandSection({ sections }) {
   const navigate = useNavigate();
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 768);
-    check();
-    window.addEventListener('resize', check);
-    return () => window.removeEventListener('resize', check);
-  }, []);
+  // Single matchMedia check — no per-component resize listener
+  const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches;
 
   const brandSections = sections || [];
 
@@ -39,7 +31,7 @@ export default function BrandSection({ sections }) {
       >
         <div className="grid grid-cols-2 gap-2 md:gap-4">
           {brandSections.map((item, index) => {
-            const imageUrl = item?.image ? urlFor(item.image).url() : null;
+            const imageUrl = item?.image ? urlFor(item.image).width(index === 0 ? 1200 : 600).quality(70).auto('format').url() : null;
 
             if (!imageUrl) return null;
 
@@ -62,6 +54,8 @@ export default function BrandSection({ sections }) {
                     src={imageUrl}
                     alt={item?.text || 'brand section image'}
                     className="w-full h-full object-cover transition-transform duration-700 ease-out will-change-transform group-hover:scale-105"
+                    loading="lazy"
+                    decoding="async"
                   />
 
                   {/* Hover overlay tint */}

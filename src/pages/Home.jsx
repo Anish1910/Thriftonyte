@@ -72,9 +72,11 @@ export default function Home() {
                   className="rounded-lg overflow-hidden"
                 >
                   <img
-                    src={urlFor(banner.image).url()}
+                    src={urlFor(banner.image).width(800).quality(75).auto('format').url()}
                     alt={banner.title}
                     className="w-full h-full object-cover rounded-lg"
+                    loading="lazy"
+                    decoding="async"
                   />
                 </motion.div>
               )}

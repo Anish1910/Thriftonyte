@@ -44,7 +44,7 @@ function App() {
 
   return (
     <CartProvider>
-      <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+      <Router>
         <ScrollToTop />
         <div className="min-h-screen bg-neutral-white">
           <Header onCartToggle={() => setIsCartOpen(!isCartOpen)} />

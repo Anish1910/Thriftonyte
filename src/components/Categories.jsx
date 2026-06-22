@@ -205,7 +205,7 @@ export default function Categories({ categories = [] }) {
           <motion.div
             ref={trackRef}
             className="flex gap-6 md:gap-8 pb-4"
-            style={{ x }}
+            style={{ x, willChange: 'transform' }}
             drag="x"
             dragConstraints={{ left: -maxScroll, right: 0 }}
             dragElastic={0.1}

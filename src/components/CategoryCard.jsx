@@ -1,20 +1,13 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
 import { urlFor } from '../lib/sanity';
 import { cardVariants } from '../constants/animations';
 import SpotlightCard from './SpotlightCard';
 
 export default function CategoryCard({ category }) {
-  const imageUrl = category.image ? urlFor(category.image).url() : null;
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 768);
-    check();
-    window.addEventListener('resize', check);
-    return () => window.removeEventListener('resize', check);
-  }, []);
+  const imageUrl = category.image ? urlFor(category.image).width(400).quality(70).auto('format').url() : null;
+  // Single matchMedia check — no per-component resize listener
+  const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches;
 
   return (
     <motion.div
@@ -35,6 +28,8 @@ export default function CategoryCard({ category }) {
                 src={imageUrl}
                 alt={category.name}
                 className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+                loading="lazy"
+                decoding="async"
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center text-text-light">

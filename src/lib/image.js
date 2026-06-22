@@ -1,10 +1,27 @@
 import { urlFor } from './sanity';
 
 /**
+ * Returns an appropriate image width based on viewport size.
+ * Avoids serving desktop-sized images to mobile devices.
+ *
+ * @param {number} desktopWidth - Desired width for desktop (default 800)
+ * @returns {number} - Width appropriate for current viewport
+ */
+const _isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches;
+const _isTablet = typeof window !== 'undefined' && window.matchMedia('(min-width: 768px) and (max-width: 1023px)').matches;
+
+export const getResponsiveWidth = (desktopWidth = 800) => {
+  if (_isMobile) return Math.min(400, desktopWidth);
+  if (_isTablet) return Math.min(600, desktopWidth);
+  return desktopWidth;
+};
+
+/**
  * Safe image handler that supports both Sanity image objects and string URLs
  * Prevents crashes from mixed image data types
  *
  * @param {object|string|undefined} img - Image input
+ * @param {object} options - { width, height, quality, autoFormat, responsive }
  * @returns {string} - Safe URL string or empty string
  *
  * Examples:
@@ -13,17 +30,35 @@ import { urlFor } from './sanity';
  * - getImage('IMG_1829.PNG') -> returns filename directly
  * - getImage(undefined) -> returns ''
  */
-export const getImage = (img) => {
+export const getImage = (img, options = {}) => {
   // Handle undefined or null
   if (!img) return '';
 
-  // Handle Sanity image objects (with asset reference)
-  if (typeof img === 'object' && img.asset) {
-    try {
-      return urlFor(img).url();
-    } catch (error) {
-      console.warn('Failed to process Sanity image:', img, error);
-      return '';
+  // Handle Sanity image objects
+  if (typeof img === 'object') {
+    // If we have a dereferenced asset URL directly, we use it as fallback
+    if (img.asset?.url && !img.asset?._ref) {
+      return img.asset.url;
+    }
+    
+    if (img.asset || img._ref) {
+      try {
+        let builderInstance = urlFor(img);
+        // Use responsive width if enabled (default: true)
+        const useResponsive = options.responsive !== false;
+        const width = useResponsive && options.width
+          ? getResponsiveWidth(options.width)
+          : options.width;
+        if (width) builderInstance = builderInstance.width(width);
+        if (options.height) builderInstance = builderInstance.height(options.height);
+        builderInstance = builderInstance.quality(options.quality || 75);
+        if (options.autoFormat !== false) builderInstance = builderInstance.auto('format');
+        return builderInstance.url();
+      } catch (error) {
+        console.warn('Failed to process Sanity image:', img, error);
+        // Fallback to asset url if available
+        if (img.asset?.url) return img.asset.url;
+      }
     }
   }
 

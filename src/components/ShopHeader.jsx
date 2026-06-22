@@ -28,6 +28,7 @@ export default function ShopHeader({ settings }) {
                 loop
                 muted
                 playsInline
+                preload="metadata"
                 className="col-start-1 row-start-1 w-full h-auto object-cover"
               />
             ) : imageUrl ? (
@@ -35,6 +36,7 @@ export default function ShopHeader({ settings }) {
                 src={imageUrl}
                 alt="Shop Header Background"
                 className="col-start-1 row-start-1 w-full h-auto object-cover"
+                decoding="async"
               />
             ) : null}
             

@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -18,10 +17,24 @@ const GENDER_OPTIONS = [
   { label: 'Women', value: 'women' },
 ];
 
+// Complete Tailwind class strings to avoid dynamic class purging
+const NAV_ACTIVE_CLASSES = {
+  'accent-brown': 'text-accent-brown',
+  'accent-green': 'text-accent-green',
+};
+const NAV_HOVER_CLASSES = {
+  'accent-brown': 'text-text-medium hover:text-accent-brown',
+  'accent-green': 'text-text-medium hover:text-accent-green',
+};
+const MOBILE_ACTIVE_CLASSES = {
+  'accent-brown': 'border-accent-brown text-accent-brown',
+  'accent-green': 'border-accent-green text-accent-green',
+};
+
 const getNavLinkClass = ({ isActive }, color = 'accent-brown') =>
   `text-sm font-medium uppercase tracking-wider transition-colors ${isActive
-    ? `text-${color}`
-    : `text-text-medium hover:text-${color}`
+    ? NAV_ACTIVE_CLASSES[color] || 'text-accent-brown'
+    : NAV_HOVER_CLASSES[color] || 'text-text-medium hover:text-accent-brown'
   }`;
 
 export default function Header({ onCartToggle }) {
@@ -134,7 +147,7 @@ export default function Header({ onCartToggle }) {
                               to={item.to}
                               className={({ isActive }) =>
                                 `flex-1 block text-xl font-semibold transition-all duration-300 border-l-2 pl-4 py-2 uppercase tracking-wide ${isActive
-                                  ? `border-${item.color} text-${item.color}`
+                                  ? MOBILE_ACTIVE_CLASSES[item.color] || 'border-accent-brown text-accent-brown'
                                   : 'border-transparent text-text-dark hover:border-accent-brown hover:text-accent-brown'
                                 }`
                               }
@@ -186,7 +199,7 @@ export default function Header({ onCartToggle }) {
                           to={item.to}
                           className={({ isActive }) =>
                             `block text-xl font-semibold transition-all duration-300 border-l-2 pl-4 py-2 uppercase tracking-wide ${isActive
-                              ? `border-${item.color} text-${item.color}`
+                              ? MOBILE_ACTIVE_CLASSES[item.color] || 'border-accent-brown text-accent-brown'
                               : 'border-transparent text-text-dark hover:border-accent-brown hover:text-accent-brown'
                             }`
                           }

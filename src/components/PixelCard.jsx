@@ -210,6 +210,9 @@ export default function PixelCard({ variant = 'default', gap = undefined, speed 
   };
 
   useEffect(() => {
+    // Skip expensive canvas work entirely when disabled (e.g. on mobile)
+    if (disabled) return;
+
     initPixels();
     const observer = new ResizeObserver(() => {
       initPixels();
@@ -222,7 +225,7 @@ export default function PixelCard({ variant = 'default', gap = undefined, speed 
       cancelAnimationFrame(animationRef.current);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [finalGap, finalSpeed, finalColors, finalNoFocus]);
+  }, [finalGap, finalSpeed, finalColors, finalNoFocus, disabled]);
 
   if (disabled) {
     return (
