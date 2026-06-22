@@ -98,12 +98,14 @@ export default function ProductCard({ product }) {
               isHovered ? 'scale-[1.015] -translate-y-0.5 shadow-lg' : 'shadow-md'
             }`}
           >
-            {/* Badge */}
-            {product.badge && (
-              <div className="absolute right-2 top-2 z-20 pointer-events-none">
-                <span className={`rounded-minimal px-2 py-1 text-xs font-semibold uppercase tracking-wider ${BADGE_STYLES[product.badge] || 'bg-accent-brown text-white'}`}>
-                  {product.badge}
-                </span>
+            {/* Badges */}
+            {product.badges && product.badges.length > 0 && (
+              <div className="absolute right-2 top-2 z-20 pointer-events-none flex flex-col gap-1 items-end">
+                {product.badges.map(badgeObj => (
+                  <span key={badgeObj.name} className={`rounded-minimal px-2 py-1 text-xs font-semibold uppercase tracking-wider ${BADGE_STYLES[badgeObj.name] || 'bg-accent-brown text-white'}`}>
+                    {badgeObj.name}
+                  </span>
+                ))}
               </div>
             )}
 

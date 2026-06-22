@@ -296,15 +296,18 @@ export default function ProductDetail() {
                   {genderLabel}
                 </span>
               )}
-              {product.badge && (
-                <motion.span
-                  initial={{ scale: 0.95, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 0.4, delay: 0.1 }}
-                  className={`px-3 py-1 text-xs font-semibold rounded-full uppercase tracking-wide ${BADGE_STYLES[product.badge] || 'bg-accent-brown text-white'}`}
-                >
-                  {product.badge}
-                </motion.span>
+              {/* Badges */}
+              {product.badges && product.badges.length > 0 && (
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {product.badges.map(badgeObj => (
+                    <span 
+                      key={badgeObj.name}
+                      className={`px-3 py-1 text-xs font-semibold rounded-full uppercase tracking-wide ${BADGE_STYLES[badgeObj.name] || 'bg-accent-brown text-white'}`}
+                    >
+                      {badgeObj.name}
+                    </span>
+                  ))}
+                </div>
               )}
             </div>
 

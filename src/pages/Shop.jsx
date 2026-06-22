@@ -59,7 +59,7 @@ export default function Shop() {
   }, []);
 
   // Derive unique badge names from fetched products
-  const uniqueBadges = [...new Set(products.map(p => p.badge).filter(Boolean))].sort();
+  const uniqueBadges = [...new Set(products.flatMap(p => p.badges?.map(b => b.name) || []).filter(Boolean))].sort();
 
   // Filter products by category, gender, and badge
   let filteredProducts = products;
@@ -78,7 +78,7 @@ export default function Shop() {
 
   if (badgeParams.length > 0) {
     filteredProducts = filteredProducts.filter(
-      (p) => p.badge && badgeParams.includes(p.badge)
+      (p) => p.badges && p.badges.some(b => badgeParams.includes(b.name))
     );
   }
 

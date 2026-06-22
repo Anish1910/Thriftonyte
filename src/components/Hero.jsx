@@ -230,7 +230,7 @@ export default function Hero({ settings }) {
                 {/* Product Info Overlay */}
                 <div className="absolute bottom-8 left-4 right-4 z-20 text-left">
                   <span className="inline-block rounded-minimal px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wider bg-accent-brown text-white mb-2">
-                    {product.badge || 'Curated For You'}
+                    {product.badges?.[0]?.name || 'Curated For You'}
                   </span>
                   <h3 className="text-base font-extrabold text-white uppercase tracking-wider truncate">
                     {product.title}

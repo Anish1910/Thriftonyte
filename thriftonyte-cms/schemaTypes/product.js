@@ -60,17 +60,11 @@ export default {
       }
     },
     {
-      name: 'badge',
-      title: 'Badge',
-      type: 'string',
-      options: {
-        list: [
-          { title: 'Curated', value: 'Curated' },
-          { title: 'New', value: 'New' },
-          { title: 'Limited', value: 'Limited' },
-          { title: 'Rare', value: 'Rare' }
-        ]
-      }
+      name: 'badges',
+      title: 'Badges',
+      type: 'array',
+      of: [{ type: 'reference', to: [{ type: 'badge' }] }],
+      description: 'Select one or more badges for this product'
     },
     {
       name: 'category',
