@@ -14,7 +14,33 @@ export const client = createClient({
 
 const builder = imageUrlBuilder(client);
 
-export const urlFor = (source) => builder.image(source);
+export const urlFor = (source) => {
+  if (!source || (typeof source === 'object' && !source.asset && !source._ref)) {
+    const dummy = {
+      width: () => dummy,
+      height: () => dummy,
+      quality: () => dummy,
+      fit: () => dummy,
+      ignoreImageParams: () => dummy,
+      url: () => '',
+    };
+    return dummy;
+  }
+  try {
+    return builder.image(source);
+  } catch (err) {
+    console.error('Error creating image URL builder:', err);
+    const dummy = {
+      width: () => dummy,
+      height: () => dummy,
+      quality: () => dummy,
+      fit: () => dummy,
+      ignoreImageParams: () => dummy,
+      url: () => '',
+    };
+    return dummy;
+  }
+};
 
 // PRODUCT QUERIES
 export const fetchProducts = async () => {
