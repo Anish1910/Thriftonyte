@@ -28,7 +28,7 @@ export default function Home() {
         heroImages,
         heroText,
         scrollingTexts,
-        featuredProducts[]->{_id, title, slug, price, images, description, badge, tags, status, gender, hoverGif, category->{name, slug}, longDescription, whyThisPiece},
+        featuredProducts[]->{_id, title, slug, price, images, description, badges[]->{name}, tags, status, gender, hoverGif, category->{name, slug}, longDescription, whyThisPiece},
         featuredCategories[]->{_id, name, slug, image, description},
         brandSections[]{image, link, text}
       }`)

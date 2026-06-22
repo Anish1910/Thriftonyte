@@ -53,6 +53,7 @@ export default function ProductDetail() {
               name,
               slug
             },
+            badges[]->{name},
             whyThisPiece
           }`,
           { id }

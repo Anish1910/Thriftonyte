@@ -50,7 +50,8 @@ export default function Shop() {
         category->{
           name,
           slug
-        }
+        },
+        badges[]->{name}
       }`)
       .then((data) => {
         setProducts(data);
