@@ -44,7 +44,7 @@ export const urlFor = (source) => {
 
 // PRODUCT QUERIES
 export const fetchProducts = async () => {
-  const query = `*[_type == "product" && status == "available"] | order(_createdAt desc) {
+  const query = `*[_type == "product"] | order(status asc, _createdAt desc) {
     _id,
     title,
     slug,
@@ -98,7 +98,7 @@ export const fetchProductBySlug = async (slug) => {
 };
 
 export const fetchProductsByCategory = async (categorySlug) => {
-  const query = `*[_type == "product" && category->slug.current == $categorySlug && status == "available"] | order(_createdAt desc) {
+  const query = `*[_type == "product" && category->slug.current == $categorySlug] | order(status asc, _createdAt desc) {
     _id,
     title,
     slug,

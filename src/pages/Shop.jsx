@@ -45,7 +45,7 @@ export default function Shop() {
 
   useEffect(() => {
     client
-      .fetch(`*[_type == "product"]{
+      .fetch(`*[_type == "product"] | order(status asc, _createdAt desc) {
         ...,
         category->{
           name,

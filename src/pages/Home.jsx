@@ -37,7 +37,10 @@ export default function Home() {
   }, []);
 
 
-  const featuredProducts = homepageSettings?.featuredProducts || [];
+  const featuredProducts = [...(homepageSettings?.featuredProducts || [])].sort((a, b) => {
+    if (a.status === b.status) return 0;
+    return a.status === 'available' ? -1 : 1;
+  });
   const featuredCategories = homepageSettings?.featuredCategories || [];
 
   return (
