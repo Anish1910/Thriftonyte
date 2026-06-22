@@ -13,7 +13,7 @@ export default function Hero({ settings }) {
   const carouselImages = heroImages.length > 0 ? heroImages : defaultImages;
 
   const heroImageUrls = carouselImages.map(img =>
-    typeof img === 'string' ? img : urlFor(img).width(800).quality(75).auto('format').url()
+    typeof img === 'string' ? img : urlFor(img).width(1200).quality(85).auto('format').url()
   );
 
   const heroProducts = settings?.featuredProducts?.length > 0
@@ -207,7 +207,7 @@ export default function Hero({ settings }) {
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
           {heroProducts.map((product, idx) => {
-            const productImg = getImage(product.images?.[0] || product.images, { width: 500, quality: 70 });
+            const productImg = getImage(product.images?.[0] || product.images, { width: 800, quality: 85 });
             const productId = product._id || product.id;
             
             return (

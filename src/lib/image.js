@@ -10,9 +10,10 @@ import { urlFor } from './sanity';
 const _isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches;
 const _isTablet = typeof window !== 'undefined' && window.matchMedia('(min-width: 768px) and (max-width: 1023px)').matches;
 
-export const getResponsiveWidth = (desktopWidth = 800) => {
-  if (_isMobile) return Math.min(400, desktopWidth);
-  if (_isTablet) return Math.min(600, desktopWidth);
+export const getResponsiveWidth = (desktopWidth = 1200) => {
+  // Use higher resolution for retina displays on mobile
+  if (_isMobile) return Math.min(800, desktopWidth);
+  if (_isTablet) return Math.min(1000, desktopWidth);
   return desktopWidth;
 };
 
@@ -51,7 +52,7 @@ export const getImage = (img, options = {}) => {
           : options.width;
         if (width) builderInstance = builderInstance.width(width);
         if (options.height) builderInstance = builderInstance.height(options.height);
-        builderInstance = builderInstance.quality(options.quality || 75);
+        builderInstance = builderInstance.quality(options.quality || 85);
         if (options.autoFormat !== false) builderInstance = builderInstance.auto('format');
         return builderInstance.url();
       } catch (error) {

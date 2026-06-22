@@ -39,10 +39,9 @@ export default function ProductCard({ product }) {
     setTimeout(() => setAddedToCart(false), 1500);
   };
 
-  // Reduced sizes: 400px is plenty for cards displayed at 180-300px
-  const mainImage = getImage(product.images?.[0], { width: 400, quality: 70 });
-  const hoverImage = isMobile ? '' : getImage(product.hoverGif, { width: 400, quality: 70 });
-  const displayImage = isHovered && hoverImage ? hoverImage : mainImage;
+  // Use high-quality 800px width images so they look sharp on retina displays
+  const mainImage = getImage(product.images?.[0], { width: 800, quality: 85 });
+  const hoverImage = getImage(product.hoverGif, { width: 800, quality: 85 });
 
   const genderLabel = (() => {
     if (!product.gender) return '';
@@ -82,7 +81,7 @@ export default function ProductCard({ product }) {
         onMouseLeave={() => setIsHovered(false)}
       >
         <TiltedCard
-          imageSrc={displayImage}
+          imageSrc={isHovered && hoverImage ? hoverImage : mainImage}
           containerHeight="100%"
           containerWidth="100%"
           imageHeight="auto"
@@ -114,12 +113,22 @@ export default function ProductCard({ product }) {
               style={{ aspectRatio: '1 / 1' }}
             >
               <img
-                src={displayImage || ''}
+                src={mainImage || ''}
                 alt={product.title}
-                className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 ease-out md:group-hover:scale-[1.04]"
+                className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ease-out md:group-hover:scale-[1.04] ${isHovered && hoverImage ? 'opacity-0' : 'opacity-100'}`}
                 loading="lazy"
                 decoding="async"
               />
+
+              {hoverImage && (
+                <img
+                  src={hoverImage}
+                  alt={`${product.title} hover`}
+                  className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ease-out md:group-hover:scale-[1.04] ${isHovered ? 'opacity-100' : 'opacity-0'}`}
+                  loading="lazy"
+                  decoding="async"
+                />
+              )}
 
               {/* Slide Up Button Overlay (Duo-Tone Mask Effect) - DESKTOP ONLY */}
               <div className="hidden md:block absolute bottom-0 left-0 w-full h-9 md:translate-y-full md:group-hover:translate-y-0 transition-all duration-500 ease-out z-20 backdrop-blur-md md:opacity-0 md:group-hover:opacity-100 border-t border-white/20 overflow-hidden">

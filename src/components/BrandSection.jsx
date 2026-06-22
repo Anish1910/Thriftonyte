@@ -31,7 +31,7 @@ export default function BrandSection({ sections }) {
       >
         <div className="grid grid-cols-2 gap-2 md:gap-4">
           {brandSections.map((item, index) => {
-            const imageUrl = item?.image ? urlFor(item.image).width(index === 0 ? 1200 : 600).quality(70).auto('format').url() : null;
+            const imageUrl = item?.image ? urlFor(item.image).width(index === 0 ? 1200 : 800).quality(85).auto('format').url() : null;
 
             if (!imageUrl) return null;
 

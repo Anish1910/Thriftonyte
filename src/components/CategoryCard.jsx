@@ -5,7 +5,7 @@ import { cardVariants } from '../constants/animations';
 import SpotlightCard from './SpotlightCard';
 
 export default function CategoryCard({ category }) {
-  const imageUrl = category.image ? urlFor(category.image).width(400).quality(70).auto('format').url() : null;
+  const imageUrl = category.image ? urlFor(category.image).width(800).quality(85).auto('format').url() : null;
   // Single matchMedia check — no per-component resize listener
   const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches;
 

@@ -210,7 +210,7 @@ export default function ProductDetail() {
               <AnimatePresence initial={false} custom={direction}>
                 <motion.img
                   key={selectedImageIndex}
-                  src={getImage(product.images?.[selectedImageIndex], { width: 800, quality: 75 })}
+                  src={getImage(product.images?.[selectedImageIndex], { width: 1200, quality: 85 })}
                   alt={product.title}
                   custom={direction}
                   variants={slideVariants}
