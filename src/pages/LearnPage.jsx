@@ -4,8 +4,16 @@ import { client, urlFor } from '../lib/sanity';
 import LearnModal from '../components/LearnModal';
 import Newsletter from '../components/Newsletter';
 import ChromaGrid from '../components/ChromaGrid';
+import { useDocumentMeta } from '../hooks/useDocumentMeta';
 
 export default function LearnPage() {
+  useDocumentMeta({
+    title: 'Learn',
+    description:
+      "Thrifting tips, garment care and sustainable fashion notes from the Thriftonyte team.",
+    path: '/learn',
+  });
+
   const [tips, setTips] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('all');

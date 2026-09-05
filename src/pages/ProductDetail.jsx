@@ -6,6 +6,8 @@ import { fadeInVariants } from '../constants/animations';
 import { BADGE_STYLES } from '../constants/product';
 import { getImage } from '../lib/image';
 import { client } from '../lib/sanity';
+import { whatsappLink } from '../constants/site';
+import { useDocumentMeta, SITE_URL } from '../hooks/useDocumentMeta';
 
 const slideVariants = {
   enter: (direction) => ({
@@ -25,7 +27,7 @@ const slideVariants = {
 };
 
 export default function ProductDetail() {
-  const { id } = useParams();
+  const { slug } = useParams();
   const navigate = useNavigate();
   const { addToCart } = useCart();
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -44,10 +46,15 @@ export default function ProductDetail() {
     : '';
 
   useEffect(() => {
+    let cancelled = false;
+
     const fetchProduct = async () => {
+      setLoading(true);
       try {
+        // Match on slug OR _id: new links use the readable slug, but
+        // /product/<uuid> links already shared on WhatsApp must keep resolving.
         const data = await client.fetch(
-          `*[_type == "product" && _id == $id][0]{
+          `*[_type == "product" && (slug.current == $key || _id == $key)][0]{
             ...,
             category->{
               name,
@@ -56,19 +63,20 @@ export default function ProductDetail() {
             badges[]->{name},
             whyThisPiece
           }`,
-          { id }
+          { key: slug }
         );
-        setProduct(data || null);
+        if (!cancelled) setProduct(data || null);
       } catch (error) {
         console.error('Error fetching product:', error);
-        setProduct(null);
+        if (!cancelled) setProduct(null);
       } finally {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       }
     };
 
     fetchProduct();
-  }, [id]);
+    return () => { cancelled = true; };
+  }, [slug]);
 
   useEffect(() => {
     let timer;
@@ -138,6 +146,56 @@ export default function ProductDetail() {
     }
   };
 
+  // Hooks can't live after the early returns below, so route metadata is
+  // assembled here and simply reflects whichever state we're in.
+  const metaPath = product ? `/product/${product.slug?.current || product._id}` : undefined;
+  const metaImage = product
+    ? getImage(product.images?.[0], { width: 1200, quality: 85, responsive: false })
+    : undefined;
+
+  useDocumentMeta({
+    title: product
+      ? product.title?.trim()
+      : loading
+        ? 'Loading piece'
+        : 'Piece not found',
+    description: product
+      ? `${product.title?.trim()} — ₹${product.price}. ${product.description?.trim() || 'One-of-a-kind pre-loved piece. Only one exists.'}`
+      : undefined,
+    image: metaImage || undefined,
+    path: metaPath,
+    // A missing product is a 404 in everything but HTTP status; keep it out of
+    // the index rather than letting Google collect empty pages.
+    noindex: !loading && !product,
+    jsonLd: product
+      ? {
+          '@context': 'https://schema.org',
+          '@type': 'Product',
+          name: product.title?.trim(),
+          description: product.description?.trim() || product.longDescription?.trim(),
+          image: (product.images || [])
+            .map((img) => getImage(img, { width: 1200, quality: 85, responsive: false }))
+            .filter(Boolean),
+          sku: product._id,
+          category: product.category?.name,
+          brand: { '@type': 'Brand', name: 'Thriftonyte' },
+          offers: {
+            '@type': 'Offer',
+            url: `${SITE_URL}${metaPath}`,
+            priceCurrency: 'INR',
+            price: product.price,
+            // Every piece is second-hand and there is exactly one of each.
+            itemCondition: 'https://schema.org/UsedCondition',
+            availability:
+              product.status === 'sold_out'
+                ? 'https://schema.org/SoldOut'
+                : 'https://schema.org/InStock',
+            seller: { '@type': 'Organization', name: 'Thriftonyte' },
+          },
+        }
+      : null,
+  });
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -170,10 +228,11 @@ export default function ProductDetail() {
     setAddedToCart(true);
   };
 
-  const getWhatsAppMessage = () => {
-    const message = `Hey, I'm interested in this piece:\n\n${product.title} - ₹${product.price}\n\nName: \nAddress: \nPhone: \nEmail:\n\nIs it still available?`;
-    return encodeURIComponent(message);
-  };
+  const productUrl = `${SITE_URL}/product/${product.slug?.current || product._id}`;
+
+  const whatsappHref = whatsappLink(
+    `Hey, I'm interested in this piece:\n\n${product.title?.trim()} - ₹${product.price}\n${productUrl}\n\nName: \nAddress: \nPhone: \nEmail:\n\nIs it still available?`
+  );
 
   return (
     <main className="min-h-screen bg-neutral-white">
@@ -375,15 +434,7 @@ export default function ProductDetail() {
                   </p>
                 </motion.div>
 
-                {/* FOMO Message */}
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 0.28 }}
-                  className="text-xs text-red-600 font-semibold mb-8"
-                >
-                  Spotted by someone else too
-                </motion.p>
+                <div className="mb-8" />
               </>
             )}
 
@@ -416,7 +467,7 @@ export default function ProductDetail() {
                 </div>
               ) : (
                 <motion.a
-                  href={`https://wa.me/9510381376?text=${getWhatsAppMessage()}`}
+                  href={whatsappHref}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full px-6 py-4 bg-accent-brown text-white font-semibold rounded-lg hover:bg-opacity-90 transition-all duration-300 shadow-soft hover:shadow-md flex items-center justify-center gap-2 text-base uppercase tracking-wide"

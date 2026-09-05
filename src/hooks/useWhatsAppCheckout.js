@@ -1,4 +1,4 @@
-import { CONFIG } from '../data/products';
+import { whatsappDigits } from '../constants/site';
 
 export const useWhatsAppCheckout = () => {
   const generateWhatsAppMessage = (cartItems, total) => {
@@ -22,7 +22,7 @@ export const useWhatsAppCheckout = () => {
   const sendWhatsAppMessage = (cartItems, total) => {
     const message = generateWhatsAppMessage(cartItems, total);
     const encodedMessage = encodeURIComponent(message);
-    const whatsappURL = `https://wa.me/${CONFIG.whatsappNumber.replace(/\D/g, '')}?text=${encodedMessage}`;
+    const whatsappURL = `https://wa.me/${whatsappDigits()}?text=${encodedMessage}`;
 
     window.open(whatsappURL, '_blank');
   };

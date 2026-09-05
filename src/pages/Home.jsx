@@ -10,8 +10,35 @@ import ScrollVelocity from '../components/ScrollVelocity';
 import Newsletter from '../components/Newsletter';
 
 import { client, urlFor } from '../lib/sanity';
+import { useDocumentMeta, SITE_URL } from '../hooks/useDocumentMeta';
 
 export default function Home() {
+  useDocumentMeta({
+    path: '/',
+    jsonLd: {
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'Organization',
+          '@id': `${SITE_URL}/#organization`,
+          name: 'Thriftonyte',
+          url: SITE_URL,
+          logo: `${SITE_URL}/apple-touch-icon.png`,
+          description:
+            'Curated pre-loved and vintage fashion in India. Every piece is one of one.',
+          sameAs: ['https://instagram.com/thriftonyte'],
+        },
+        {
+          '@type': 'WebSite',
+          '@id': `${SITE_URL}/#website`,
+          url: SITE_URL,
+          name: 'Thriftonyte',
+          publisher: { '@id': `${SITE_URL}/#organization` },
+        },
+      ],
+    },
+  });
+
   const [banner, setBanner] = useState(null);
   const [homepageSettings, setHomepageSettings] = useState(null);
 

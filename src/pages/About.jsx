@@ -4,8 +4,16 @@ import { useState, useEffect } from 'react';
 import Footer from '../components/Footer';
 import Newsletter from '../components/Newsletter';
 import { client } from '../lib/sanity';
+import { useDocumentMeta } from '../hooks/useDocumentMeta';
 
 export default function About() {
+  useDocumentMeta({
+    title: 'About',
+    description:
+      "Why Thriftonyte exists — curated pre-loved fashion, one piece at a time. No restocks, no fast fashion.",
+    path: '/about',
+  });
+
   const [aboutSettings, setAboutSettings] = useState(null);
 
   useEffect(() => {

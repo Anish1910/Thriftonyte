@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Footer from '../components/Footer';
 import Newsletter from '../components/Newsletter';
 import { useFormSubmit } from '../hooks/useFormSubmit';
+import { useDocumentMeta } from '../hooks/useDocumentMeta';
 
 const FAQS = [
   {
@@ -196,6 +197,13 @@ function FAQItem({ faq, isOpen, onClick }) {
 }
 
 export default function Contact() {
+  useDocumentMeta({
+    title: 'Contact',
+    description:
+      "Questions about a piece, sizing or an order? Reach Thriftonyte on WhatsApp, email or Instagram.",
+    path: '/contact',
+  });
+
   const [openFaqIndex, setOpenFaqIndex] = useState(0);
 
   return (

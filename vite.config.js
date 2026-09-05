@@ -32,5 +32,23 @@ export default defineConfig({
   server: {
     port: 3000,
     open: true
-  }
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Core React runtime — changes rarely, caches well
+          'vendor-react': ['react', 'react-dom'],
+          // Animation library — large (~100kB), shared across many components
+          'vendor-framer-motion': ['framer-motion'],
+          // CMS client — only needed once data fetching starts
+          'vendor-sanity': ['@sanity/client', '@sanity/image-url'],
+          // GSAP — only used by ChromaGrid, isolate it
+          'vendor-gsap': ['gsap'],
+          // Router — used on every page but small enough to warrant its own chunk
+          'vendor-router': ['react-router-dom'],
+        },
+      },
+    },
+  },
 })

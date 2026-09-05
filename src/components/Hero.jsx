@@ -1,12 +1,12 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
 import { products } from '../data/products';
 import { urlFor } from '../lib/sanity';
 import { getImage } from '../lib/image';
+import { productPath } from '../lib/productUrl';
 
 export default function Hero({ settings }) {
-  const navigate = useNavigate();
   const mobileScrollRef = useRef(null);
   const defaultImages = products.slice(0, 4).flatMap(p => p.images.slice(0, 1));
   const heroImages = settings?.heroImages?.length > 0 ? settings.heroImages : [];
@@ -211,10 +211,10 @@ export default function Hero({ settings }) {
             const productId = product._id || product.id;
             
             return (
-              <div 
+              <Link
                 key={productId || idx}
-                className="w-full h-full flex-shrink-0 snap-start snap-always relative cursor-pointer"
-                onClick={() => navigate(`/product/${productId}`)}
+                to={productPath(product)}
+                className="w-full h-full flex-shrink-0 snap-start snap-always relative block"
               >
                 <img 
                   src={productImg} 
@@ -239,7 +239,7 @@ export default function Hero({ settings }) {
                     ₹{product.price}
                   </p>
                 </div>
-              </div>
+              </Link>
             );
           })}
         </div>

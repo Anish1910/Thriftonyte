@@ -1,0 +1,68 @@
+/* ─── Skeleton shimmer animation ─── */
+@keyframes skeleton-shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+.skeleton-block {
+  background: linear-gradient(
+    90deg,
+    #e8e4df 0%,
+    #f5f2ee 40%,
+    #f5f2ee 60%,
+    #e8e4df 100%
+  );
+  background-size: 800px 100%;
+  animation: skeleton-shimmer 1.8s ease-in-out infinite;
+  border-radius: 6px;
+}
+
+/* ─── Size presets ─── */
+.skeleton-title    { height: 32px; }
+.skeleton-title-lg { height: 44px; }
+.skeleton-text     { height: 16px; }
+.skeleton-text-sm  { height: 12px; }
+.skeleton-price    { height: 36px; }
+.skeleton-pill     { height: 36px; width: 80px; border-radius: 9999px; }
+
+.skeleton-button {
+  height: 52px;
+  border-radius: 8px;
+  width: 100%;
+}
+
+.skeleton-button-outline {
+  height: 46px;
+  border-radius: 8px;
+  width: 100%;
+  background: transparent;
+  border: 2px solid #e8e4df;
+  animation: none;
+}
+
+/* ─── Route transition progress bar ─── */
+.route-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: left;
+  background: linear-gradient(
+    90deg,
+    #8B7355 0%,
+    #a08a6a 50%,
+    #8B7355 100%
+  );
+  transition: opacity 0.15s ease, transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.route-progress-bar--active {
+  opacity: 1;
+  transform: scaleX(0.85);
+  transition: opacity 0.15s ease, transform 8s cubic-bezier(0.1, 0.7, 0.1, 1);
+}

@@ -1,10 +1,12 @@
 import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { cardVariants } from '../constants/animations';
 import { BADGE_STYLES } from '../constants/product';
 import { getImage } from '../lib/image';
-import { useState, useEffect, useRef } from 'react';
+import { productPath } from '../lib/productUrl';
+import { rememberShopScroll } from '../lib/productCache';
+import { useState, useEffect } from 'react';
 import TiltedCard from './TiltedCard';
 
 // Single matchMedia check shared across all cards (no per-card resize listener)
@@ -14,10 +16,9 @@ const isMobileQuery = typeof window !== 'undefined'
 
 export default function ProductCard({ product }) {
   const { addToCart } = useCart();
-  const navigate = useNavigate();
   const [isHovered, setIsHovered] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
-  const cardRef = useRef(null);
+  const href = productPath(product);
 
   // Use matchMedia listener instead of per-card resize
   const [isMobile, setIsMobile] = useState(isMobileQuery.matches);
@@ -26,11 +27,6 @@ export default function ProductCard({ product }) {
     isMobileQuery.addEventListener('change', handler);
     return () => isMobileQuery.removeEventListener('change', handler);
   }, []);
-
-  const handleCardClick = (e) => {
-    if (e.target.closest('button')) return;
-    navigate(`/product/${product._id}`);
-  };
 
   const handleAddToCart = (e) => {
     e.stopPropagation();
@@ -50,21 +46,6 @@ export default function ProductCard({ product }) {
 
   const isSoldOut = product.status === 'sold_out';
 
-  // On mobile: use IntersectionObserver to trigger hover state (GIF + lift) when card is in viewport center
-  useEffect(() => {
-    if (!isMobile || !cardRef.current) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsHovered(entry.isIntersecting);
-      },
-      { rootMargin: '-30% 0px -30% 0px', threshold: 0.1 }
-    );
-
-    observer.observe(cardRef.current);
-    return () => observer.disconnect();
-  }, [isMobile]);
-
   return (
     <motion.div
       variants={cardVariants}
@@ -74,11 +55,9 @@ export default function ProductCard({ product }) {
       className="flex flex-col h-full"
     >
       <div
-        ref={cardRef}
-        className="group relative flex h-full flex-col cursor-pointer"
-        onClick={handleCardClick}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+        className="group relative flex h-full flex-col"
+        onMouseEnter={() => !isMobile && setIsHovered(true)}
+        onMouseLeave={() => !isMobile && setIsHovered(false)}
       >
         <TiltedCard
           imageSrc={isHovered && hoverImage ? hoverImage : mainImage}
@@ -114,23 +93,31 @@ export default function ProductCard({ product }) {
               className="relative w-full overflow-hidden bg-neutral-warm-beige"
               style={{ aspectRatio: '1 / 1' }}
             >
-              <img
-                src={mainImage || ''}
-                alt={product.title}
-                className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ease-out md:group-hover:scale-[1.04] ${isHovered && hoverImage ? 'opacity-0' : 'opacity-100'}`}
-                loading="lazy"
-                decoding="async"
-              />
-
-              {hoverImage && (
+              <Link
+                to={href}
+                onClick={rememberShopScroll}
+                aria-label={product.title?.trim()}
+                className="absolute inset-0 block focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent-brown"
+              >
                 <img
-                  src={hoverImage}
-                  alt={`${product.title} hover`}
-                  className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ease-out md:group-hover:scale-[1.04] ${isHovered ? 'opacity-100' : 'opacity-0'}`}
+                  src={mainImage || ''}
+                  alt={product.title?.trim()}
+                  className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ease-out md:group-hover:scale-[1.04] ${isHovered && hoverImage ? 'opacity-0' : 'opacity-100'}`}
                   loading="lazy"
                   decoding="async"
                 />
-              )}
+
+                {hoverImage && (
+                  <img
+                    src={hoverImage}
+                    alt=""
+                    aria-hidden="true"
+                    className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ease-out md:group-hover:scale-[1.04] ${isHovered ? 'opacity-100' : 'opacity-0'}`}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                )}
+              </Link>
 
               {/* Slide Up Button Overlay (Duo-Tone Mask Effect) - DESKTOP ONLY */}
               <div className="hidden md:block absolute bottom-0 left-0 w-full h-9 md:translate-y-full md:group-hover:translate-y-0 transition-all duration-500 ease-out z-20 backdrop-blur-md md:opacity-0 md:group-hover:opacity-100 border-t border-white/20 overflow-hidden">
@@ -208,7 +195,13 @@ export default function ProductCard({ product }) {
                 {/* Desktop: Title & Price Side-by-Side | Mobile: Title Only */}
                 <div className="flex items-start justify-between gap-4">
                   <h3 className="line-clamp-2 text-lg font-extrabold leading-snug text-text-dark md:text-xl flex-1">
-                    {product.title}
+                    <Link
+                      to={href}
+                      onClick={rememberShopScroll}
+                      className="transition-colors hover:text-accent-brown focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-brown"
+                    >
+                      {product.title?.trim()}
+                    </Link>
                   </h3>
                   
                   {/* Desktop-only Price Reveal */}

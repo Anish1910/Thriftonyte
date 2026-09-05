@@ -1,5 +1,8 @@
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { getImage } from '../lib/image';
+import { productPath } from '../lib/productUrl';
 import { useWhatsAppCheckout } from '../hooks/useWhatsAppCheckout';
 
 export default function Cart({ isOpen, onClose }) {
@@ -8,11 +11,12 @@ export default function Cart({ isOpen, onClose }) {
   const total = getTotalPrice();
 
   const handleCheckout = () => {
-    if (cartItems.length > 0) {
-      sendWhatsAppMessage(cartItems, total);
-      clearCart();
-      onClose();
-    }
+    if (cartItems.length === 0) return;
+    // Deliberately does NOT clear the cart: the popup can be blocked, WhatsApp
+    // can fail to open, or the buyer can change their mind. Losing the basket
+    // at that point is unrecoverable for them and invisible to us.
+    sendWhatsAppMessage(cartItems, total);
+    onClose();
   };
 
   const backdropVariants = {
@@ -27,16 +31,19 @@ export default function Cart({ isOpen, onClose }) {
 
   return (
     <>
-      {isOpen && (
-        <motion.div
-          className="fixed inset-0 bg-black z-50 cursor-pointer"
-          variants={backdropVariants}
-          initial="hidden"
-          animate="visible"
-          exit="hidden"
-          onClick={onClose}
-        />
-      )}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            className="fixed inset-0 bg-black/50 z-50 cursor-pointer"
+            variants={backdropVariants}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+            onClick={onClose}
+            aria-hidden="true"
+          />
+        )}
+      </AnimatePresence>
 
       <motion.div
         className="fixed right-0 top-0 h-full w-11/12 sm:w-96 bg-neutral-white shadow-hover z-50 flex flex-col"
@@ -69,9 +76,21 @@ export default function Cart({ isOpen, onClose }) {
             <div className="space-y-4">
               {cartItems.map(item => (
                 <div key={item._id} className="flex gap-4 pb-4 border-b border-neutral-light-beige">
-                  <div className="text-4xl flex-shrink-0">{item.image}</div>
+                  <Link to={productPath(item)} onClick={onClose} className="flex-shrink-0">
+                    <img
+                      src={getImage(item.images?.[0], { width: 160, quality: 80 })}
+                      alt={item.title?.trim()}
+                      className="h-20 w-20 rounded-minimal object-cover bg-neutral-warm-beige"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </Link>
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-text-dark truncate">{item.title}</h3>
+                    <h3 className="font-semibold text-text-dark truncate">
+                      <Link to={productPath(item)} onClick={onClose} className="hover:text-accent-brown transition-colors">
+                        {item.title?.trim()}
+                      </Link>
+                    </h3>
                     <p className="text-sm text-text-medium">₹{item.price}</p>
                     <button
                       onClick={() => removeFromCart(item._id)}

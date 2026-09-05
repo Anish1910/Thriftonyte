@@ -3,21 +3,38 @@ import { createContext, useContext, useState, useEffect } from 'react';
 const CartContext = createContext(null);
 
 export const CartProvider = ({ children }) => {
+  // This initializer runs inside the provider that wraps the entire app, so
+  // anything that throws here white-screens every route. A truncated write, a
+  // browser extension, or a future shape change is enough — hence the guards.
   const [cartItems, setCartItems] = useState(() => {
-    const saved = localStorage.getItem('cart');
-    if (!saved) return [];
-    const parsed = JSON.parse(saved);
-    // Deduplicate by _id (older data may contain duplicates)
-    const seen = new Set();
-    return parsed.filter(item => {
-      if (seen.has(item._id)) return false;
-      seen.add(item._id);
-      return true;
-    });
+    try {
+      const saved = localStorage.getItem('cart');
+      if (!saved) return [];
+
+      const parsed = JSON.parse(saved);
+      if (!Array.isArray(parsed)) return [];
+
+      // Deduplicate by _id (older data may contain duplicates)
+      const seen = new Set();
+      return parsed.filter(item => {
+        if (!item || typeof item !== 'object' || !item._id) return false;
+        if (seen.has(item._id)) return false;
+        seen.add(item._id);
+        return true;
+      });
+    } catch (err) {
+      console.warn('Discarding unreadable cart from localStorage:', err);
+      return [];
+    }
   });
 
   useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cartItems));
+    try {
+      localStorage.setItem('cart', JSON.stringify(cartItems));
+    } catch (err) {
+      // Private mode / quota exhausted — the cart still works for this session.
+      console.warn('Could not persist cart:', err);
+    }
   }, [cartItems]);
 
   const addToCart = (product) => {
